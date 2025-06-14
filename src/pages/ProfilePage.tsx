@@ -223,8 +223,10 @@ const ProfilePage: React.FC = () => {
 
               <form onSubmit={handleProfileUpdate} className="space-y-4">
                 <Input
-                  label="Full Name"
+                  label="Name"
                   type="text"
+                  minLength={2}
+                  maxLength={18}
                   value={profileData.name}
                   onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
                   disabled={!isEditing}
@@ -298,6 +300,7 @@ const ProfilePage: React.FC = () => {
                   <div className="relative">
                     <Input
                       label="New Password"
+                      maxLength={32}
                       type={showNewPassword ? 'text' : 'password'}
                       value={createPasswordData.newPassword}
                       onChange={(e) => setCreatePasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
@@ -358,6 +361,7 @@ const ProfilePage: React.FC = () => {
                   <div className="relative">
                     <Input
                       label="Current Password"
+                      maxLength={32}
                       type={showCurrentPassword ? 'text' : 'password'}
                       value={passwordData.currentPassword}
                       onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
