@@ -43,7 +43,7 @@ const CartPage: React.FC = () => {
     const { name, email, phone, address, city, state, pincode } = shippingAddress;
 
     if (!name.trim() || name.trim().length < 2) {
-      toast.error('Full Name must be at least 2 characters');
+      toast.error('Name must be at least 2 characters');
       return false;
     }
     if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) {
@@ -402,6 +402,7 @@ const CartPage: React.FC = () => {
                 <Input
                   label="Full Name"
                   name="name"
+                  maxLength={30}
                   value={shippingAddress.name}
                   onChange={handleAddressChange}
                   required
@@ -410,6 +411,7 @@ const CartPage: React.FC = () => {
                   label="Email"
                   type="email"
                   name="email"
+                  maxLength={50}
                   value={shippingAddress.email}
                   onChange={handleAddressChange}
                   required
@@ -417,6 +419,7 @@ const CartPage: React.FC = () => {
                 <Input
                   label="Phone"
                   name="phone"
+                  maxLength={15}
                   value={shippingAddress.phone}
                   onChange={handleAddressChange}
                   required
@@ -424,6 +427,7 @@ const CartPage: React.FC = () => {
                 <Input
                   label="Pincode"
                   name="pincode"
+                  maxLength={10}
                   value={shippingAddress.pincode}
                   onChange={handleAddressChange}
                   required
@@ -434,6 +438,7 @@ const CartPage: React.FC = () => {
                 <Input
                   label="Address"
                   name="address"
+                  maxLength={100}
                   value={shippingAddress.address}
                   onChange={handleAddressChange}
                   required
@@ -444,6 +449,7 @@ const CartPage: React.FC = () => {
                 <Input
                   label="City"
                   name="city"
+                  maxLength={50}
                   value={shippingAddress.city}
                   onChange={handleAddressChange}
                   required
@@ -451,6 +457,7 @@ const CartPage: React.FC = () => {
                 <Input
                   label="State"
                   name="state"
+                  maxLength={50}
                   value={shippingAddress.state}
                   onChange={handleAddressChange}
                   required
