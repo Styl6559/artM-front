@@ -159,9 +159,11 @@ const ContactPage: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <Input
-                      label="Full Name"
+                      label="Name"
                       type="text"
                       name="name"
+                      minLength={2}
+                      maxLength={24}
                       value={formData.name}
                       onChange={handleChange}
                       required
@@ -173,6 +175,7 @@ const ContactPage: React.FC = () => {
                       label="Email Address"
                       type="email"
                       name="email"
+                      maxLength={50}
                       value={formData.email}
                       onChange={handleChange}
                       required
@@ -209,6 +212,7 @@ const ContactPage: React.FC = () => {
                   </label>
                   <textarea
                     name="message"
+                    maxLength={1000}
                     value={formData.message}
                     onChange={handleChange}
                     rows={6}
