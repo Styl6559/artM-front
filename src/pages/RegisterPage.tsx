@@ -138,15 +138,17 @@ const RegisterPage: React.FC = () => {
         <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/30">
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
-              label="Full Name"
+              label="Name"
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Enter your full name"
+              placeholder="Enter your name"
               icon={<User className="w-5 h-5" />}
               error={errors.name}
               required
+              minLength={2}
+              maxLength={18}
             />
 
             <Input
@@ -159,6 +161,7 @@ const RegisterPage: React.FC = () => {
               icon={<Mail className="w-5 h-5" />}
               error={errors.email}
               required
+              maxLength={50}
             />
 
             <div className="space-y-2">
@@ -167,6 +170,7 @@ const RegisterPage: React.FC = () => {
                   label="Password"
                   type={showPassword ? 'text' : 'password'}
                   name="password"
+                  maxLength={32}
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Create a strong password"
