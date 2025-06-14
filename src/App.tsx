@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -32,6 +32,24 @@ import { CartProvider } from './context/CartContext';
 import { SearchProvider } from './context/SearchContext';
 
 function App() {
+  const [serverAwake, setServerAwake] = useState(false);
+
+  // Wake up backend server on first load
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/health`)
+      .then(() => setServerAwake(true))
+      .catch(() => setServerAwake(true)); // Even on error, let app load
+  }, []);
+
+  if (!serverAwake) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Please wait...</p>
+      </div>
+    );
+  }
+
   return (
     <Router>
       <AuthProvider>
