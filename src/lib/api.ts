@@ -18,8 +18,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid, redirect to login
-      window.location.href = '/login';
+      console.warn('Unauthorized - token may be expired');
     }
     return Promise.reject(error);
   }
