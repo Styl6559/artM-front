@@ -53,17 +53,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Only fetch profile on initial mount for protected routes
   useEffect(() => {
-    const initializeAuth = async () => {
-      if (hasInitialized.current) return;
-      hasInitialized.current = true;
+    // Only run once on mount
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
 
-      // Only check auth for protected routes
-      if (isPublicRoute(location.pathname)) {
-        setIsLoading(false);
-        setIsInitialized(true);
-        return;
-      }
-
+    const fetchProfile = async () => {
       try {
         setIsLoading(true);
         const profileResponse = await authAPI.getProfile();
@@ -80,8 +74,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
     };
 
-    initializeAuth();
-  }, []);
+    fetchProfile();
+  }, []); // <-- Only on mount, not on every route change
 
   // Refresh profile method for explicit updates
   const refreshProfile = async () => {
