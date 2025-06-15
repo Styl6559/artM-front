@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Package, Clock, CheckCircle, Truck, Star, ShoppingCart, Eye } from 'lucide-react';
+import { ArrowLeft, Package, Clock, CheckCircle, Truck, Star, ShoppingCart, Eye, Sparkles } from 'lucide-react';
 import { paymentAPI } from '../lib/api';
 import { useCart } from '../context/CartContext';
 import Button from '../components/ui/Button';
@@ -84,11 +84,14 @@ const MyOrdersPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading your orders...</p>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+              <div className="relative animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto"></div>
+            </div>
+            <p className="mt-4 text-gray-600">Loading your artistic journey...</p>
           </div>
         </div>
       </div>
@@ -96,30 +99,38 @@ const MyOrdersPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link to="/dashboard" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-4">
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Dashboard
+          <Link to="/dashboard" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-4 group">
+            <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+            <span className="font-medium">Back to Dashboard</span>
           </Link>
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">My Orders</h1>
-          <p className="text-lg text-gray-600">Track your purchases and rate delivered items</p>
+          <div className="text-center">
+            <div className="relative inline-block mb-4">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur-2xl opacity-30 animate-pulse"></div>
+              <Package className="relative w-12 h-12 text-emerald-600 mx-auto" />
+            </div>
+              <h1 className="text-4xl font-bold text-gray-800 mb-2 font-serif bg-gradient-to-r from-green-700 via-emerald-800 to-green-900 bg-clip-text text-transparent">
+                My Orders
+              </h1>
+            <p className="text-lg text-gray-600 font-light">Track your artistic purchases and share your experience</p>
+          </div>
         </div>
 
         {orders.length > 0 ? (
           <div className="space-y-6">
             {orders.map((order) => (
-              <div key={order._id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+              <div key={order._id} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300">
                 {/* Order Header */}
-                <div className="bg-gray-50 p-4 border-b border-gray-200">
+                <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 border-b border-gray-200/50">
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-800">
+                      <h3 className="text-lg font-semibold text-gray-800 font-serif">
                         Order #{order._id.slice(-8).toUpperCase()}
                       </h3>
-                      <p className="text-gray-600">
+                      <p className="text-gray-600 font-light">
                         Placed on {new Date(order.createdAt).toLocaleDateString('en-US', {
                           weekday: 'long',
                           year: 'numeric',
@@ -129,13 +140,13 @@ const MyOrdersPage: React.FC = () => {
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className={`px-3 py-1 text-sm font-medium rounded-full border flex items-center gap-2 ${getStatusColor(order.status)}`}>
+                      <span className={`px-3 py-1 text-sm font-medium rounded-full border flex items-center gap-2 shadow-lg ${getStatusColor(order.status)}`}>
                         {getStatusIcon(order.status)}
                         <span className="capitalize">{order.status}</span>
                       </span>
                       <div className="text-right">
-                        <p className="text-lg font-bold text-emerald-600">₹{order.totalAmount.toFixed(2)}</p>
-                        <p className="text-sm text-gray-500">{order.items.length} item{order.items.length > 1 ? 's' : ''}</p>
+                        <p className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">₹{order.totalAmount.toFixed(2)}</p>
+                        <p className="text-sm text-gray-500 font-light">{order.items.length} item{order.items.length > 1 ? 's' : ''}</p>
                       </div>
                     </div>
                   </div>
@@ -145,20 +156,25 @@ const MyOrdersPage: React.FC = () => {
                 <div className="p-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {order.items.map((item: any, index: number) => (
-                      <div key={index} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+                      <div key={index} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 hover:from-gray-100 hover:to-gray-200 transition-all duration-300 shadow-lg">
                         <div className="flex items-start gap-3">
                           {item.product?.image && (
-                            <img
-                              src={item.product.image}
-                              alt={item.product.name}
-                              className="w-12 h-12 object-cover rounded-lg shadow-sm"
-                            />
+                            <div className="relative">
+                              <img
+                                src={item.product.image}
+                                alt={item.product.name}
+                                className="w-12 h-12 object-cover rounded-lg shadow-sm"
+                              />
+                              <div className="absolute -top-2 -right-2 w-5 h-5 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-bold">{item.quantity}</span>
+                              </div>
+                            </div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-medium text-gray-800 mb-1 line-clamp-2">
+                            <h4 className="font-medium text-gray-800 mb-1 line-clamp-2 font-serif">
                               {item.product?.name || 'Product'}
                             </h4>
-                            <p className="text-sm text-gray-600 mb-1">
+                            <p className="text-sm text-gray-600 mb-1 font-light">
                               Qty: {item.quantity} × ₹{item.price}
                             </p>
                             {item.selectedSize && (
@@ -168,7 +184,7 @@ const MyOrdersPage: React.FC = () => {
                             {/* Rating Display */}
                             {item.rating && (
                               <div className="flex items-center gap-1 mb-2">
-                                <span className="text-xs text-gray-600">Your rating:</span>
+                                <span className="text-xs text-gray-600 font-medium">Your rating:</span>
                                 {[...Array(5)].map((_, i) => (
                                   <Star
                                     key={i}
@@ -191,7 +207,7 @@ const MyOrdersPage: React.FC = () => {
                                     productImage: item.product.image
                                   })}
                                   size="sm"
-                                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white"
+                                  className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
                                 >
                                   <Star className="w-3 h-3 mr-1" />
                                   Rate Item
@@ -202,7 +218,7 @@ const MyOrdersPage: React.FC = () => {
                                 onClick={() => handleAddToCart(item.product)}
                                 size="sm"
                                 variant="outline"
-                                className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white"
+                                className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white shadow-lg hover:shadow-xl transition-all duration-300"
                               >
                                 <ShoppingCart className="w-3 h-3 mr-1" />
                                 Buy Again
@@ -215,11 +231,11 @@ const MyOrdersPage: React.FC = () => {
                   </div>
 
                   {/* Order Details Button */}
-                  <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="mt-4 pt-4 border-t border-gray-200/50">
                     <Button
                       onClick={() => setSelectedOrder(selectedOrder?._id === order._id ? null : order)}
                       variant="ghost"
-                      className="text-emerald-600 hover:text-emerald-700"
+                      className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 font-medium"
                     >
                       <Eye className="w-4 h-4 mr-2" />
                       {selectedOrder?._id === order._id ? 'Hide' : 'View'} Order Details
@@ -228,9 +244,9 @@ const MyOrdersPage: React.FC = () => {
 
                   {/* Expanded Order Details */}
                   {selectedOrder?._id === order._id && (
-                    <div className="mt-4 p-4 bg-emerald-50 rounded-lg">
-                      <h4 className="font-medium text-gray-800 mb-3">Shipping Address</h4>
-                      <div className="text-sm text-gray-600 space-y-1">
+                    <div className="mt-4 p-4 bg-gradient-to-r from-emerald-50 to-blue-50 rounded-lg shadow-inner">
+                      <h4 className="font-medium text-gray-800 mb-3 font-serif">Shipping Address</h4>
+                      <div className="text-sm text-gray-600 space-y-1 font-light">
                         <p className="font-medium">{order.shippingAddress.name}</p>
                         <p>{order.shippingAddress.address}</p>
                         <p>{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.pincode}</p>
@@ -244,18 +260,22 @@ const MyOrdersPage: React.FC = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-              <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold text-gray-800 mb-2">No Orders Yet</h3>
-              <p className="text-lg text-gray-600 mb-6">Start shopping to see your orders here!</p>
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 p-8">
+              <div className="relative inline-block mb-6">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+                <Package className="relative w-16 h-16 text-gray-400 mx-auto" />
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-2 font-serif">No Orders Yet</h3>
+              <p className="text-lg text-gray-600 mb-6 font-light">Start your artistic journey by exploring our collections!</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/shop/painting">
-                  <Button className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600">
+                  <Button className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-xl hover:shadow-2xl transition-all duration-300">
+                    <Sparkles className="w-5 h-5 mr-2" />
                     Browse Paintings
                   </Button>
                 </Link>
                 <Link to="/shop/apparel">
-                  <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white">
+                  <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white shadow-xl hover:shadow-2xl transition-all duration-300">
                     Shop Apparel
                   </Button>
                 </Link>
@@ -267,17 +287,22 @@ const MyOrdersPage: React.FC = () => {
         {/* Rating Modal */}
         {ratingOrder && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-xl">
+            <div className="bg-white/95 backdrop-blur-sm rounded-xl max-w-md w-full p-6 shadow-2xl border border-white/20">
               <div className="text-center mb-6">
                 {ratingOrder.productImage && (
-                  <img
-                    src={ratingOrder.productImage}
-                    alt={ratingOrder.productName}
-                    className="w-16 h-16 object-cover rounded-lg mx-auto mb-4 shadow-md"
-                  />
+                  <div className="relative inline-block mb-4">
+                    <img
+                      src={ratingOrder.productImage}
+                      alt={ratingOrder.productName}
+                      className="w-16 h-16 object-cover rounded-lg mx-auto shadow-xl"
+                    />
+                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full flex items-center justify-center">
+                      <Sparkles className="w-3 h-3 text-white" />
+                    </div>
+                  </div>
                 )}
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Rate Your Purchase</h3>
-                <p className="text-gray-600">{ratingOrder.productName}</p>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Rate Your Purchase</h3>
+                <p className="text-gray-600 font-light">{ratingOrder.productName}</p>
               </div>
               
               <div className="flex justify-center gap-2 mb-6">
@@ -285,7 +310,7 @@ const MyOrdersPage: React.FC = () => {
                   <button
                     key={star}
                     onClick={() => setRatings({ ...ratings, [ratingOrder.productId]: star })}
-                    className="p-2 hover:scale-110 transition-transform duration-200"
+                    className="p-2 hover:scale-110 transition-transform duration-200 rounded-full hover:bg-yellow-50"
                   >
                     <Star
                       className={`w-8 h-8 ${
@@ -317,7 +342,7 @@ const MyOrdersPage: React.FC = () => {
                     }
                   }}
                   disabled={!ratings[ratingOrder.productId]}
-                  className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600"
+                  className="flex-1 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   Submit Rating
                 </Button>
