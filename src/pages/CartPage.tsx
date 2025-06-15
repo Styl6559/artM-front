@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, CreditCard, AlertTriangle } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, CreditCard, AlertTriangle, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
@@ -218,16 +218,22 @@ const CartPage: React.FC = () => {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12">
+      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100 py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-12">
-              <ShoppingBag className="w-20 h-20 text-gray-400 mx-auto mb-6" />
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">Your cart is empty</h2>
-              <p className="text-lg text-gray-600 mb-8">Start shopping to add items to your cart</p>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-12">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+                <ShoppingBag className="relative w-20 h-20 text-gray-400 mx-auto mb-6" />
+              </div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-4 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                Your Cart Awaits
+              </h2>
+              <p className="text-lg text-gray-600 mb-8 font-light">Discover beautiful artworks to fill your creative space</p>
               <Link to="/dashboard">
-                <Button className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-8 py-3">
-                  Continue Shopping
+                <Button className="bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hover:from-emerald-600 hover:via-blue-600 hover:to-purple-600 text-white px-8 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Start Your Journey
                 </Button>
               </Link>
             </div>
@@ -242,18 +248,22 @@ const CartPage: React.FC = () => {
   const total = subtotal + gst;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link to="/dashboard" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-4">
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Continue Shopping
+          <Link to="/dashboard" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-4 group">
+            <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+            <span className="font-medium">Continue Shopping</span>
           </Link>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Shopping Cart</h1>
-          <p className="text-lg text-gray-600">
-            {items.length} item{items.length !== 1 ? 's' : ''} in your cart
-          </p>
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2 font-serif bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Your Art Collection
+            </h1>
+            <p className="text-lg text-gray-600 font-light">
+              {items.length} masterpiece{items.length !== 1 ? 's' : ''} ready for checkout
+            </p>
+          </div>
         </div>
 
         {!showCheckout ? (
@@ -261,26 +271,33 @@ const CartPage: React.FC = () => {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-6">
               {items.map((item) => (
-                <div key={`${item.product.id}-${item.selectedSize}`} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div key={`${item.product.id}-${item.selectedSize}`} className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
                   <div className="flex items-start space-x-4">
-                    <ImageWithSkeleton
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="w-20 h-20 object-cover rounded-lg shadow-md"
-                      skeletonClassName="w-20 h-20 rounded-lg"
-                    />
+                    <div className="relative">
+                      <ImageWithSkeleton
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-20 h-20 object-cover rounded-lg shadow-md"
+                        skeletonClassName="w-20 h-20 rounded-lg"
+                      />
+                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">{item.quantity}</span>
+                      </div>
+                    </div>
                     
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-1 font-serif">
                         {item.product.name}
                       </h3>
                       {item.product.artist && (
-                        <p className="text-sm text-gray-600 mb-1">by {item.product.artist}</p>
+                        <p className="text-sm text-gray-600 mb-1 italic">by {item.product.artist}</p>
                       )}
                       {item.selectedSize && (
                         <p className="text-sm text-gray-600 mb-2">Size: {item.selectedSize}</p>
                       )}
-                      <p className="text-lg font-bold text-emerald-600">₹{item.product.price}</p>
+                      <p className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                        ₹{item.product.price}
+                      </p>
                       
                       {!item.product.inStock && (
                         <div className="mt-2 flex items-center">
@@ -292,17 +309,17 @@ const CartPage: React.FC = () => {
 
                     <div className="flex items-center space-x-4">
                       {/* Quantity Controls */}
-                      <div className="flex items-center bg-gray-100 rounded-lg border border-gray-200">
+                      <div className="flex items-center bg-gray-100/80 backdrop-blur-sm rounded-lg border border-gray-200/50 shadow-lg">
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                          className="p-2 hover:bg-gray-200 transition-colors rounded-l-lg"
+                          className="p-2 hover:bg-gray-200/80 transition-colors rounded-l-lg"
                         >
                           <Minus className="w-4 h-4 text-gray-600" />
                         </button>
                         <span className="px-4 py-2 font-semibold text-gray-800">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                          className="p-2 hover:bg-gray-200 transition-colors rounded-r-lg"
+                          className="p-2 hover:bg-gray-200/80 transition-colors rounded-r-lg"
                         >
                           <Plus className="w-4 h-4 text-gray-600" />
                         </button>
@@ -311,14 +328,14 @@ const CartPage: React.FC = () => {
                       {/* Remove Button */}
                       <button
                         onClick={() => removeFromCart(item.product.id)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors shadow-lg hover:shadow-xl"
                       >
                         <Trash2 className="w-5 h-5" />
                       </button>
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="mt-4 pt-4 border-t border-gray-200/50">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Subtotal:</span>
                       <span className="font-semibold text-lg text-gray-800">₹{(item.product.price * item.quantity).toFixed(2)}</span>
@@ -341,8 +358,8 @@ const CartPage: React.FC = () => {
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 sticky top-8">
-                <h2 className="text-xl font-semibold text-gray-800 mb-6">Order Summary</h2>
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-xl border border-white/20 sticky top-8">
+                <h2 className="text-xl font-semibold text-gray-800 mb-6 font-serif">Order Summary</h2>
                 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
@@ -357,10 +374,10 @@ const CartPage: React.FC = () => {
                     <span className="text-gray-600">GST (18%):</span>
                     <span className="font-semibold text-gray-800">₹{gst.toFixed(2)}</span>
                   </div>
-                  <div className="border-t border-gray-200 pt-4">
+                  <div className="border-t border-gray-200/50 pt-4">
                     <div className="flex justify-between">
                       <span className="text-lg font-semibold text-gray-800">Total:</span>
-                      <span className="text-xl font-bold text-emerald-600">
+                      <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
                         ₹{total.toFixed(2)}
                       </span>
                     </div>
@@ -369,14 +386,14 @@ const CartPage: React.FC = () => {
 
                 <Button 
                   onClick={handleProceedToCheckout}
-                  className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 mb-4 py-3"
+                  className="w-full bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hover:from-emerald-600 hover:via-blue-600 hover:to-purple-600 mb-4 py-3 shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   <CreditCard className="w-5 h-5 mr-2" />
                   Proceed to Checkout
                 </Button>
 
                 <div className="text-center">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 font-light">
                     Secure checkout powered by Razorpay
                   </p>
                 </div>
@@ -386,9 +403,9 @@ const CartPage: React.FC = () => {
         ) : (
           /* Checkout Form */
           <div className="max-w-2xl mx-auto">
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-8 shadow-xl border border-white/20">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-semibold text-gray-800">Shipping Address</h2>
+                <h2 className="text-2xl font-semibold text-gray-800 font-serif">Shipping Details</h2>
                 <Button
                   variant="outline"
                   onClick={() => setShowCheckout(false)}
@@ -465,7 +482,7 @@ const CartPage: React.FC = () => {
               </div>
 
               {/* Order Summary */}
-              <div className="bg-gray-50 rounded-lg p-6 mb-6">
+              <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-lg p-6 mb-6">
                 <h3 className="font-semibold text-gray-800 mb-4">Order Summary</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
@@ -478,7 +495,7 @@ const CartPage: React.FC = () => {
                   </div>
                   <div className="flex justify-between font-semibold text-lg border-t pt-3">
                     <span className="text-gray-800">Total:</span>
-                    <span className="text-emerald-600">₹{total.toFixed(2)}</span>
+                    <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">₹{total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -486,7 +503,7 @@ const CartPage: React.FC = () => {
               <Button
                 onClick={handleCheckout}
                 isLoading={isProcessing}
-                className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 py-3"
+                className="w-full bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hover:from-emerald-600 hover:via-blue-600 hover:to-purple-600 py-3 shadow-xl hover:shadow-2xl transition-all duration-300"
               >
                 {isProcessing ? 'Processing...' : 'Pay with Razorpay'}
               </Button>
@@ -497,10 +514,10 @@ const CartPage: React.FC = () => {
         {/* Confirmation Modal */}
         {showConfirmation && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl max-w-md w-full p-6">
+            <div className="bg-white/95 backdrop-blur-sm rounded-xl max-w-md w-full p-6 shadow-2xl">
               <div className="text-center mb-6">
                 <AlertTriangle className="w-12 h-12 text-orange-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Items Removed from Cart</h3>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Items Removed</h3>
                 <p className="text-gray-600">
                   {removedItems.length} item{removedItems.length > 1 ? 's' : ''} removed due to stock unavailability:
                 </p>
