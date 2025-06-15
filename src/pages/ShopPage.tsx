@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Filter, Grid, List, SortAsc, Search, Palette, Crown } from 'lucide-react';
+import { Filter, Grid, List, SortAsc, Search, Palette, Crown, Sparkles } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
 import { useDebounce } from '../hooks/useDebounce';
 import ProductCard from '../components/ProductCard';
@@ -72,11 +72,11 @@ const ShopPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-8">
-            <div className="h-10 bg-gray-200 rounded w-80 mb-4 animate-pulse"></div>
-            <div className="h-6 bg-gray-200 rounded w-96 animate-pulse"></div>
+            <div className="h-10 bg-gray-200/50 rounded w-80 mb-4 animate-pulse"></div>
+            <div className="h-6 bg-gray-200/50 rounded w-96 animate-pulse"></div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {[...Array(10)].map((_, i) => (
@@ -89,71 +89,79 @@ const ShopPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-emerald-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Modern Header */}
+        {/* Header */}
         <div className="mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/60 p-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-8">
             <div className="flex items-center mb-4">
-              <div className="bg-gradient-to-r from-emerald-500 to-blue-500 rounded-xl p-3 shadow-lg mr-4">
-                {React.createElement(categoryIcon, { className: "w-6 h-6 text-white" })}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg blur-lg opacity-30"></div>
+                <div className="relative bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg p-3 shadow-xl">
+                  {React.createElement(categoryIcon, { className: "w-6 h-6 text-white" })}
+                </div>
               </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800">{categoryTitle}</h1>
-                <p className="text-gray-600">{categoryDescription}</p>
+              <div className="ml-4">
+                <h1 className="text-3xl font-bold text-gray-800 font-serif bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">{categoryTitle}</h1>
+                <p className="text-gray-600 font-light">{categoryDescription}</p>
               </div>
             </div>
             
             {/* Search Bar */}
             <div className="max-w-xl">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                <input
-                  type="text"
-                  placeholder={`Search ${category || 'products'} by name...`}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/90 backdrop-blur-sm shadow-sm"
-                />
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-lg blur-xl"></div>
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                  <input
+                    type="text"
+                    placeholder={`Search ${category || 'products'} by name...`}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 border border-gray-300/50 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm shadow-xl font-light placeholder-gray-400"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Modern Filters Sidebar */}
+          {/* Filters Sidebar */}
           <div className="lg:w-64 space-y-6">
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/60 p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center font-serif">
                 <Filter className="w-5 h-5 mr-2 text-emerald-600" />
                 Filters
               </h3>
 
               {/* Price Range */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
+                <label className="block text-sm font-medium text-gray-700 mb-3 font-serif">
                   Price Range: ₹{priceRange[0]} - ₹{priceRange[1]}
                 </label>
-                <input
-                  type="range"
-                  min="0"
-                  max="10000"
-                  value={priceRange[1]}
-                  onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-emerald-600"
-                />
+                <div className="relative">
+                  <input
+                    type="range"
+                    min="0"
+                    max="10000"
+                    value={priceRange[1]}
+                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                    className="w-full h-2 bg-gradient-to-r from-emerald-200 to-blue-200 rounded-lg appearance-none cursor-pointer accent-emerald-600 shadow-lg"
+                  />
+                </div>
               </div>
 
               {/* Artist Filter */}
               {artists.length > 0 && (
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-3 font-serif">
                     Artist
                   </label>
                   <select
                     value={selectedArtist}
                     onChange={(e) => setSelectedArtist(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/90"
+                    className="w-full p-3 border border-gray-300/50 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm font-serif shadow-lg"
                   >
                     <option value="">All Artists</option>
                     {artists.map(artist => (
@@ -171,7 +179,7 @@ const ShopPage: React.FC = () => {
                   setSelectedArtist('');
                   setSearchQuery('');
                 }}
-                className="w-full"
+                className="w-full font-serif shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Clear Filters
               </Button>
@@ -180,13 +188,13 @@ const ShopPage: React.FC = () => {
 
           {/* Products Grid */}
           <div className="flex-1">
-            {/* Modern Toolbar */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/60 p-4 mb-6">
+            {/* Toolbar */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-4 mb-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div className="text-gray-600">
-                  Showing {filteredProducts.length} of {products.length} products
+                <div className="text-gray-600 font-serif">
+                  Showing <span className="font-bold text-emerald-600">{filteredProducts.length}</span> of <span className="font-bold">{products.length}</span> products
                   {debouncedSearchQuery && (
-                    <span className="ml-2 text-emerald-600 font-medium">
+                    <span className="ml-2 text-emerald-600 font-semibold">
                       for "{debouncedSearchQuery}"
                     </span>
                   )}
@@ -199,7 +207,7 @@ const ShopPage: React.FC = () => {
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/90"
+                      className="border border-gray-300/50 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm font-serif shadow-lg"
                     >
                       <option value="name">Name</option>
                       <option value="price-low">Price: Low to High</option>
@@ -209,16 +217,16 @@ const ShopPage: React.FC = () => {
                   </div>
 
                   {/* View Mode */}
-                  <div className="flex border border-gray-300 rounded-lg overflow-hidden">
+                  <div className="flex border border-gray-300/50 rounded-lg overflow-hidden shadow-lg">
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-2 ${viewMode === 'grid' ? 'bg-emerald-600 text-white' : 'text-gray-600 hover:bg-gray-100'} transition-colors`}
+                      className={`p-2 ${viewMode === 'grid' ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gray-100 bg-white/80'} transition-all duration-300`}
                     >
                       <Grid className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`p-2 ${viewMode === 'list' ? 'bg-emerald-600 text-white' : 'text-gray-600 hover:bg-gray-100'} transition-colors`}
+                      className={`p-2 ${viewMode === 'list' ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-600 hover:bg-gray-100 bg-white/80'} transition-all duration-300`}
                     >
                       <List className="w-4 h-4" />
                     </button>
@@ -240,10 +248,13 @@ const ShopPage: React.FC = () => {
               </div>
             ) : (
               <div className="text-center py-12">
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/60 p-8">
-                  <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">No products found</h3>
-                  <p className="text-gray-600 mb-6">
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-8">
+                  <div className="relative inline-block mb-6">
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+                    <Search className="relative w-16 h-16 text-gray-400 mx-auto" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">No products found</h3>
+                  <p className="text-gray-600 mb-6 font-light">
                     {debouncedSearchQuery 
                       ? `No products match "${debouncedSearchQuery}". Try different keywords or clear filters.`
                       : 'No products found matching your criteria'
@@ -256,7 +267,9 @@ const ShopPage: React.FC = () => {
                       setSearchQuery('');
                     }}
                     variant="outline"
+                    className="font-serif shadow-xl hover:shadow-2xl transition-all duration-300"
                   >
+                    <Sparkles className="w-4 h-4 mr-2" />
                     Clear All Filters
                   </Button>
                 </div>
