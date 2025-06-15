@@ -71,16 +71,20 @@ const Header: React.FC = () => {
           {/* Logo Section */}
           <Link to="/dashboard" className="flex items-center group">
             <div className="relative">
+              {/* Soft glow effect behind logo */}
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
-              <div className="relative h-10 w-32 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm border border-white/60 shadow-md group-hover:shadow-lg transition-all duration-300">
+
+              {/* Logo container - fixed size */}
+              <div className="relative h-12 w-36 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm border border-white/60 shadow-md group-hover:shadow-lg transition-all duration-300 flex items-center justify-center">
                 <img
                   src={logo}
                   alt="Artistic Manifestation"
-                  className="h-full w-full object-contain object-center p-1"
+                  className="scale-[1.15] object-contain object-center"
                 />
               </div>
             </div>
           </Link>
+
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
@@ -202,18 +206,18 @@ const Header: React.FC = () => {
                       <div className="py-1">
                         <Link
                           to="/profile"
-                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors text-sm"
                           onClick={() => setIsUserMenuOpen(false)}
+                          className="group flex items-center px-4 py-2 text-gray-700 hover:bg-emerald-50/50 transition-colors duration-300"
                         >
-                          <Settings className="w-4 h-4 mr-3 text-gray-500" />
-                          Profile Settings
+                          <Settings className="w-4 h-4 mr-3 text-emerald-600 group-hover:rotate-90 transition-transform duration-500" />
+                          <span className="group-hover:text-emerald-700 text-sm">Profile Settings</span>
                         </Link>
                         <button
                           onClick={handleLogout}
-                          className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors text-sm"
+                          className="group flex items-center w-full px-4 py-2 text-gray-700 hover:bg-red-50/50 transition-colors duration-300"
                         >
-                          <LogOut className="w-4 h-4 mr-3 text-gray-500" />
-                          Sign Out
+                          <LogOut className="w-4 h-4 mr-3 text-red-600 group-hover:translate-x-[6px] transition-transform duration-300" />
+                          <span className="group-hover:text-red-700 text-sm">Sign Out</span>
                         </button>
                       </div>
                     </div>
@@ -266,12 +270,12 @@ const Header: React.FC = () => {
               ))}
               {isAuthenticated && (
                 <Link
-                  to="/my-orders"
+                  to="/cart"
                   className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Package className="w-5 h-5" />
-                  <span className="font-medium">My Orders</span>
+                  <ShoppingCart className="w-5 h-5" />
+                  <span className="font-medium">My Cart</span>
                 </Link>
               )}
             </div>
