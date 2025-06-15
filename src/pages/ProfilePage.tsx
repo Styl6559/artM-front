@@ -146,7 +146,7 @@ const ProfilePage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Profile Overview */}
           <div className="lg:col-span-1">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <div className="text-center">
                 <div className="relative inline-block mb-4">
                   {profileData.avatar ? (
@@ -188,7 +188,7 @@ const ProfilePage: React.FC = () => {
           {/* Profile Forms */}
           <div className="lg:col-span-2 space-y-6">
             {/* Profile Information */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-bold text-slate-800 font-serif">Profile Information</h3>
                 {!isEditing ? (
@@ -258,7 +258,7 @@ const ProfilePage: React.FC = () => {
             </div>
 
             {/* Password Management */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-bold text-slate-800 font-serif">Password</h3>
                 {!isChangingPassword && !isCreatingPassword && (
@@ -439,7 +439,7 @@ const ProfilePage: React.FC = () => {
             </div>
 
             {/* Account Statistics */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <h3 className="text-2xl font-bold text-slate-800 mb-4 font-serif">Account Statistics</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl">
