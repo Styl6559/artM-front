@@ -125,7 +125,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => 
               size="sm"
               className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-xs px-3 py-2"
             >
-              <ShoppingCart className="w-3 h-3 mr-1" />
+              <ShoppingCart className="w-6 h-3 mr-1" />
               Add
             </Button>
           )}
