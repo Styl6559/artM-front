@@ -374,6 +374,7 @@ const AdminProducts: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <Input
                     label="Product Name"
+                    minLength={2}
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     required
@@ -387,6 +388,7 @@ const AdminProducts: React.FC = () => {
                       value={formData.description}
                       onChange={(e) => setFormData({...formData, description: e.target.value})}
                       rows={3}
+                      minLength={10}
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       required
                     />
@@ -421,6 +423,7 @@ const AdminProducts: React.FC = () => {
 
                   <Input
                     label="Artist Name"
+                    minLength={2}
                     value={formData.artist}
                     onChange={(e) => setFormData({...formData, artist: e.target.value})}
                     required
