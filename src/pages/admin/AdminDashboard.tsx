@@ -86,18 +86,8 @@ const AdminDashboard: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white font-serif">Admin Dashboard</h1>
-                <p className="text-white/80 font-light">Artistic Manifestation Management</p>
+                <p className="text-white/80 font-light">RangLeela Management</p>
               </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
-                <Bell className="w-4 h-4 mr-2" />
-                Notifications
-              </Button>
-              <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
-              </Button>
             </div>
           </div>
         </div>
