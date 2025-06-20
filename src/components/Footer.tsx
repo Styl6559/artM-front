@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
               <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl shadow-xl">
                 <Palette className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold font-serif">Artistic Manifestation</span>
+              <span className="text-2xl font-bold font-serif">Rangleela</span>
             </div>
             <p className="text-slate-300 text-sm leading-relaxed font-serif">
               Discover unique paintings and artistic apparel from talented creators around India. 
@@ -142,11 +142,11 @@ const Footer: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-emerald-400" />
-                <span className="text-slate-300 text-sm font-serif">support@artisanaura.in</span>
+                <span className="text-slate-300 text-sm font-serif">rangleela0506@gmail.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-blue-400" />
-                <span className="text-slate-300 text-sm font-serif">+91 98765 43210</span>
+                <span className="text-slate-300 text-sm font-serif">+91 70177 34431</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-orange-400" />
@@ -175,7 +175,7 @@ const Footer: React.FC = () => {
         <div className="border-t border-slate-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-slate-400 text-sm font-serif">
-              © {currentYear} Artistic Manifestation. All rights reserved.
+              © {currentYear} Rangleela. All rights reserved.
             </div>
             <div className="flex items-center space-x-6">
               <Link 
