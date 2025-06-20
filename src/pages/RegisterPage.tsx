@@ -130,7 +130,7 @@ const RegisterPage: React.FC = () => {
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-3xl mb-6 shadow-2xl">
             <Palette className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-emerald-600 bg-clip-text text-transparent mb-3 font-serif">Join Artistic Manifestation</h1>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-emerald-600 bg-clip-text text-transparent mb-3 font-serif">Join Rangleela</h1>
           <p className="text-xl text-slate-600 font-light">Create your account to discover unique art</p>
         </div>
 
@@ -264,7 +264,7 @@ const RegisterPage: React.FC = () => {
 
         {/* Security Features */}
         <div className="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
-          <h3 className="text-sm font-semibold text-gray-900 mb-2 font-serif">🎨 Why Join Artistic Manifestation?</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-2 font-serif">🎨 Why Join Rangleela?</h3>
           <ul className="text-xs text-gray-600 space-y-1 font-serif">
             <li>• Discover unique paintings from talented artists</li>
             <li>• Shop exclusive artistic apparel</li>
