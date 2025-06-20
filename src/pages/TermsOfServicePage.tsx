@@ -21,7 +21,7 @@ const TermsOfServicePage: React.FC = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Agreement to Terms</h2>
             <p className="text-gray-600 mb-4">
-              Welcome to Artistic Manifestation. These Terms of Service ("Terms") govern your use of our website and services. 
+              Welcome to Rangleela. These Terms of Service ("Terms") govern your use of our website and services. 
               By accessing or using our service, you agree to be bound by these Terms. If you disagree with any part 
               of these terms, then you may not access the service.
             </p>
@@ -29,7 +29,7 @@ const TermsOfServicePage: React.FC = () => {
               <div className="flex items-start">
                 <CheckCircle className="w-5 h-5 text-blue-600 mr-3 mt-0.5" />
                 <p className="text-blue-800 text-sm">
-                  By using Artistic Manifestation, you confirm that you are at least 18 years old or have parental consent.
+                  By using Rangleela, you confirm that you are at least 18 years old or have parental consent.
                 </p>
               </div>
             </div>
@@ -126,7 +126,7 @@ const TermsOfServicePage: React.FC = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Intellectual Property Rights</h2>
             <p className="text-gray-600 mb-4">
               The service and its original content, features, and functionality are and will remain the exclusive property 
-              of Artistic Manifestation and its licensors. The service is protected by copyright, trademark, and other laws.
+              of Rangleela and its licensors. The service is protected by copyright, trademark, and other laws.
             </p>
             <p className="text-gray-600 mb-6">
               All artwork sold on our platform is the intellectual property of the respective artists. Purchasing artwork 
@@ -160,7 +160,7 @@ const TermsOfServicePage: React.FC = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Limitation of Liability</h2>
             <p className="text-gray-600 mb-6">
-              In no event shall Artistic Manifestation, its directors, employees, partners, agents, suppliers, or affiliates be liable 
+              In no event shall Rangleela, its directors, employees, partners, agents, suppliers, or affiliates be liable 
               for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of 
               profits, data, use, goodwill, or other intangible losses, resulting from your use of the service.
             </p>
