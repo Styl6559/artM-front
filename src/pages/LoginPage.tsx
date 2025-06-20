@@ -105,7 +105,7 @@ const LoginPage: React.FC = () => {
             <Palette className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-emerald-600 bg-clip-text text-transparent mb-3 font-serif">Welcome Back</h1>
-          <p className="text-xl text-slate-600 font-light">Sign in to your Artistic Manifestation account</p>
+          <p className="text-xl text-slate-600 font-light">Sign in to your Rangleela account</p>
         </div>
 
         {/* Login Form */}
@@ -175,12 +175,6 @@ const LoginPage: React.FC = () => {
                 Sign up
               </Link>
             </p>
-            <Link 
-              to="/forgot-password" 
-              className="text-sm text-gray-500 hover:text-gray-700 transition-colors font-serif"
-            >
-              Forgot your password?
-            </Link>
           </div>
         </div>
 
