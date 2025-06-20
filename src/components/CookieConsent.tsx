@@ -7,7 +7,7 @@ const CookieConsent: React.FC = () => {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem('artistic-manifestation-cookie-consent');
+    const consent = localStorage.getItem('rangleela-cookie-consent');
     if (!consent) {
       // Show consent after a short delay
       const timer = setTimeout(() => {
@@ -18,14 +18,14 @@ const CookieConsent: React.FC = () => {
   }, []);
 
   const acceptCookies = () => {
-    localStorage.setItem('artistic-manifestation-cookie-consent', 'accepted');
+    localStorage.setItem('rangleela-cookie-consent', 'accepted');
     setShowConsent(false);
   };
 
   const rejectCookies = () => {
-    localStorage.setItem('artistic-manifestation-cookie-consent', 'rejected');
+    localStorage.setItem('rangleela-cookie-consent', 'rejected');
     // Clear any existing cookies/localStorage except essential ones
-    const essentialKeys = ['artistic-manifestation-cookie-consent'];
+    const essentialKeys = ['rangleela-cookie-consent'];
     Object.keys(localStorage).forEach(key => {
       if (!essentialKeys.includes(key)) {
         localStorage.removeItem(key);
