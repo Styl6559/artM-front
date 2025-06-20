@@ -161,7 +161,7 @@ const CartPage: React.FC = () => {
           key,
           amount,
           currency,
-          name: 'Artistic Manifestation',
+          name: 'Rangleela',
           description: `Order for ${itemsToCheckout.length} item${itemsToCheckout.length > 1 ? 's' : ''}`,
           order_id: orderId,
           prefill: {
