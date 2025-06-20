@@ -80,8 +80,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">support@artisanaura.in</p>
-                    <p className="text-gray-600">hello@artisanaura.in</p>
+                    <p className="text-gray-600">rangleela0506@gmail.com </p>
                   </div>
                 </div>
 
@@ -91,8 +90,8 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">Phone</h3>
-                    <p className="text-gray-600">+91 98765 43210</p>
-                    <p className="text-gray-600">+91 87654 32109</p>
+                    <p className="text-gray-600">+91 70177 34431</p>
+                    <p className="text-gray-600">+91 99999 99999</p>
                   </div>
                 </div>
 
@@ -259,7 +258,7 @@ const ContactPage: React.FC = () => {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Artistic Manifestation Location - Connaught Place, New Delhi"
+                title="Location - Connaught Place, New Delhi"
               />
             </div>
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
