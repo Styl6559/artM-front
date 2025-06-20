@@ -78,7 +78,7 @@ const Header: React.FC = () => {
               <div className="relative h-12 w-36 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm border border-white/60 shadow-md group-hover:shadow-lg transition-all duration-300 flex items-center justify-center">
                 <img
                   src={logo}
-                  alt="Artistic Manifestation"
+                  alt="Rangleela"
                   className="scale-[1.15] object-contain object-center"
                 />
               </div>
