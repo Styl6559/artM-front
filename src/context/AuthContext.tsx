@@ -146,7 +146,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (response.success && response.data) {
         setUser(response.data.user);
         setPendingUserData(null);
-        toast.success('Email verified successfully! Welcome to Artistic Manifestation!');
+        toast.success('Email verified successfully! Welcome to Rangleela!');
         // Trigger cart/wishlist sync by updating user state
       }
       
