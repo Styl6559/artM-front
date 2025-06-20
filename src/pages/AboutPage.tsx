@@ -8,7 +8,7 @@ const AboutPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">About Artistic Manifestation</h1>
+          <h1 className="text-5xl font-bold text-gray-900 mb-6">About Rangleela</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             We're passionate about connecting art lovers with talented creators, bringing unique paintings 
             and artistic apparel to people who appreciate the beauty of handcrafted art.
@@ -21,7 +21,7 @@ const AboutPage: React.FC = () => {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
               <p className="text-gray-600 mb-6">
-                At Artistic Manifestation, we believe that art has the power to transform spaces, inspire emotions, 
+                At Rangleela, we believe that art has the power to transform spaces, inspire emotions, 
                 and connect people across cultures. Our mission is to create a platform where artists can 
                 showcase their work and art enthusiasts can discover pieces that speak to their souls.
               </p>
@@ -92,7 +92,7 @@ const AboutPage: React.FC = () => {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
             <p className="text-lg text-white/90 mb-6">
-              Founded in 2024, Artistic Manifestation began as a small passion project to connect local artists 
+              Founded in 2024, Rangleela began as a small passion project to connect local artists 
               with art enthusiasts. What started as a weekend market has grown into a global platform 
               that celebrates creativity and craftsmanship.
             </p>
@@ -142,7 +142,7 @@ const AboutPage: React.FC = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Our Community</h2>
           <p className="text-xl text-gray-600 mb-8">
             Whether you're an artist looking to showcase your work or an art lover seeking unique pieces, 
-            we'd love to have you as part of the Artistic Manifestation family.
+            we'd love to have you as part of the Rangleela family.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-gradient-to-r from-purple-600 to-orange-500">
