@@ -249,7 +249,7 @@ const VerifyPage: React.FC = () => {
 
         {/* Security Notice */}
         <div className="mt-6 bg-white rounded-xl p-4 border border-gray-100">
-          <h3 className="text-sm font-semibold text-gray-900 mb-2">🎨 Welcome to Artistic Manifestation</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-2">🎨 Welcome to RangLeela</h3>
           <ul className="text-xs text-gray-600 space-y-1">
             <li>• Check your spam/junk folder if you don't see the email</li>
             <li>• The code is valid for 10 minutes only</li>
