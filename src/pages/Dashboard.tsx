@@ -153,7 +153,7 @@ const Dashboard: React.FC = () => {
                     <>
                       <span className="block">Welcome to</span>
                       <span className="bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">
-                        Artistic Manifestation
+                        Rangleela
                       </span>
                       <span className="inline-block ml-2 text-3xl">🎨</span>
                     </>
