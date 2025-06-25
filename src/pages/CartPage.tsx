@@ -210,7 +210,12 @@ const CartPage: React.FC = () => {
 
     } catch (error) {
       console.error('Checkout error:', error);
-      toast.error('Failed to initiate checkout');
+      const backendMsg = error?.response?.data?.message;
+      if (backendMsg) {
+        toast.error(backendMsg); // or your preferred notification method
+      } else {
+        toast.error('Failed to place order. Please try again.');
+      }
     } finally {
       setIsProcessing(false);
     }
