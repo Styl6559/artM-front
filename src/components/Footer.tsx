@@ -44,16 +44,16 @@ const Footer: React.FC = () => {
               Where art meets fashion in perfect harmony.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-slate-400 hover:text-emerald-400 transition-colors transform hover:scale-110 duration-300">
+              <a href="https://www.facebook.com/profile.php?id=61578559577048" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-emerald-400 transition-colors transform hover:scale-110 duration-300">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-blue-400 transition-colors transform hover:scale-110 duration-300">
+              <a href="https://x.com/rangleela_X" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-400 transition-colors transform hover:scale-110 duration-300">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-pink-400 transition-colors transform hover:scale-110 duration-300">
+              <a href="https://www.instagram.com/rangleela.official/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-pink-400 transition-colors transform hover:scale-110 duration-300">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="#" className="text-slate-400 hover:text-red-400 transition-colors transform hover:scale-110 duration-300">
+              <a href="https://www.youtube.com/channel/UCmFNqJDPT8YO8BDYPy5DNHA" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-red-400 transition-colors transform hover:scale-110 duration-300">
                 <Youtube className="w-5 h-5" />
               </a>
             </div>
