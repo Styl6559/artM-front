@@ -44,18 +44,20 @@ const Footer: React.FC = () => {
               Where art meets fashion in perfect harmony.
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.facebook.com/profile.php?id=61578559577048" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-emerald-400 transition-colors transform hover:scale-110 duration-300">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="https://x.com/rangleela_X" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-400 transition-colors transform hover:scale-110 duration-300">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="https://www.instagram.com/rangleela.official/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-pink-400 transition-colors transform hover:scale-110 duration-300">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="https://www.youtube.com/channel/UCmFNqJDPT8YO8BDYPy5DNHA" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-red-400 transition-colors transform hover:scale-110 duration-300">
-                <Youtube className="w-5 h-5" />
-              </a>
+              <div className="flex items-center gap-6">
+                <a href="https://www.facebook.com/profile.php?id=61578559577048" target="_blank" rel="noopener noreferrer" className="group">
+                  <Facebook className="w-6 h-6 text-slate-400 group-hover:text-blue-500 transition-colors duration-300" />
+                </a>
+                <a href="https://x.com/rangleela_X" target="_blank" rel="noopener noreferrer" className="group">
+                  <Twitter className="w-6 h-6 text-slate-400 group-hover:text-slate-200 transition-colors duration-300" />
+                </a>
+                <a href="https://www.instagram.com/rangleela.official/" target="_blank" rel="noopener noreferrer" className="group">
+                  <Instagram className="w-6 h-6 text-slate-400 group-hover:text-pink-400 transition-colors duration-300" />
+                </a>
+                <a href="https://www.youtube.com/channel/UCmFNqJDPT8YO8BDYPy5DNHA" target="_blank" rel="noopener noreferrer" className="group">
+                  <Youtube className="w-7 h-7 text-slate-400 group-hover:text-red-400 transition-colors duration-300" />
+                </a>
+              </div>
             </div>
           </div>
 
@@ -88,6 +90,15 @@ const Footer: React.FC = () => {
                   className="text-slate-300 hover:text-white transition-colors text-sm font-serif inline-block"
                 >
                   Apparel
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/shop/accessories" 
+                  onClick={scrollToTop}
+                  className="text-slate-300 hover:text-white transition-colors text-sm font-serif inline-block"
+                >
+                  Accessories
                 </Link>
               </li>
               <li>

@@ -59,7 +59,7 @@ const HelpCenterPage: React.FC = () => {
     },
     {
       title: "Product Information",
-      description: "Details about our paintings, apparel, and authenticity",
+      description: "Details about our paintings, apparel, accessories, and authenticity",
       icon: "🎨"
     },
     {

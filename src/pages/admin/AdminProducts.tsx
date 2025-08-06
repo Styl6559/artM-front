@@ -19,7 +19,6 @@ const AdminProducts: React.FC = () => {
     description: '',
     price: '',
     category: 'painting',
-    artist: '',
     size: '',
     material: '',
     featured: false,
@@ -77,10 +76,7 @@ const AdminProducts: React.FC = () => {
       return;
     }
     
-    if (!formData.artist.trim()) {
-      toast.error('Artist name is required');
-      return;
-    }
+
     
     if (!editingProduct && !formData.image) {
       toast.error('Product image is required');
@@ -97,7 +93,7 @@ const AdminProducts: React.FC = () => {
       formDataToSend.append('description', formData.description.trim());
       formDataToSend.append('price', formData.price);
       formDataToSend.append('category', formData.category);
-      formDataToSend.append('artist', formData.artist.trim());
+
       formDataToSend.append('size', formData.size.trim());
       formDataToSend.append('material', formData.material.trim());
       formDataToSend.append('featured', formData.featured.toString());
@@ -177,7 +173,7 @@ const AdminProducts: React.FC = () => {
       description: '',
       price: '',
       category: 'painting',
-      artist: '',
+
       size: '',
       material: '',
       featured: false,
@@ -193,7 +189,7 @@ const AdminProducts: React.FC = () => {
       description: product.description || '',
       price: product.price?.toString() || '',
       category: product.category || 'painting',
-      artist: product.artist || '',
+
       size: product.size || '',
       material: product.material || '',
       featured: product.featured || false,
@@ -204,8 +200,7 @@ const AdminProducts: React.FC = () => {
   };
 
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.artist?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = product.name?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !categoryFilter || product.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
@@ -258,6 +253,7 @@ const AdminProducts: React.FC = () => {
                 <option value="">All Categories</option>
                 <option value="painting">Paintings</option>
                 <option value="apparel">Apparel</option>
+                <option value="accessories">Accessories</option>
               </select>
             </div>
           </div>
@@ -300,7 +296,7 @@ const AdminProducts: React.FC = () => {
                 </div>
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">{product.name}</h3>
-                  <p className="text-sm text-gray-600 mb-2">by {product.artist}</p>
+
                   <p className="text-lg font-bold text-purple-600 mb-3">₹{product.price}</p>
                   
                   {/* Stock Toggle */}
@@ -417,17 +413,12 @@ const AdminProducts: React.FC = () => {
                       >
                         <option value="painting">Painting</option>
                         <option value="apparel">Apparel</option>
+                        <option value="accessories">Accessories</option>
                       </select>
                     </div>
                   </div>
 
-                  <Input
-                    label="Artist Name"
-                    minLength={2}
-                    value={formData.artist}
-                    onChange={(e) => setFormData({...formData, artist: e.target.value})}
-                    required
-                  />
+
 
                   <div className="grid grid-cols-2 gap-4">
                     <Input

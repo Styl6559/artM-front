@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
-  ShoppingCart, 
-  Heart, 
-  User, 
-  Menu, 
-  X,
-  LogOut,
-  Settings,
-  Package,
-  Sparkles,
-  Crown,
-  Star,
-  Palette
+ShoppingCart, 
+Heart, 
+User, 
+Menu, 
+X,
+LogOut,
+Settings,
+Package,
+Sparkles,
+Crown,
+Star,
+Palette,
+Phone
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -46,14 +47,21 @@ const Header: React.FC = () => {
       href: '/shop/painting',
       icon: Palette,
       description: 'Original Works',
-      gradient: 'from-blue-500 to-violet-500'
+      gradient: 'from-teal-500 to-cyan-500'
     },
     { 
       name: 'Apparel', 
       href: '/shop/apparel',
       icon: Crown,
       description: 'Wearable Art',
-      gradient: 'from-orange-500 to-red-500'
+      gradient: 'from-purple-500 to-pink-500'
+    },
+    { 
+      name: 'Accessories', 
+      href: '/shop/accessories',
+      icon: Star,
+      description: 'Designer Pieces',
+      gradient: 'from-orange-500 to-amber-500'
     },
   ];
 
@@ -67,10 +75,10 @@ const Header: React.FC = () => {
   return (
     <header className="relative bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-200 sticky top-0 z-50">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex items-center h-16">
           {/* Logo Section */}
-          <Link to="/dashboard" className="flex items-center group">
-            <div className="relative">
+          <Link to="/dashboard" className="flex items-center group flex-shrink-0 mr-8">
+            <div className="relative" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               {/* Soft glow effect behind logo */}
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
 
@@ -87,7 +95,7 @@ const Header: React.FC = () => {
 
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-1 flex-1 justify-center ml-16">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -97,6 +105,7 @@ const Header: React.FC = () => {
                     ? `bg-gradient-to-r ${link.gradient} text-white shadow-md`
                     : 'text-gray-700 hover:bg-gray-100 hover:shadow-sm'
                 }`}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
                 <div className="flex items-center space-x-2">
                   <link.icon className={`w-4 h-4 ${
@@ -111,7 +120,7 @@ const Header: React.FC = () => {
           </nav>
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0 ml-8 lg:ml-8 ml-auto mr-2">
             {isAuthenticated ? (
               <>
                 {/* My Orders */}
@@ -119,6 +128,7 @@ const Header: React.FC = () => {
                   to="/my-orders" 
                   className="relative group p-2 rounded-lg text-gray-600 hover:text-emerald-600 hover:bg-gray-100 transition-all duration-300"
                   title="My Orders"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   <Package className="w-5 h-5" />
                 </Link>
@@ -128,6 +138,7 @@ const Header: React.FC = () => {
                   to="/cart" 
                   className="relative group p-2 rounded-lg text-gray-600 hover:text-emerald-600 hover:bg-gray-100 transition-all duration-300"
                   title="Shopping Cart"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   <ShoppingCart className="w-5 h-5" />
                   {getTotalItems() > 0 && (
@@ -142,6 +153,7 @@ const Header: React.FC = () => {
                   to="/wishlist" 
                   className="relative group p-2 rounded-lg text-gray-600 hover:text-pink-600 hover:bg-gray-100 transition-all duration-300"
                   title="Wishlist"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
                   <Heart className="w-5 h-5" />
                   {wishlist.length > 0 && (
@@ -193,12 +205,12 @@ const Header: React.FC = () => {
                     <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
                       <div className="px-4 py-3 border-b border-gray-200">
                         <div className="flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full flex items-center justify-center">
+                          <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
                             <User className="w-4 h-4 text-white" />
                           </div>
                           <div>
                             <p className="font-medium text-gray-800 text-sm">{user?.name}</p>
-                            <p className="text-xs text-gray-600">{user?.email}</p>
+                            <p className="text-xs text-gray-600 max-w-[140px] truncate" title={user?.email}>{user?.email}</p>
                           </div>
                         </div>
                       </div>
@@ -211,6 +223,16 @@ const Header: React.FC = () => {
                         >
                           <Settings className="w-4 h-4 mr-3 text-emerald-600 group-hover:rotate-90 transition-transform duration-500" />
                           <span className="group-hover:text-emerald-700 text-sm">Profile Settings</span>
+                        </Link>
+                        <Link
+                          to="/contact"
+                          onClick={() => setIsUserMenuOpen(false)}
+                          className="group flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50/50 transition-colors duration-300"
+                        >
+                          <span className="relative mr-3 flex items-center">
+                            <Phone className="w-4 h-4 text-blue-600 group-hover:animate-bounce" />
+                          </span>
+                          <span className="group-hover:text-blue-700 text-sm">Contact Us</span>
                         </Link>
                         <button
                           onClick={handleLogout}
@@ -254,29 +276,47 @@ const Header: React.FC = () => {
           <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
             <div className="px-4 py-4 space-y-2">
               {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 ${
-                    isCurrentPage(link.href)
-                      ? `bg-gradient-to-r ${link.gradient} text-white`
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <link.icon className="w-5 h-5" />
-                  <span className="font-medium">{link.name}</span>
-                </Link>
+              <Link
+                key={link.name}
+                to={link.href}
+                className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 ${
+                  isCurrentPage(link.href)
+                    ? `bg-gradient-to-r ${link.gradient} text-white`
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+                onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              >
+                <link.icon className="w-5 h-5" />
+                <span className="font-medium">{link.name}</span>
+              </Link>
               ))}
               {isAuthenticated && (
-                <Link
-                  to="/cart"
-                  className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-300"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  <span className="font-medium">My Cart</span>
-                </Link>
+                <>
+                  <Link
+                    to="/cart"
+                    className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                    onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  >
+                    <ShoppingCart className="w-5 h-5 text-emerald-600 group-hover:text-emerald-700 transition-colors duration-300" />
+                    <span className="font-medium group-hover:text-emerald-700">My Cart</span>
+                  </Link>
+                  <Link
+                    to="/my-orders"
+                    className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-orange-50/50 transition-all duration-300 group"
+                    onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  >
+                    <Package className="w-5 h-5 text-orange-600 group-hover:text-orange-700 transition-colors duration-300" />
+                    <span className="font-medium group-hover:text-orange-700">My Orders</span>
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-blue-50/50 transition-all duration-300 group"
+                    onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  >
+                    <Phone className="w-5 h-5 text-blue-600 group-hover:text-blue-700 group-hover:animate-bounce transition-colors duration-300" />
+                    <span className="font-medium group-hover:text-blue-700">Contact Us</span>
+                  </Link>
+                </>
               )}
             </div>
           </div>

@@ -268,6 +268,7 @@ const RegisterPage: React.FC = () => {
           <ul className="text-xs text-gray-600 space-y-1 font-serif">
             <li>• Discover unique paintings from talented artists</li>
             <li>• Shop exclusive artistic apparel</li>
+            <li>• Browse designer accessories</li>
             <li>• Secure account with email verification</li>
             <li>• Personalized recommendations</li>
           </ul>

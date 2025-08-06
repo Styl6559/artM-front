@@ -89,11 +89,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetails }) => 
         </div>
         
         <h3 className="font-semibold text-gray-800 mb-1 line-clamp-2 text-sm">{product.name}</h3>
-        
-        {product.artist && (
-          <p className="text-sm text-gray-600 mb-2">by {product.artist}</p>
-        )}
-        
         <p className="text-sm text-gray-600 mb-3 line-clamp-2">{product.description}</p>
         
         {/* Rating */}

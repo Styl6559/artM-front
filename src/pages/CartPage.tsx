@@ -294,9 +294,6 @@ const CartPage: React.FC = () => {
                       <h3 className="text-lg font-semibold text-gray-800 mb-1 font-serif">
                         {item.product.name}
                       </h3>
-                      {item.product.artist && (
-                        <p className="text-sm text-gray-600 mb-1 italic">by {item.product.artist}</p>
-                      )}
                       {item.selectedSize && (
                         <p className="text-sm text-gray-600 mb-2">Size: {item.selectedSize}</p>
                       )}

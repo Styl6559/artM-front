@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { contactAPI } from '../lib/api';
@@ -79,66 +79,41 @@ const ContactPage: React.FC = () => {
                     <Mail className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">rangleela0506@gmail.com </p>
+                    <div className="text-lg font-semibold text-gray-800 font-serif">Email</div>
+                    <div className="text-gray-600 font-serif">rangleela0506@gmail.com</div>
                   </div>
                 </div>
-
-                <div className="flex items-start">
-                  <div className="bg-orange-100 rounded-full p-3 mr-4">
-                    <Phone className="w-6 h-6 text-orange-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Phone</h3>
-                    <p className="text-gray-600">+91 70177 34431</p>
-                    <p className="text-gray-600">+91 99999 99999</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="bg-green-100 rounded-full p-3 mr-4">
-                    <MapPin className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Address</h3>
-                    <p className="text-gray-600">
-                      Block A, Connaught Place<br />
-                      New Delhi, Delhi 110001<br />
-                      India
-                    </p>
-                  </div>
-                </div>
-
                 <div className="flex items-start">
                   <div className="bg-blue-100 rounded-full p-3 mr-4">
-                    <Clock className="w-6 h-6 text-blue-600" />
+                    <Phone className="w-6 h-6 text-blue-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Business Hours</h3>
-                    <p className="text-gray-600">
-                      Monday - Friday: 10:00 AM - 7:00 PM IST<br />
-                      Saturday: 11:00 AM - 5:00 PM IST<br />
-                      Sunday: Closed
-                    </p>
+                    <div className="text-lg font-semibold text-gray-800 font-serif">Phone</div>
+                    <div className="text-gray-600 font-serif">+91 70177 34431</div>
                   </div>
                 </div>
-              </div>
-
-              {/* Social Media */}
-              <div className="mt-8 pt-8 border-t border-gray-200">
-                <h3 className="font-semibold text-gray-900 mb-4">Follow Us</h3>
-                <div className="flex space-x-4">
-                  <a href="#" className="text-gray-400 hover:text-purple-600 transition-colors">
-                    <span className="sr-only">Facebook</span>
-                    <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+                <div className="flex items-start">
+                  <div className="bg-orange-100 rounded-full p-3 mr-4">
+                    <MapPin className="w-6 h-6 text-orange-500" />
+                  </div>
+                  <div>
+                    <div className="text-lg font-semibold text-gray-800 font-serif">Address</div>
+                    <div className="text-gray-600 font-serif">Connaught Place, New Delhi, India</div>
+                  </div>
+                </div>
+                {/* Social Media Icons */}
+                <div className="flex items-center gap-4 mt-8">
+                  <a href="https://www.facebook.com/profile.php?id=61578559577048" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 hover:bg-blue-100 shadow transition-all duration-300">
+                    <Facebook className="w-6 h-6 text-blue-600" />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-purple-600 transition-colors">
-                    <span className="sr-only">Instagram</span>
-                    <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+                  <a href="https://x.com/rangleela_X" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 hover:bg-slate-100 shadow transition-all duration-300">
+                    <Twitter className="w-6 h-6 text-slate-700" />
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-purple-600 transition-colors">
-                    <span className="sr-only">Twitter</span>
-                    <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+                  <a href="https://www.instagram.com/rangleela.official/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-pink-50 hover:bg-pink-100 shadow transition-all duration-300">
+                    <Instagram className="w-6 h-6 text-pink-500" />
+                  </a>
+                  <a href="https://www.youtube.com/channel/UCmFNqJDPT8YO8BDYPy5DNHA" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-50 hover:bg-red-100 shadow transition-all duration-300">
+                    <Youtube className="w-6 h-6 text-red-600" />
                   </a>
                 </div>
               </div>

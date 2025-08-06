@@ -44,7 +44,6 @@ const SearchPage: React.FC = () => {
     const filtered = products.filter(product => 
       product.name.toLowerCase().includes(searchTerm) ||
       product.description.toLowerCase().includes(searchTerm) ||
-      product.artist?.toLowerCase().includes(searchTerm) ||
       product.category.toLowerCase().includes(searchTerm) ||
       product.tags?.some(tag => tag.toLowerCase().includes(searchTerm))
     );

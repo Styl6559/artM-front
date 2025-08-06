@@ -80,9 +80,9 @@ const WishlistPage: React.FC = () => {
                 <div className="absolute top-2 right-2">
                   <button
                     onClick={() => removeFromWishlist(item.product.id)}
-                    className="p-1.5 bg-red-500/90 backdrop-blur-sm text-white rounded-full hover:bg-red-600 transition-colors shadow-xl hover:shadow-2xl transform hover:scale-110 duration-300"
+                    className="p-2 bg-red-500/90 backdrop-blur-sm text-white rounded-full hover:bg-red-600 transition-colors shadow-xl hover:shadow-2xl transform hover:scale-110 duration-300"
                   >
-                    <Trash2 className="w-3 h-3" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
                 {!item.product.inStock && (
@@ -102,10 +102,6 @@ const WishlistPage: React.FC = () => {
                 </div>
                 
                 <h3 className="font-medium text-gray-800 mb-1 text-sm line-clamp-2 font-serif">{item.product.name}</h3>
-                
-                {item.product.artist && (
-                  <p className="text-xs text-gray-600 mb-1 italic font-light">by {item.product.artist}</p>
-                )}
                 
                 {/* Rating */}
                 <div className="flex items-center gap-1 mb-2">

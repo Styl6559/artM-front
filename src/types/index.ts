@@ -51,8 +51,7 @@ export interface Product {
   description: string;
   price: number;
   image: string;
-  category: 'painting' | 'apparel';
-  artist?: string;
+  category: 'painting' | 'apparel' | 'accessories';
   size?: string;
   material?: string;
   inStock: boolean;

@@ -8,19 +8,18 @@ import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import Button from '../components/ui/Button';
 
 const ShopPage: React.FC = () => {
-  const { category } = useParams<{ category: 'painting' | 'apparel' }>();
+  const { category } = useParams<{ category: 'painting' | 'apparel' | 'accessories' }>();
   const { products, isLoading } = useProducts();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('name');
   const [priceRange, setPriceRange] = useState([0, 10000]);
-  const [selectedArtist, setSelectedArtist] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
 
   // Debounce search query to prevent excessive filtering
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
   // Memoize filtered and sorted products
-  const { filteredProducts, artists } = useMemo(() => {
+  const filteredProducts = useMemo(() => {
     let filtered = category 
       ? products.filter(p => p.category === category)
       : products;
@@ -35,11 +34,6 @@ const ShopPage: React.FC = () => {
 
     // Filter by price range
     filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
-
-    // Filter by artist
-    if (selectedArtist) {
-      filtered = filtered.filter(p => p.artist === selectedArtist);
-    }
 
     // Sort products
     filtered.sort((a, b) => {
@@ -56,16 +50,19 @@ const ShopPage: React.FC = () => {
       }
     });
 
-    const uniqueArtists = [...new Set(products.map(p => p.artist))].filter(Boolean);
+    return filtered;
+  }, [products, category, debouncedSearchQuery, priceRange, sortBy]);
 
-    return { filteredProducts: filtered, artists: uniqueArtists };
-  }, [products, category, debouncedSearchQuery, priceRange, selectedArtist, sortBy]);
-
-  const categoryTitle = category === 'painting' ? 'Original Paintings' : category === 'apparel' ? 'Artistic Apparel' : 'All Products';
+  const categoryTitle = category === 'painting' ? 'Original Paintings' 
+    : category === 'apparel' ? 'Designer Apparel' 
+    : category === 'accessories' ? 'Artistic Accessories'
+    : 'All Products';
   const categoryDescription = category === 'painting' 
-    ? 'Discover unique paintings from talented artists worldwide' 
+    ? 'Discover unique paintings from around the world' 
     : category === 'apparel' 
-    ? 'Wearable art and fashion-forward designs'
+    ? 'Fashion-forward designs'
+    : category === 'accessories'
+    ? 'Complete your look with artistic accessories'
     : 'Browse our complete collection';
 
   const categoryIcon = category === 'painting' ? Palette : Crown;
@@ -152,31 +149,11 @@ const ShopPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Artist Filter */}
-              {artists.length > 0 && (
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-3 font-serif">
-                    Artist
-                  </label>
-                  <select
-                    value={selectedArtist}
-                    onChange={(e) => setSelectedArtist(e.target.value)}
-                    className="w-full p-3 border border-gray-300/50 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm font-serif shadow-lg"
-                  >
-                    <option value="">All Artists</option>
-                    {artists.map(artist => (
-                      <option key={artist} value={artist}>{artist}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
               {/* Clear Filters */}
               <Button
                 variant="outline"
                 onClick={() => {
                   setPriceRange([0, 10000]);
-                  setSelectedArtist('');
                   setSearchQuery('');
                 }}
                 className="w-full font-serif shadow-lg hover:shadow-xl transition-all duration-300"
@@ -239,11 +216,13 @@ const ShopPage: React.FC = () => {
             {filteredProducts.length > 0 ? (
               <div className={`grid gap-4 ${
                 viewMode === 'grid' 
-                  ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5' 
+                  ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3' 
                   : 'grid-cols-1'
               }`}>
                 {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <div className="w-full">
+                    <ProductCard key={product.id} product={product} className="w-full max-w-xl mx-auto" />
+                  </div>
                 ))}
               </div>
             ) : (
@@ -263,7 +242,6 @@ const ShopPage: React.FC = () => {
                   <Button
                     onClick={() => {
                       setPriceRange([0, 10000]);
-                      setSelectedArtist('');
                       setSearchQuery('');
                     }}
                     variant="outline"

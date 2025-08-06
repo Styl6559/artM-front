@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
   const { products, featuredProducts, isLoading, error } = useProducts();
 
   // Memoize derived data to prevent unnecessary recalculations
-  const { newArrivals, paintingProducts, apparelProducts } = useMemo(() => {
+  const { newArrivals, paintingProducts, apparelProducts, accessoryProducts } = useMemo(() => {
     const sortedByDate = [...products].sort((a, b) => 
       new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
     );
@@ -24,7 +24,8 @@ const Dashboard: React.FC = () => {
     return {
       newArrivals: sortedByDate.slice(0, 8),
       paintingProducts: products.filter(p => p.category === 'painting').slice(0, 4),
-      apparelProducts: products.filter(p => p.category === 'apparel').slice(0, 4)
+      apparelProducts: products.filter(p => p.category === 'apparel').slice(0, 4),
+      accessoryProducts: products.filter(p => p.category === 'accessories').slice(0, 4)
     };
   }, [products]);
 
@@ -94,6 +95,12 @@ const Dashboard: React.FC = () => {
       title: "Limited Editions",
       subtitle: "Exclusive artworks in limited quantities",
       category: "painting"
+    },
+    {
+      url: "https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Artistic Accessories",
+      subtitle: "Complete your look with designer pieces",
+      category: "accessories"
     }
   ];
 
@@ -160,7 +167,7 @@ const Dashboard: React.FC = () => {
                   )}
                 </h1>
                 <p className="text-lg text-white/90 font-light">
-                  Discover unique paintings and artistic apparel from talented creators worldwide
+                  Discover unique paintings, artistic apparel, and designer accessories from talented creators worldwide
                 </p>
               </div>
             </div>
@@ -217,15 +224,19 @@ const Dashboard: React.FC = () => {
                           <div className="flex items-center mb-2">
                             {image.category === 'painting' ? (
                               <Brush className="w-4 h-4 mr-2" />
-                            ) : (
+                            ) : image.category === 'apparel' ? (
                               <Crown className="w-4 h-4 mr-2" />
+                            ) : (
+                              <Sparkles className="w-4 h-4 mr-2" />
                             )}
                             <h3 className="text-lg font-bold font-serif">{image.title}</h3>
                           </div>
                           <p className="text-white/90 text-sm mb-3 font-light">{image.subtitle}</p>
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-medium text-yellow-300 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">
-                              {image.category === 'painting' ? 'Paintings' : 'Apparel'}
+                              {image.category === 'painting' ? 'Paintings' 
+                                : image.category === 'apparel' ? 'Apparel' 
+                                : 'Accessories'}
                             </span>
                             <div className="flex items-center text-white/80 group-hover:text-white transition-colors">
                               <Eye className="w-3 h-3 mr-1" />
@@ -244,23 +255,33 @@ const Dashboard: React.FC = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
-                <Link to="/shop/painting">
-                  <Button className="group bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
-                    <div className="flex items-center">
+                <Link to="/shop/painting" className="w-full sm:w-[180px]">
+                  <Button className="group w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
+                    <div className="flex items-center justify-center">
                       <div className="mr-2 p-1 bg-white/20 rounded-full group-hover:bg-white/30 transition-colors">
                         <Brush className="w-4 h-4" />
                       </div>
-                      <span className="font-medium">Explore Paintings</span>
+                      <span className="font-medium whitespace-nowrap">Explore Paintings</span>
                     </div>
                   </Button>
                 </Link>
-                <Link to="/shop/apparel">
-                  <Button className="group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
-                    <div className="flex items-center">
+                <Link to="/shop/apparel" className="w-full sm:w-[180px]">
+                  <Button className="group w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
+                    <div className="flex items-center justify-center">
                       <div className="mr-2 p-1 bg-white/20 rounded-full group-hover:bg-white/30 transition-colors">
                         <Crown className="w-4 h-4" />
                       </div>
-                      <span className="font-medium">Shop Apparel</span>
+                      <span className="font-medium whitespace-nowrap">Shop Apparel</span>
+                    </div>
+                  </Button>
+                </Link>
+                <Link to="/shop/accessories" className="w-full sm:w-[180px]">
+                  <Button className="group w-full bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
+                    <div className="flex items-center justify-center">
+                      <div className="mr-2 p-1 bg-white/20 rounded-full group-hover:bg-white/30 transition-colors">
+                        <Sparkles className="w-4 h-4" />
+                      </div>
+                      <span className="font-medium whitespace-nowrap">Shop Accessories</span>
                     </div>
                   </Button>
                 </Link>
@@ -296,7 +317,7 @@ const Dashboard: React.FC = () => {
           <div className="flex justify-between items-center mb-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">New Arrivals</h2>
-              <p className="text-gray-600">Fresh artworks and apparel just added</p>
+              <p className="text-gray-600">Fresh artworks, apparel and added accessories</p>
             </div>
             <Link to="/shop/painting">
               <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
@@ -326,7 +347,7 @@ const Dashboard: React.FC = () => {
         {/* Featured Categories */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center font-serif bg-gradient-to-r from-emerald-600 to-purple-600 bg-clip-text text-transparent">Shop by Category</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Link to="/shop/painting" className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
@@ -370,6 +391,30 @@ const Dashboard: React.FC = () => {
                   <div className="flex items-center text-yellow-300 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">
                     <Eye className="w-4 h-4 mr-1" />
                     <span className="text-sm font-medium">Shop Now ({apparelProducts.length} items)</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+
+            <Link to="/shop/accessories" className="group">
+              <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
+                <ImageWithSkeleton
+                  src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  alt="Accessories"
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-700"
+                  skeletonClassName="w-full h-64"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 to-red-500/20 group-hover:from-amber-500/30 group-hover:to-red-500/30 transition-all duration-500"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <div className="flex items-center mb-2">
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    <h3 className="text-xl font-bold font-serif">Artistic Accessories</h3>
+                  </div>
+                  <p className="text-white/90 text-sm mb-2">Complete your look with artistic flair</p>
+                  <div className="flex items-center text-yellow-300 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">
+                    <Eye className="w-4 h-4 mr-1" />
+                    <span className="text-sm font-medium">Discover ({accessoryProducts.length} items)</span>
                   </div>
                 </div>
               </div>

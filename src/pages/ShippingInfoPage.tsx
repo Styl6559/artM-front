@@ -160,6 +160,16 @@ const ShippingInfoPage: React.FC = () => {
                 <li>• Care instructions included with each item</li>
               </ul>
             </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Accessories</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>• Individual protective packaging for each item</li>
+                <li>• Padded envelopes for delicate pieces</li>
+                <li>• Gift-ready presentation</li>
+                <li>• Care and authenticity cards included</li>
+              </ul>
+            </div>
           </div>
         </div>
 
