@@ -161,6 +161,49 @@ const ShopPage: React.FC = () => {
                 Clear Filters
               </Button>
             </div>
+
+            {/* Customization Section */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6 mt-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center font-serif">
+                <Sparkles className="w-5 h-5 mr-2 text-purple-600" />
+                Custom Orders
+              </h3>
+              <div className="space-y-3">
+                <Button
+                  variant="primary"
+                  onClick={() => window.location.href = '/contact?subject=custom-painting'}
+                  className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500"
+                >
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative flex items-center justify-center">
+                    <Palette className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                    <span>Create Custom Painting</span>
+                  </div>
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => window.location.href = '/contact?subject=custom-apparel'}
+                  className="w-full relative overflow-hidden group bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500"
+                >
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative flex items-center justify-center">
+                    <Crown className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                    <span>Design Custom Apparel</span>
+                  </div>
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={() => window.location.href = '/contact?subject=custom-accessories'}
+                  className="w-full relative overflow-hidden group bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500"
+                >
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                    <span>Create Custom Accessories</span>
+                  </div>
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Products Grid */}
