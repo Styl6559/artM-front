@@ -308,7 +308,21 @@ const Header: React.FC = () => {
               </Link>
               ))}
               
-              {/* Cart and Wishlist - Always visible */}
+              {/* Wishlist and Cart - Always visible */}
+              <Link
+                to="/wishlist"
+                className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-pink-50/50 transition-all duration-300 group"
+                onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              >
+                <Heart className="w-5 h-5 text-pink-600 group-hover:text-pink-700 transition-colors duration-300" />
+                <span className="font-medium group-hover:text-pink-700">My Wishlist</span>
+                {wishlist.length > 0 && (
+                  <span className="ml-auto bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {wishlist.length}
+                  </span>
+                )}
+              </Link>
+
               <Link
                 to="/cart"
                 className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
