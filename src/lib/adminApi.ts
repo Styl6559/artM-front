@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 // Create axios instance for admin API
 const adminApi = axios.create({
@@ -192,6 +192,19 @@ export const adminAPI = {
       return error.response?.data || { 
         success: false, 
         message: 'Failed to update contact' 
+      };
+    }
+  },
+
+  replyToContact: async (id: string, reply: string) => {
+    try {
+      const response = await adminApi.post(`/contacts/${id}/reply`, { reply });
+      return response.data;
+    } catch (error: any) {
+      console.error('Reply to contact API error:', error);
+      return error.response?.data || { 
+        success: false, 
+        message: 'Failed to send reply' 
       };
     }
   },

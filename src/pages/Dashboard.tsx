@@ -15,6 +15,10 @@ const Dashboard: React.FC = () => {
   const { wishlist, getTotalItems } = useCart();
   const { products, featuredProducts, isLoading, error } = useProducts();
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Memoize derived data to prevent unnecessary recalculations
   const { newArrivals, paintingProducts, apparelProducts, accessoryProducts } = useMemo(() => {
     const sortedByDate = [...products].sort((a, b) => 
@@ -348,7 +352,7 @@ const Dashboard: React.FC = () => {
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center font-serif bg-gradient-to-r from-emerald-600 to-purple-600 bg-clip-text text-transparent">Shop by Category</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Link to="/shop/painting" className="group">
+            <Link to="/shop/painting" onClick={scrollToTop} className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
                   src="https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -372,7 +376,7 @@ const Dashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/shop/apparel" className="group">
+            <Link to="/shop/apparel" onClick={scrollToTop} className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
                   src="https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -396,7 +400,7 @@ const Dashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/shop/accessories" className="group">
+            <Link to="/shop/accessories" onClick={scrollToTop} className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
                   src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=800"

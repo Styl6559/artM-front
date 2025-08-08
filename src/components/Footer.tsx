@@ -137,6 +137,15 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link 
+                  to="/refund-policy" 
+                  onClick={scrollToTop}
+                  className="text-slate-300 hover:text-white transition-colors text-sm font-serif inline-block"
+                >
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link 
                   to="/contact" 
                   onClick={scrollToTop}
                   className="text-slate-300 hover:text-white transition-colors text-sm font-serif inline-block"

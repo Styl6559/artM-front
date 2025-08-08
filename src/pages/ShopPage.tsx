@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { Filter, Grid, List, SortAsc, Search, Palette, Crown, Sparkles } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Filter, Grid, List, SortAsc, Search, Palette, Crown, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
 import { useDebounce } from '../hooks/useDebounce';
 import ProductCard from '../components/ProductCard';
@@ -9,11 +9,22 @@ import Button from '../components/ui/Button';
 
 const ShopPage: React.FC = () => {
   const { category } = useParams<{ category: 'painting' | 'apparel' | 'accessories' }>();
+  const navigate = useNavigate();
   const { products, isLoading } = useProducts();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('name');
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCustomOrderNavigation = (category: string) => {
+    scrollToTop();
+    navigate(`/contact?subject=custom&category=${category}`);
+  };
 
   // Debounce search query to prevent excessive filtering
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
@@ -91,17 +102,40 @@ const ShopPage: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-8">
-            <div className="flex items-center mb-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg blur-lg opacity-30"></div>
-                <div className="relative bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg p-3 shadow-xl">
-                  {React.createElement(categoryIcon, { className: "w-6 h-6 text-white" })}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg blur-lg opacity-30"></div>
+                  <div className="relative bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg p-3 shadow-xl">
+                    {React.createElement(categoryIcon, { className: "w-6 h-6 text-white" })}
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <h1 className="text-3xl font-bold text-gray-800 font-serif bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">{categoryTitle}</h1>
+                  <p className="text-gray-600 font-light">{categoryDescription}</p>
                 </div>
               </div>
-              <div className="ml-4">
-                <h1 className="text-3xl font-bold text-gray-800 font-serif bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">{categoryTitle}</h1>
-                <p className="text-gray-600 font-light">{categoryDescription}</p>
-              </div>
+              
+              {/* Customize Your Own Button */}
+              {category && (
+                <Button
+                  onClick={() => handleCustomOrderNavigation(category)}
+                  className="relative text-white px-6 py-3 rounded-full font-semibold tracking-wide border-2 border-white/20 overflow-hidden transition-all duration-300 shadow-lg hover:scale-105 hover:shadow-[0_0_25px_rgba(244,63,94,0.7)]"
+                >
+                  {/* Animated Gradient Layer */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-rose-500 to-pink-600 bg-[length:200%_200%] animate-gradientMove"></div>
+                  
+                  {/* Glow Layer */}
+                  <div className="absolute inset-0 rounded-full blur-xl bg-pink-500/40 opacity-50"></div>
+
+                  {/* Content */}
+                  <div className="relative flex items-center z-10">
+                    <Sparkles className="w-5 h-5 mr-2 animate-pulse" />
+                    ✨ Create Your Custom {category === 'painting' ? 'Art' : category === 'apparel' ? 'Design' : 'Piece'} ✨
+                  </div>
+                </Button>
+
+              )}
             </div>
             
             {/* Search Bar */}
@@ -113,6 +147,7 @@ const ShopPage: React.FC = () => {
                   <input
                     type="text"
                     placeholder={`Search ${category || 'products'} by name...`}
+                    maxLength={100}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-12 pr-4 py-3 border border-gray-300/50 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm shadow-xl font-light placeholder-gray-400"
@@ -124,8 +159,59 @@ const ShopPage: React.FC = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
-          <div className="lg:w-64 space-y-6">
+          {/* Mobile Filters Dropdown */}
+          <div className="lg:hidden">
+            <button
+              onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+              className="w-full bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-4 flex items-center justify-between"
+            >
+              <div className="flex items-center">
+                <Filter className="w-5 h-5 mr-2 text-emerald-600" />
+                <span className="font-semibold text-gray-800 font-serif">Filters</span>
+              </div>
+              {isFiltersOpen ? (
+                <ChevronUp className="w-5 h-5 text-gray-600" />
+              ) : (
+                <ChevronDown className="w-5 h-5 text-gray-600" />
+              )}
+            </button>
+            
+            {isFiltersOpen && (
+              <div className="mt-4 bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">
+                {/* Price Range */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-3 font-serif">
+                    Price Range: ₹{priceRange[0]} - ₹{priceRange[1]}
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="range"
+                      min="0"
+                      max="10000"
+                      value={priceRange[1]}
+                      onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                      className="w-full h-2 bg-gradient-to-r from-emerald-200 to-blue-200 rounded-lg appearance-none cursor-pointer accent-emerald-600 shadow-lg"
+                    />
+                  </div>
+                </div>
+
+                {/* Clear Filters */}
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setPriceRange([0, 10000]);
+                    setSearchQuery('');
+                  }}
+                  className="w-full font-serif shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Clear Filters
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Filters Sidebar */}
+          <div className="hidden lg:block lg:w-64 space-y-6">
             <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center font-serif">
                 <Filter className="w-5 h-5 mr-2 text-emerald-600" />
@@ -160,49 +246,6 @@ const ShopPage: React.FC = () => {
               >
                 Clear Filters
               </Button>
-            </div>
-
-            {/* Customization Section */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6 mt-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center font-serif">
-                <Sparkles className="w-5 h-5 mr-2 text-purple-600" />
-                Custom Orders
-              </h3>
-              <div className="space-y-3">
-                <Button
-                  variant="primary"
-                  onClick={() => window.location.href = '/contact?subject=custom-painting'}
-                  className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500"
-                >
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative flex items-center justify-center">
-                    <Palette className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                    <span>Create Custom Painting</span>
-                  </div>
-                </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => window.location.href = '/contact?subject=custom-apparel'}
-                  className="w-full relative overflow-hidden group bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500"
-                >
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative flex items-center justify-center">
-                    <Crown className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                    <span>Design Custom Apparel</span>
-                  </div>
-                </Button>
-                <Button
-                  variant="primary"
-                  onClick={() => window.location.href = '/contact?subject=custom-accessories'}
-                  className="w-full relative overflow-hidden group bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500"
-                >
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                    <span>Create Custom Accessories</span>
-                  </div>
-                </Button>
-              </div>
             </div>
           </div>
 
@@ -296,6 +339,51 @@ const ShopPage: React.FC = () => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Custom Orders Section - Below Product Cards */}
+        <div className="mt-12">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center justify-center font-serif">
+              <Sparkles className="w-5 h-5 mr-2 text-purple-600" />
+              Custom Orders
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <Button
+                variant="primary"
+                onClick={() => handleCustomOrderNavigation('painting')}
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500"
+              >
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative flex items-center justify-center">
+                  <Palette className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                  <span>Create Custom Painting</span>
+                </div>
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => handleCustomOrderNavigation('apparel')}
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500"
+              >
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative flex items-center justify-center">
+                  <Crown className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                  <span>Design Custom Apparel</span>
+                </div>
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => handleCustomOrderNavigation('accessories')}
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500"
+              >
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                  <span>Create Custom Accessories</span>
+                </div>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

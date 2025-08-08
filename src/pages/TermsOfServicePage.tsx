@@ -12,7 +12,7 @@ const TermsOfServicePage: React.FC = () => {
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Terms of Service</h1>
           <p className="text-xl text-gray-600">
-            Last updated: December 2024
+            Last updated: August 8, 2025
           </p>
         </div>
 
@@ -84,15 +84,15 @@ const TermsOfServicePage: React.FC = () => {
             
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Pricing</h3>
             <p className="text-gray-600 mb-4">
-              All prices are listed in USD and are subject to change without notice. We reserve the right to modify 
+              All prices are listed in INR (Indian Rupees) and are subject to change without notice. We reserve the right to modify 
               or discontinue products at any time.
             </p>
 
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Payment</h3>
             <ul className="list-disc list-inside text-gray-600 mb-6 space-y-1">
               <li>Payment is due at the time of purchase</li>
-              <li>We accept major credit cards and PayPal</li>
-              <li>All transactions are processed securely</li>
+              <li>We accept major credit cards, debit cards, UPI, and net banking</li>
+              <li>All transactions are processed securely through Razorpay</li>
               <li>You authorize us to charge your payment method for all purchases</li>
             </ul>
 
@@ -109,15 +109,15 @@ const TermsOfServicePage: React.FC = () => {
             
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Shipping</h3>
             <p className="text-gray-600 mb-4">
-              We ship to most locations worldwide. Shipping costs and delivery times vary by location and shipping method selected.
+              We ship across India and to select international locations. Shipping costs and delivery times vary by location and shipping method selected.
             </p>
 
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Returns</h3>
             <ul className="list-disc list-inside text-gray-600 mb-6 space-y-1">
-              <li>Most items can be returned within 30 days of delivery</li>
-              <li>Items must be in original condition</li>
-              <li>Original paintings and custom items may not be returnable</li>
-              <li>Return shipping costs are the responsibility of the customer</li>
+              <li>Most items can be returned within 7 days of delivery</li>
+              <li>Items must be in original condition with all packaging</li>
+              <li>Custom artworks and personalized items cannot be returned</li>
+              <li>Return shipping costs may apply unless item was damaged or incorrect</li>
             </ul>
           </section>
 
@@ -170,9 +170,9 @@ const TermsOfServicePage: React.FC = () => {
           <section className="mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Governing Law</h2>
             <p className="text-gray-600 mb-6">
-              These Terms shall be interpreted and governed by the laws of the State of New York, United States, 
+              These Terms shall be interpreted and governed by the laws of India, 
               without regard to its conflict of law provisions. Any disputes arising from these terms will be 
-              resolved in the courts of New York.
+              resolved in the courts of New Delhi, India.
             </p>
           </section>
 
@@ -192,9 +192,9 @@ const TermsOfServicePage: React.FC = () => {
               If you have any questions about these Terms of Service, please contact us:
             </p>
             <div className="space-y-2 text-gray-600">
-              <p><strong>Email:</strong> legal@artisanaura.com</p>
-              <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-              <p><strong>Address:</strong> 123 Art Street, Creative District, New York, NY 10001</p>
+              <p><strong>Email:</strong> rangleela0506@gmail.com</p>
+              <p><strong>Phone:</strong> +91 70177 34431</p>
+              <p><strong>Address:</strong> Connaught Place, New Delhi, India</p>
             </div>
           </section>
         </div>

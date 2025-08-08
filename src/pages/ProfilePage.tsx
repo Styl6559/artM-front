@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, Save, Lock, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { authAPI } from '../lib/api';
+import { authAPI, paymentAPI } from '../lib/api';
 import toast from 'react-hot-toast';
 
 const ProfilePage: React.FC = () => {
@@ -16,6 +16,7 @@ const ProfilePage: React.FC = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [orderCount, setOrderCount] = useState(0);
   
   const [profileData, setProfileData] = useState({
     name: user?.name || '',
@@ -33,6 +34,27 @@ const ProfilePage: React.FC = () => {
     newPassword: '',
     confirmPassword: ''
   });
+
+  // Fetch user's order count
+  useEffect(() => {
+    const fetchOrderCount = async () => {
+      try {
+        const response = await paymentAPI.getOrders();
+        if (response.success) {
+          // Filter out pending orders to match MyOrdersPage behavior
+          const completedOrders = response.data.orders.filter((order: any) => order.status !== 'pending');
+          setOrderCount(completedOrders.length);
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        // Don't show error to user, just keep count at 0
+      }
+    };
+
+    if (user) {
+      fetchOrderCount();
+    }
+  }, [user]);
 
   // Check if user has a password (Google users might not have one)
   const hasPassword = !user?.googleId;
@@ -318,6 +340,7 @@ const ProfilePage: React.FC = () => {
                   <div className="relative">
                     <Input
                       label="Confirm New Password"
+                      maxLength={32}
                       type={showConfirmPassword ? 'text' : 'password'}
                       value={createPasswordData.confirmPassword}
                       onChange={(e) => setCreatePasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
@@ -379,6 +402,7 @@ const ProfilePage: React.FC = () => {
                   <div className="relative">
                     <Input
                       label="New Password"
+                      maxLength={32}
                       type={showNewPassword ? 'text' : 'password'}
                       value={passwordData.newPassword}
                       onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
@@ -396,6 +420,7 @@ const ProfilePage: React.FC = () => {
                   <div className="relative">
                     <Input
                       label="Confirm New Password"
+                      maxLength={32}
                       type={showConfirmPassword ? 'text' : 'password'}
                       value={passwordData.confirmPassword}
                       onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
@@ -443,7 +468,7 @@ const ProfilePage: React.FC = () => {
               <h3 className="text-2xl font-bold text-slate-800 mb-4 font-serif">Account Statistics</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl">
-                  <div className="text-2xl font-bold text-emerald-600 font-serif">0</div>
+                  <div className="text-2xl font-bold text-emerald-600 font-serif">{orderCount}</div>
                   <div className="text-sm text-slate-600 font-serif">Orders Placed</div>
                 </div>
                 <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl">

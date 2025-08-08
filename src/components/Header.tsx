@@ -248,14 +248,38 @@ const Header: React.FC = () => {
               </>
             ) : (
               <div className="flex items-center space-x-2">
-                <Link to="/login">
-                  <Button variant="ghost" size="sm" className="text-gray-700 hover:text-emerald-700 text-sm">
-                    Sign In
-                  </Button>
+                {/* Cart */}
+                <Link 
+                  to="/cart" 
+                  className="relative group p-2 rounded-lg text-gray-600 hover:text-emerald-600 hover:bg-gray-100 transition-all duration-300"
+                  title="Shopping Cart"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                  {getTotalItems() > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                      {getTotalItems()}
+                    </span>
+                  )}
+                </Link>
+
+                {/* Wishlist */}
+                <Link 
+                  to="/wishlist" 
+                  className="relative group p-2 rounded-lg text-gray-600 hover:text-pink-600 hover:bg-gray-100 transition-all duration-300"
+                  title="Wishlist"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  <Heart className="w-5 h-5" />
+                  {wishlist.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                      {wishlist.length}
+                    </span>
+                  )}
                 </Link>
                 <Link to="/register">
-                  <Button size="sm" className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-sm px-4 py-2">
-                    Join Us
+                  <Button size="sm" className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-sm px-4 py-2 ml-2">
+                    Join Now
                   </Button>
                 </Link>
               </div>
@@ -290,16 +314,38 @@ const Header: React.FC = () => {
                 <span className="font-medium">{link.name}</span>
               </Link>
               ))}
-              {isAuthenticated && (
+              
+              {/* Cart and Wishlist - Always visible */}
+              <Link
+                to="/cart"
+                className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              >
+                <ShoppingCart className="w-5 h-5 text-emerald-600 group-hover:text-emerald-700 transition-colors duration-300" />
+                <span className="font-medium group-hover:text-emerald-700">My Cart</span>
+                {getTotalItems() > 0 && (
+                  <span className="ml-auto bg-emerald-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {getTotalItems()}
+                  </span>
+                )}
+              </Link>
+              
+              <Link
+                to="/wishlist"
+                className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
+                onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              >
+                <Heart className="w-5 h-5 text-pink-600 group-hover:text-pink-700 transition-colors duration-300" />
+                <span className="font-medium group-hover:text-pink-700">My Wishlist</span>
+                {wishlist.length > 0 && (
+                  <span className="ml-auto bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {wishlist.length}
+                  </span>
+                )}
+              </Link>
+
+              {isAuthenticated ? (
                 <>
-                  <Link
-                    to="/cart"
-                    className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
-                    onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  >
-                    <ShoppingCart className="w-5 h-5 text-emerald-600 group-hover:text-emerald-700 transition-colors duration-300" />
-                    <span className="font-medium group-hover:text-emerald-700">My Cart</span>
-                  </Link>
                   <Link
                     to="/my-orders"
                     className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-orange-50/50 transition-all duration-300 group"
@@ -315,6 +361,17 @@ const Header: React.FC = () => {
                   >
                     <Phone className="w-5 h-5 text-blue-600 group-hover:text-blue-700 group-hover:animate-bounce transition-colors duration-300" />
                     <span className="font-medium group-hover:text-blue-700">Contact Us</span>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/register"
+                    className="flex items-center space-x-3 p-3 rounded-lg bg-gradient-to-r from-emerald-500 to-blue-500 text-white hover:from-emerald-600 hover:to-blue-600 transition-all duration-300"
+                    onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  >
+                    <Star className="w-5 h-5" />
+                    <span className="font-medium">Join Now</span>
                   </Link>
                 </>
               )}

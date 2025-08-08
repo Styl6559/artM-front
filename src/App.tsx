@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'react-hot-toast';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import Header from './components/Header';
@@ -22,6 +22,7 @@ import ShippingInfoPage from './pages/ShippingInfoPage';
 import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
+import RefundPolicyPage from './pages/RefundPolicyPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
@@ -39,6 +40,26 @@ function App() {
     fetch(`${import.meta.env.VITE_API_URL}/health`)
       .then(() => setServerAwake(true))
       .catch(() => setServerAwake(true)); // Even on error, let app load
+  }, []);
+
+  // Add global click listener to dismiss toasts when clicked
+  useEffect(() => {
+    const handleToastClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      // Check if clicked element is part of a toast notification
+      // React-hot-toast uses div with role="status" and specific class names
+      const toastElement = target.closest('[role="status"]') || 
+                          target.closest('[data-hot-toast]') || 
+                          target.closest('.react-hot-toast') ||
+                          target.closest('[class*="hot-toast"]');
+      
+      if (toastElement) {
+        toast.dismiss(); // Dismiss all toasts on click
+      }
+    };
+
+    document.addEventListener('click', handleToastClick);
+    return () => document.removeEventListener('click', handleToastClick);
   }, []);
 
   if (!serverAwake) {
@@ -101,6 +122,7 @@ function App() {
                           <Route path="/terms" element={<TermsOfServicePage />} />
                           <Route path="/contact" element={<ContactPage />} />
                           <Route path="/shipping" element={<ShippingInfoPage />} />
+                          <Route path="/refund-policy" element={<RefundPolicyPage />} />
                           
                           {/* Protected Routes */}
                           <Route path="/search" element={
@@ -108,16 +130,8 @@ function App() {
                               <SearchPage />
                             </ProtectedRoute>
                           } />
-                          <Route path="/cart" element={
-                            <ProtectedRoute>
-                              <CartPage />
-                            </ProtectedRoute>
-                          } />
-                          <Route path="/wishlist" element={
-                            <ProtectedRoute>
-                              <WishlistPage />
-                            </ProtectedRoute>
-                          } />
+                          <Route path="/cart" element={<CartPage />} />
+                          <Route path="/wishlist" element={<WishlistPage />} />
                           <Route path="/profile" element={
                             <ProtectedRoute>
                               <ProfilePage />
@@ -128,6 +142,9 @@ function App() {
                               <MyOrdersPage />
                             </ProtectedRoute>
                           } />
+                          
+                          {/* Catch-all route - redirect unknown routes to dashboard */}
+                          <Route path="*" element={<Navigate to="/dashboard" replace />} />
                         </Routes>
                       </main>
                       <Footer />
@@ -138,21 +155,22 @@ function App() {
                 <Toaster
                   position="top-right"
                   toastOptions={{
-                    duration: 4000,
+                    duration: 2000, // Shorter duration for better UX
                     style: {
                       background: '#363636',
                       color: '#fff',
                       fontFamily: 'Inter, sans-serif',
+                      cursor: 'pointer', // Indicate clickable
                     },
                     success: {
-                      duration: 3000,
+                      duration: 1500, // Very short for success messages
                       iconTheme: {
                         primary: '#10b981',
                         secondary: '#fff',
                       },
                     },
                     error: {
-                      duration: 4000,
+                      duration: 3000,
                       iconTheme: {
                         primary: '#ef4444',
                         secondary: '#fff',

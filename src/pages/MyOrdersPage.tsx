@@ -119,9 +119,9 @@ const MyOrdersPage: React.FC = () => {
           </div>
         </div>
 
-        {orders.length > 0 ? (
+        {orders.filter(order => order.status !== 'pending').length > 0 ? (
           <div className="space-y-6">
-            {orders.map((order) => (
+            {orders.filter(order => order.status !== 'pending').map((order) => (
               <div key={order._id} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300">
                 {/* Order Header */}
                 <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 border-b border-gray-200/50">
