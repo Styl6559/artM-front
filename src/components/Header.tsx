@@ -82,7 +82,7 @@ const Header: React.FC = () => {
               <img
                 src={logo}
                 alt="Rangleela"
-                className="h-9 w-40 object-contain object-center scale-[1.7]"
+                className="h-9 w-36 object-contain object-center scale-[1.7]"
               />
             </div>
           </Link>
