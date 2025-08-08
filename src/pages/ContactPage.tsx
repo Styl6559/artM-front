@@ -20,6 +20,32 @@ const ContactPage: React.FC = () => {
   const [images, setImages] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Get maximum allowed images based on subject
+  const getMaxImages = (subject: string) => {
+    switch (subject) {
+      case 'custom':
+        return 3; // Custom design
+      case 'order':
+        return 1; // Order support
+      case 'return':
+        return 3; // Exchange/return
+      case 'other':
+        return 3; // Others
+      case 'artist':
+        return 1; // Art application
+      default:
+        return 0; // No images allowed for other subjects
+    }
+  };
+
+  // Check if current subject supports images
+  const supportsImages = (subject: string) => {
+    return ['custom', 'order', 'return', 'other', 'artist'].includes(subject);
+  };
+
+  const maxImages = getMaxImages(formData.subject);
+  const canUploadImages = supportsImages(formData.subject);
+
   // Autofill user data when logged in
   useEffect(() => {
     if (isAuthenticated && user && user.name && user.email) {
@@ -63,11 +89,26 @@ const ContactPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    
+    // If subject is changing, clear images if new subject doesn't support them
+    if (name === 'subject') {
+      const newSubjectSupportsImages = supportsImages(value);
+      if (!newSubjectSupportsImages) {
+        setImages([]);
+      }
+    }
+    
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
+    
+    // Check if current subject supports images
+    if (!canUploadImages) {
+      toast.error('Image upload is not supported for this subject');
+      return;
+    }
     
     // Validate file types
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
@@ -85,9 +126,9 @@ const ContactPage: React.FC = () => {
       return;
     }
 
-    // Check total number of images
-    if (images.length + files.length > 3) {
-      toast.error('You can upload maximum 3 images');
+    // Check total number of images with dynamic limit
+    if (images.length + files.length > maxImages) {
+      toast.error(`You can upload maximum ${maxImages} image${maxImages > 1 ? 's' : ''} for ${formData.subject} inquiries`);
       return;
     }
 
@@ -130,18 +171,14 @@ const ContactPage: React.FC = () => {
           uploadData.append('images', image);
         });
 
-        response = await fetch('/contact/with-images', {
-          method: 'POST',
-          body: uploadData,
-        });
+        response = await contactAPI.submitContactWithImages(uploadData);
       } else {
         // Use regular contact API
         response = await contactAPI.submitContact(formData);
       }
 
-      if (response.ok || response.success) {
-        const data = response.json ? await response.json() : response;
-        toast.success(data.message || 'Message sent successfully! We will get back to you soon.');
+      if (response.success) {
+        toast.success(response.message || 'Message sent successfully! We will get back to you soon.');
         setFormData({
           name: '',
           email: '',
@@ -150,8 +187,7 @@ const ContactPage: React.FC = () => {
         });
         setImages([]);
       } else {
-        const data = response.json ? await response.json() : response;
-        toast.error(data.message || 'Failed to send message');
+        toast.error(response.message || 'Failed to send message');
       }
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
@@ -297,12 +333,16 @@ const ContactPage: React.FC = () => {
                   </select>
                 </div>
 
-                {/* Image Upload Section - Show only for custom designs */}
-                {formData.subject === 'custom' && (
+                {/* Image Upload Section - Show for supported subjects */}
+                {canUploadImages && (
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Upload Reference Images (Max 3 images, 15MB each)
+                        Upload {formData.subject === 'custom' ? 'Reference' : 
+                               formData.subject === 'order' ? 'Order' :
+                               formData.subject === 'return' ? 'Return/Exchange' :
+                               formData.subject === 'artist' ? 'Portfolio' : ''} Images 
+                        (Max {maxImages} image{maxImages > 1 ? 's' : ''}, 15MB each)
                       </label>
                       <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-purple-400 transition-colors">
                         <div className="space-y-1 text-center">

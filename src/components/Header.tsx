@@ -78,21 +78,14 @@ const Header: React.FC = () => {
         <div className="flex items-center h-16">
           {/* Logo Section */}
           <Link to="/dashboard" className="flex items-center group flex-shrink-0 mr-8">
-            <div className="relative" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              {/* Soft glow effect behind logo */}
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
-
-              {/* Logo container - fixed size */}
-              <div className="relative h-12 w-36 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm border border-white/60 shadow-md group-hover:shadow-lg transition-all duration-300 flex items-center justify-center">
-                <img
-                  src={logo}
-                  alt="Rangleela"
-                  className="scale-[1.15] object-contain object-center"
-                />
-              </div>
+            <div onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <img
+                src={logo}
+                alt="Rangleela"
+                className="h-9 w-40 object-contain object-center scale-[1.7]"
+              />
             </div>
           </Link>
-
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1 flex-1 justify-center ml-16">
@@ -151,7 +144,7 @@ const Header: React.FC = () => {
                 {/* Wishlist */}
                 <Link 
                   to="/wishlist" 
-                  className="relative group p-2 rounded-lg text-gray-600 hover:text-pink-600 hover:bg-gray-100 transition-all duration-300"
+                  className="hidden lg:inline-flex relative group p-2 rounded-lg text-gray-600 hover:text-pink-600 hover:bg-gray-100 transition-all duration-300"
                   title="Wishlist"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
@@ -266,7 +259,7 @@ const Header: React.FC = () => {
                 {/* Wishlist */}
                 <Link 
                   to="/wishlist" 
-                  className="relative group p-2 rounded-lg text-gray-600 hover:text-pink-600 hover:bg-gray-100 transition-all duration-300"
+                  className="hidden lg:inline-flex relative group p-2 rounded-lg text-gray-600 hover:text-pink-600 hover:bg-gray-100 transition-all duration-300"
                   title="Wishlist"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 >
@@ -277,9 +270,9 @@ const Header: React.FC = () => {
                     </span>
                   )}
                 </Link>
-                <Link to="/register">
+                <Link to="/login">
                   <Button size="sm" className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-sm px-4 py-2 ml-2">
-                    Join Now
+                    Sign In
                   </Button>
                 </Link>
               </div>
@@ -326,20 +319,6 @@ const Header: React.FC = () => {
                 {getTotalItems() > 0 && (
                   <span className="ml-auto bg-emerald-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                     {getTotalItems()}
-                  </span>
-                )}
-              </Link>
-              
-              <Link
-                to="/wishlist"
-                className="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-300 group"
-                onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              >
-                <Heart className="w-5 h-5 text-pink-600 group-hover:text-pink-700 transition-colors duration-300" />
-                <span className="font-medium group-hover:text-pink-700">My Wishlist</span>
-                {wishlist.length > 0 && (
-                  <span className="ml-auto bg-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                    {wishlist.length}
                   </span>
                 )}
               </Link>

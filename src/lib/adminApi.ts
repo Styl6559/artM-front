@@ -15,12 +15,6 @@ const adminApi = axios.create({
 // Request interceptor for debugging
 adminApi.interceptors.request.use(
   (config) => {
-    console.log('Admin API Request:', {
-      method: config.method,
-      url: config.url,
-      headers: config.headers,
-      data: config.data instanceof FormData ? 'FormData' : config.data
-    });
     return config;
   },
   (error) => {
@@ -32,11 +26,6 @@ adminApi.interceptors.request.use(
 // Response interceptor to handle errors
 adminApi.interceptors.response.use(
   (response) => {
-    console.log('Admin API Response:', {
-      status: response.status,
-      url: response.config.url,
-      data: response.data
-    });
     return response;
   },
   (error) => {
@@ -48,7 +37,6 @@ adminApi.interceptors.response.use(
     });
     
     if (error.response?.status === 401) {
-      console.log('Admin authentication failed, redirecting to login');
       window.location.href = '/login';
     }
     return Promise.reject(error);
@@ -56,6 +44,40 @@ adminApi.interceptors.response.use(
 );
 
 export const adminAPI = {
+  // Hero Images
+  getHeroImages: async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/hero-images`, { withCredentials: true });
+      return response.data;
+    } catch (error: any) {
+      console.error('Get hero images API error:', error);
+      return error.response?.data || { success: false, message: 'Failed to fetch hero images' };
+    }
+  },
+
+  addHeroImage: async (formData: FormData) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/hero-images`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true,
+        timeout: 60000,
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('Add hero image API error:', error);
+      return error.response?.data || { success: false, message: 'Failed to add hero image' };
+    }
+  },
+
+  deleteHeroImage: async (id: string) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/hero-images/${id}`, { withCredentials: true });
+      return response.data;
+    } catch (error: any) {
+      console.error('Delete hero image API error:', error);
+      return error.response?.data || { success: false, message: 'Failed to delete hero image' };
+    }
+  },
   // Analytics
   getAnalytics: async () => {
     try {
@@ -112,14 +134,7 @@ export const adminAPI = {
   },
 
   createProduct: async (formData: FormData) => {
-    try {
-      console.log('Creating product with FormData...');
-      
-      // Log FormData contents for debugging
-      for (let [key, value] of formData.entries()) {
-        console.log(`FormData ${key}:`, value);
-      }
-      
+    try {   
       const response = await adminApi.post('/products', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -137,9 +152,7 @@ export const adminAPI = {
   },
 
   updateProduct: async (id: string, formData: FormData) => {
-    try {
-      console.log('Updating product with ID:', id);
-      
+    try {    
       const response = await adminApi.put(`/products/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',

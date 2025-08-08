@@ -306,8 +306,8 @@ const ShopPage: React.FC = () => {
                   : 'grid-cols-1'
               }`}>
                 {filteredProducts.map((product) => (
-                  <div className="w-full">
-                    <ProductCard key={product.id} product={product} className="w-full max-w-xl mx-auto" />
+                  <div className="w-full" key={product.id}>
+                    <ProductCard product={product} className="w-full max-w-xl mx-auto" />
                   </div>
                 ))}
               </div>

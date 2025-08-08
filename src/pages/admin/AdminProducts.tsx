@@ -34,14 +34,11 @@ const AdminProducts: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
-      console.log('Fetching products...');
       
       const response = await adminAPI.getProducts();
-      console.log('Products response:', response);
       
       if (response.success) {
         setProducts(response.data.products || []);
-        console.log('Products loaded:', response.data.products?.length || 0);
       } else {
         console.error('Failed to fetch products:', response.message);
         toast.error(response.message || 'Failed to fetch products');
@@ -58,9 +55,7 @@ const AdminProducts: React.FC = () => {
     e.preventDefault();
     
     if (isSubmitting) return;
-    
-    console.log('Submitting form...', formData);
-    
+
     // Frontend validation with character limits
     if (!formData.name.trim()) {
       toast.error('Product name is required');
@@ -138,7 +133,6 @@ const AdminProducts: React.FC = () => {
         formDataToSend.append('image', formData.image);
       }
 
-      console.log('Sending FormData...');
 
       let response;
       if (editingProduct) {
@@ -147,7 +141,6 @@ const AdminProducts: React.FC = () => {
         response = await adminAPI.createProduct(formDataToSend);
       }
 
-      console.log('Submit response:', response);
 
       if (response.success) {
         toast.success(editingProduct ? 'Product updated successfully!' : 'Product created successfully!');
@@ -251,12 +244,12 @@ const AdminProducts: React.FC = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-white/20 rounded-xl blur-md"></div>
                 <div className="relative bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4 border border-white/30">
-                  <Package className="w-8 h-8 text-white" />
+                  <Plus className="w-8 h-8 text-white" />
                 </div>
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white font-serif">Product Management</h1>
-                <p className="text-white/90 font-light">Manage your artistic collection</p>
+                <p className="text-white/90 font-light">Add, edit, or remove products</p>
               </div>
             </div>
             <div className="flex items-center gap-4">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Eye, MessageSquare, CheckCircle, Send, Download } from 'lucide-react';
+import { Filter, Eye, MessageSquare, CheckCircle, Send, Download } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { adminAPI } from '../../lib/adminApi';
 import toast from 'react-hot-toast';
@@ -56,6 +56,13 @@ const AdminContacts: React.FC = () => {
   };
 
   const updateContactStatus = async (id: string, status: string) => {
+    // Add confirmation for resolve action
+    if (status === 'resolved') {
+      if (!confirm('Are you sure you want to resolve and delete this contact? This action cannot be undone.')) {
+        return;
+      }
+    }
+
     try {
       const response = await adminAPI.updateContact(id, { status });
       if (response.success) {
@@ -67,7 +74,6 @@ const AdminContacts: React.FC = () => {
             setSelectedContact(null);
           }
         } else {
-          toast.success('Contact updated!');
           fetchContacts();
           if (selectedContact?._id === id) {
             setSelectedContact(response.data.contact);

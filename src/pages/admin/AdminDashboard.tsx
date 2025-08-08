@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, LineChart, Line
+  PieChart, Pie, Cell
 } from 'recharts';
 import { 
   Package, Users, MessageSquare, TrendingUp, 
-  Eye, Plus, Settings, Bell, Palette
+  Eye, Plus, Palette, Image
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Button from '../../components/ui/Button';
@@ -18,7 +18,6 @@ const AdminDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('AdminDashboard mounted');
     fetchAnalytics();
   }, []);
 
@@ -199,7 +198,7 @@ const AdminDashboard: React.FC = () => {
               <BarChart data={analytics?.contactsBySubject || []}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="_id" />
-                <YAxis />
+                <YAxis tickFormatter={(value) => Math.floor(value).toString()} />
                 <Tooltip />
                 <Bar dataKey="count" fill="#8b5cf6" />
               </BarChart>
@@ -208,61 +207,67 @@ const AdminDashboard: React.FC = () => {
         </div>
 
 
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Link to="/admin/products">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-300 cursor-pointer group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 font-serif">Manage Products</h3>
-                  <p className="text-gray-600 font-light">Add, edit, or remove products</p>
+        {/* Quick Actions - Improved layout */}
+        <div className="mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
+            <h3 className="text-xl font-bold text-gray-900 mb-6 font-serif">Quick Actions</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+              <Link to="/admin/products">
+                <div className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-emerald-50 transition group cursor-pointer border border-gray-100">
+                  <div className="p-4 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 mb-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <Plus className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 font-serif mb-1">Manage Products</h4>
+                  <p className="text-gray-600 text-sm">Add, edit, or remove products</p>
                 </div>
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 group-hover:scale-110 transition-transform duration-300">
-                  <Plus className="w-8 h-8 text-white" />
+              </Link>
+              <Link to="/admin/orders">
+                <div className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-indigo-50 transition group cursor-pointer border border-gray-100">
+                  <div className="p-4 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 mb-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <Package className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 font-serif mb-1">Order Management</h4>
+                  <p className="text-gray-600 text-sm">View and manage orders</p>
                 </div>
-              </div>
+              </Link>
+              <Link to="/admin/contacts">
+                <div className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-green-50 transition group cursor-pointer border border-gray-100">
+                  <div className="p-4 rounded-full bg-gradient-to-br from-green-500 to-green-600 mb-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <MessageSquare className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 font-serif mb-1">Manage Contacts</h4>
+                  <p className="text-gray-600 text-sm">Respond to customer inquiries</p>
+                </div>
+              </Link>
+              <Link to="/admin/hero-images">
+                <div className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-pink-50 transition group cursor-pointer border border-gray-100">
+                  <div className="p-4 rounded-full bg-gradient-to-br from-pink-500 to-yellow-500 mb-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <Image className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 font-serif mb-1">Gallery Management</h4>
+                  <p className="text-gray-600 text-sm">Manage gallery and collection images</p>
+                </div>
+              </Link>
+              <Link to="/admin/analytics">
+                <div className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-orange-50 transition group cursor-pointer border border-gray-100">
+                  <div className="p-4 rounded-full bg-gradient-to-br from-orange-500 to-red-500 mb-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <TrendingUp className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 font-serif mb-1">Analytics</h4>
+                  <p className="text-gray-600 text-sm">View detailed business insights</p>
+                </div>
+              </Link>
+              <Link to="/dashboard">
+                <div className="flex flex-col items-center text-center p-4 rounded-xl hover:bg-purple-50 transition group cursor-pointer border border-gray-100">
+                  <div className="p-4 rounded-full bg-gradient-to-br from-purple-500 to-purple-600 mb-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <Eye className="w-8 h-8 text-white" />
+                  </div>
+                  <h4 className="font-bold text-gray-900 font-serif mb-1">View Site</h4>
+                  <p className="text-gray-600 text-sm">Go to main website</p>
+                </div>
+              </Link>
             </div>
-          </Link>
-          <Link to="/admin/orders">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-300 cursor-pointer group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 font-serif">Order Management</h3>
-                  <p className="text-gray-600 font-light">View and manage orders</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 group-hover:scale-110 transition-transform duration-300">
-                  <Package className="w-8 h-8 text-white" />
-                </div>
-              </div>
-            </div>
-          </Link>
-          <Link to="/admin/contacts">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-300 cursor-pointer group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 font-serif">Reply Messages</h3>
-                  <p className="text-gray-600 font-light">Respond to customer inquiries</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-green-500 to-green-600 group-hover:scale-110 transition-transform duration-300">
-                  <Eye className="w-8 h-8 text-white" />
-                </div>
-              </div>
-            </div>
-          </Link>
-
-          <Link to="/dashboard">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-8 hover:shadow-xl transition-all duration-300 cursor-pointer group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 font-serif">View Site</h3>
-                  <p className="text-gray-600 font-light">Go to main website</p>
-                </div>
-                <div className="p-4 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 group-hover:scale-110 transition-transform duration-300">
-                  <Eye className="w-8 h-8 text-white" />
-                </div>
-              </div>
-            </div>
-          </Link>
+          </div>
         </div>
 
         {/* Recent Messages */}

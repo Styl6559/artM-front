@@ -58,24 +58,6 @@ const WishlistPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Login Prompt for Non-authenticated Users */}
-        {!user && wishlist.length > 0 && (
-          <div className="mb-6">
-            <div className="bg-gradient-to-r from-pink-50 to-red-50 border border-pink-200 rounded-xl p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="text-pink-600 text-sm">
-                    <strong>💖 Keep Your Favorites:</strong> Login to sync your wishlist across all devices!
-                  </div>
-                </div>
-                <Link to="/login" className="text-pink-600 hover:text-pink-700 font-medium text-sm border border-pink-300 px-3 py-1 rounded-lg hover:bg-pink-50 transition-colors">
-                  Login to Sync
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Wishlist Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {wishlist.map((item) => (

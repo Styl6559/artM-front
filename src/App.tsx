@@ -27,6 +27,8 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminContacts from './pages/admin/AdminContacts';
+import AdminHeroImages from './pages/admin/AdminHeroImages';
+import AdminAnalytics from './pages/admin/AdminAnalytics';
 import { AuthProvider } from './context/AuthContext';
 import { ProductProvider } from './context/ProductContext';
 import { CartProvider } from './context/CartContext';
@@ -103,6 +105,16 @@ function App() {
                   <Route path="/admin/contacts" element={
                     <AdminRoute>
                       <AdminContacts />
+                    </AdminRoute>
+                  } />
+                  <Route path="/admin/hero-images" element={
+                    <AdminRoute>
+                      <AdminHeroImages />
+                    </AdminRoute>
+                  } />
+                  <Route path="/admin/analytics" element={
+                    <AdminRoute>
+                      <AdminAnalytics />
                     </AdminRoute>
                   } />
                   

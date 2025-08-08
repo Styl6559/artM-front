@@ -180,6 +180,22 @@ export const contactAPI = {
         message: 'Failed to send message.' 
       };
     }
+  },
+
+  submitContactWithImages: async (formData: FormData) => {
+    try {
+      const response = await api.post('/contact/with-images', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      return error.response?.data || { 
+        success: false, 
+        message: 'Failed to send message with images.' 
+      };
+    }
   }
 };
 
