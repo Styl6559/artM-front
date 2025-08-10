@@ -517,7 +517,7 @@ const ShopPage: React.FC = () => {
               <Button
                 variant="primary"
                 onClick={() => handleCustomOrderNavigation('painting')}
-                className="w-full relative overflow-hidden group bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 active:from-teal-700 active:to-cyan-700"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center justify-center">
@@ -528,7 +528,7 @@ const ShopPage: React.FC = () => {
               <Button
                 variant="primary"
                 onClick={() => handleCustomOrderNavigation('apparel')}
-                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 active:from-purple-700 active:to-pink-700"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center justify-center">
@@ -539,7 +539,7 @@ const ShopPage: React.FC = () => {
               <Button
                 variant="primary"
                 onClick={() => handleCustomOrderNavigation('accessories')}
-                className="w-full relative overflow-hidden group bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 active:from-orange-700 active:to-amber-700"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center justify-center">

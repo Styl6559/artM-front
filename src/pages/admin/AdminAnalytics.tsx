@@ -400,16 +400,6 @@ const AdminAnalytics: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <select
-                value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value)}
-                className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-white/50"
-              >
-                <option value="7d" className="text-gray-900">Last 7 Days</option>
-                <option value="30d" className="text-gray-900">Last 30 Days</option>
-                <option value="90d" className="text-gray-900">Last 3 Months</option>
-                <option value="1y" className="text-gray-900">Last Year</option>
-              </select>
               <Button
                 onClick={() => window.history.back()}
                 className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30"

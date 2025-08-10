@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Package, Clock, CheckCircle, Truck, Star, ShoppingCart, Eye, Sparkles } from 'lucide-react';
 import { paymentAPI } from '../lib/api';
 import { useCart } from '../context/CartContext';
+import { useProducts } from '../context/ProductContext';
 import Button from '../components/ui/Button';
 import toast from 'react-hot-toast';
 
@@ -13,6 +14,7 @@ const MyOrdersPage: React.FC = () => {
   const [ratings, setRatings] = useState<{[key: string]: number}>({});
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const { addToCart } = useCart();
+  const { getProductById } = useProducts();
 
   useEffect(() => {
     fetchOrders();
@@ -77,9 +79,20 @@ const MyOrdersPage: React.FC = () => {
     }
   };
 
-  const handleAddToCart = (product: any) => {
-    addToCart(product);
-    toast.success('Added to cart!');
+  const handleAddToCart = (orderProduct: any) => {
+    const productId = orderProduct._id || orderProduct.id;
+    const currentProduct = getProductById(productId);
+    if (!currentProduct) {
+      toast.error('Product no longer available');
+      return;
+    }
+    
+    if (!currentProduct.inStock) {
+      toast.error('Product is currently out of stock');
+      return;
+    }
+    
+    addToCart(currentProduct);
   };
 
   if (isLoading) {
