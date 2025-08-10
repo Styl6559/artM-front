@@ -175,12 +175,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             ) : heroLoading ? (
-              <div className="w-full h-64 md:h-80 bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-                  <p className="text-lg">Loading gallery...</p>
-                </div>
-              </div>
+              <div className="w-full h-64 md:h-80 bg-gray-200 animate-pulse rounded-lg"></div>
             ) : (
               <div className="w-full h-64 md:h-80 bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 flex items-center justify-center">
                 <div className="text-center text-white">
@@ -344,36 +339,27 @@ const Dashboard: React.FC = () => {
           </div>
         )}
 
-        {/* New Arrivals Section */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">New Arrivals</h2>
-              <p className="text-gray-600">Fresh artworks, apparel and added accessories</p>
-            </div>
-            <Link to="/shop/painting">
-              <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                View All
-              </Button>
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {isLoading ? (
-              [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
-            ) : newArrivals.length > 0 ? (
-              newArrivals.slice(0, 4).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))
-            ) : (
-              <div className="col-span-4 text-center py-8">
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">
-                  <Palette className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2 font-serif">No Internet Connection</h3>
-                </div>
+        {/* Featured Products */}
+        {featuredProducts.length > 0 && (
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">Featured Artworks</h2>
+                <p className="text-gray-600">Handpicked selections from our curators</p>
               </div>
-            )}
+              <Link to="/shop/painting">
+                <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                  View All
+                </Button>
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {featuredProducts.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Featured Categories */}
         <div className="mb-8">
@@ -453,27 +439,37 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Featured Products */}
-        {featuredProducts.length > 0 && (
-          <div className="mb-8">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">Featured Artworks</h2>
-                <p className="text-gray-600">Handpicked selections from our curators</p>
-              </div>
-              <Link to="/shop/painting">
-                <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                  View All
-                </Button>
-              </Link>
+
+        {/* New Arrivals Section */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">New Arrivals</h2>
+              <p className="text-gray-600">Fresh artworks, apparel and added accessories</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {featuredProducts.slice(0, 4).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            <Link to="/shop/painting">
+              <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                View All
+              </Button>
+            </Link>
           </div>
-        )}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {isLoading ? (
+              [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
+            ) : newArrivals.length > 0 ? (
+              newArrivals.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            ) : (
+              <div className="col-span-4 text-center py-8">
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">
+                  <Palette className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2 font-serif">No Internet Connection</h3>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Trending Section */}
         <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">

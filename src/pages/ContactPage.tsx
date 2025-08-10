@@ -62,6 +62,9 @@ const ContactPage: React.FC = () => {
     const subject = searchParams.get('subject');
     const category = searchParams.get('category');
     
+    // Scroll to top when component mounts or URL params change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     if (subject === 'custom') {
       setFormData(prev => ({
         ...prev,

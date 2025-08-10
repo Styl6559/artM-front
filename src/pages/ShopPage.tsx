@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Filter, Grid, List, SortAsc, Search, Palette, Crown, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Filter, Grid, List, SortAsc, Search, Palette, Crown, Sparkles, ChevronDown, ChevronUp, Star } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
 import { useDebounce } from '../hooks/useDebounce';
 import ProductCard from '../components/ProductCard';
@@ -16,6 +16,10 @@ const ShopPage: React.FC = () => {
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [discountFilter, setDiscountFilter] = useState<string>('all');
+  const [ratingFilter, setRatingFilter] = useState<number>(0);
+  const [discountRange, setDiscountRange] = useState([0, 100]);
+  const [ratingRange, setRatingRange] = useState([0, 5]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -46,6 +50,47 @@ const ShopPage: React.FC = () => {
     // Filter by price range
     filtered = filtered.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
 
+    // Filter by discount
+    if (discountFilter !== 'all') {
+      filtered = filtered.filter(p => {
+        const hasDiscount = p.discountPrice && p.discountPrice < p.price;
+        if (!hasDiscount) return false;
+        
+        const discount = Math.round(((p.price - (p.discountPrice || 0)) / p.price) * 100);
+        switch (discountFilter) {
+          case '10':
+            return discount >= 10;
+          case '25':
+            return discount >= 25;
+          case '50':
+            return discount >= 50;
+          default:
+            return true;
+        }
+      });
+    }
+
+    // Filter by discount range
+    filtered = filtered.filter(p => {
+      const hasDiscount = p.discountPrice && p.discountPrice < p.price;
+      if (!hasDiscount && discountRange[0] > 0) return false;
+      if (!hasDiscount) return true;
+      
+      const discount = Math.round(((p.price - (p.discountPrice || 0)) / p.price) * 100);
+      return discount >= discountRange[0] && discount <= discountRange[1];
+    });
+
+    // Filter by rating
+    if (ratingFilter > 0) {
+      filtered = filtered.filter(p => (p.rating || 0) >= ratingFilter);
+    }
+
+    // Filter by rating range
+    filtered = filtered.filter(p => {
+      const rating = p.rating || 0;
+      return rating >= ratingRange[0] && rating <= ratingRange[1];
+    });
+
     // Sort products
     filtered.sort((a, b) => {
       switch (sortBy) {
@@ -62,7 +107,7 @@ const ShopPage: React.FC = () => {
     });
 
     return filtered;
-  }, [products, category, debouncedSearchQuery, priceRange, sortBy]);
+  }, [products, category, debouncedSearchQuery, priceRange, sortBy, discountFilter, ratingFilter, discountRange, ratingRange]);
 
   const categoryTitle = category === 'painting' ? 'Original Paintings' 
     : category === 'apparel' ? 'Designer Apparel' 
@@ -76,7 +121,10 @@ const ShopPage: React.FC = () => {
     ? 'Complete your look with artistic accessories'
     : 'Browse our complete collection';
 
-  const categoryIcon = category === 'painting' ? Palette : Crown;
+  const categoryIcon = category === 'painting' ? Palette 
+    : category === 'apparel' ? Crown 
+    : category === 'accessories' ? Star 
+    : Sparkles;
 
   if (isLoading) {
     return (
@@ -101,8 +149,8 @@ const ShopPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-8">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-4 sm:p-6 lg:p-8">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               <div className="flex items-center">
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg blur-lg opacity-30"></div>
@@ -111,49 +159,25 @@ const ShopPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="ml-4">
-                  <h1 className="text-3xl font-bold text-gray-800 font-serif bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">{categoryTitle}</h1>
-                  <p className="text-gray-600 font-light">{categoryDescription}</p>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 font-serif bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">{categoryTitle}</h1>
+                  <p className="text-gray-600 font-light text-sm sm:text-base">{categoryDescription}</p>
                 </div>
               </div>
               
-              {/* Customize Your Own Button */}
+              {/* Custom Order Link */}
               {category && (
-                <Button
-                  onClick={() => handleCustomOrderNavigation(category)}
-                  className="relative text-white px-6 py-3 rounded-full font-semibold tracking-wide border-2 border-white/20 overflow-hidden transition-all duration-300 shadow-lg hover:scale-105 hover:shadow-[0_0_25px_rgba(244,63,94,0.7)]"
-                >
-                  {/* Animated Gradient Layer */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-rose-500 to-pink-600 bg-[length:200%_200%] animate-gradientMove"></div>
-                  
-                  {/* Glow Layer */}
-                  <div className="absolute inset-0 rounded-full blur-xl bg-pink-500/40 opacity-50"></div>
-
-                  {/* Content */}
-                  <div className="relative flex items-center z-10">
-                    <Sparkles className="w-5 h-5 mr-2 animate-pulse" />
-                    ✨ Create Your Custom {category === 'painting' ? 'Art' : category === 'apparel' ? 'Design' : 'Piece'} ✨
-                  </div>
-                </Button>
-
-              )}
-            </div>
-            
-            {/* Search Bar */}
-            <div className="max-w-xl">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-lg blur-xl"></div>
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder={`Search ${category || 'products'} by name...`}
-                    maxLength={100}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300/50 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm shadow-xl font-light placeholder-gray-400"
-                  />
+                <div className="lg:text-right">
+                  <p className="text-gray-600 font-light text-sm sm:text-base">
+                    Create your custom piece?{' '}
+                    <button
+                      onClick={() => handleCustomOrderNavigation(category)}
+                      className="text-emerald-600 hover:text-emerald-700 underline font-medium transition-colors duration-200"
+                    >
+                      contact us
+                    </button>
+                  </p>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -195,12 +219,78 @@ const ShopPage: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Discount Filter */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-3 font-serif">
+                    Discount: {discountRange[0]}% - {discountRange[1]}%
+                  </label>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500 w-8">Min:</span>
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={discountRange[0]}
+                        onChange={(e) => setDiscountRange([parseInt(e.target.value), discountRange[1]])}
+                        className="flex-1 h-2 bg-gradient-to-r from-orange-200 to-red-200 rounded-lg appearance-none cursor-pointer accent-orange-600 shadow-lg"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500 w-8">Max:</span>
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={discountRange[1]}
+                        onChange={(e) => setDiscountRange([discountRange[0], parseInt(e.target.value)])}
+                        className="flex-1 h-2 bg-gradient-to-r from-orange-200 to-red-200 rounded-lg appearance-none cursor-pointer accent-orange-600 shadow-lg"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rating Filter */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-3 font-serif">
+                    Rating: {ratingRange[0]}★ - {ratingRange[1]}★
+                  </label>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500 w-8">Min:</span>
+                      <input
+                        type="range"
+                        min="0"
+                        max="5"
+                        step="1"
+                        value={ratingRange[0]}
+                        onChange={(e) => setRatingRange([parseInt(e.target.value), ratingRange[1]])}
+                        className="flex-1 h-2 bg-gradient-to-r from-yellow-200 to-yellow-400 rounded-lg appearance-none cursor-pointer accent-yellow-500 shadow-lg"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500 w-8">Max:</span>
+                      <input
+                        type="range"
+                        min="0"
+                        max="5"
+                        step="1"
+                        value={ratingRange[1]}
+                        onChange={(e) => setRatingRange([ratingRange[0], parseInt(e.target.value)])}
+                        className="flex-1 h-2 bg-gradient-to-r from-yellow-200 to-yellow-400 rounded-lg appearance-none cursor-pointer accent-yellow-500 shadow-lg"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 {/* Clear Filters */}
                 <Button
                   variant="outline"
                   onClick={() => {
                     setPriceRange([0, 10000]);
                     setSearchQuery('');
+                    setDiscountRange([0, 100]);
+                    setRatingRange([0, 5]);
                   }}
                   className="w-full font-serif shadow-lg hover:shadow-xl transition-all duration-300"
                 >
@@ -235,12 +325,80 @@ const ShopPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Discount Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-3 font-serif">
+                  Discount: {discountRange[0]}% - {discountRange[1]}%
+                </label>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500 w-8">Min:</span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={discountRange[0]}
+                      onChange={(e) => setDiscountRange([parseInt(e.target.value), discountRange[1]])}
+                      className="flex-1 h-2 bg-gradient-to-r from-orange-200 to-red-200 rounded-lg appearance-none cursor-pointer accent-orange-600 shadow-lg"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500 w-8">Max:</span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={discountRange[1]}
+                      onChange={(e) => setDiscountRange([discountRange[0], parseInt(e.target.value)])}
+                      className="flex-1 h-2 bg-gradient-to-r from-orange-200 to-red-200 rounded-lg appearance-none cursor-pointer accent-orange-600 shadow-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Rating Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-3 font-serif">
+                  Rating: {ratingRange[0]}★ - {ratingRange[1]}★
+                </label>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500 w-8">Min:</span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="5"
+                      step="1"
+                      value={ratingRange[0]}
+                      onChange={(e) => setRatingRange([parseInt(e.target.value), ratingRange[1]])}
+                      className="flex-1 h-2 bg-gradient-to-r from-yellow-200 to-yellow-400 rounded-lg appearance-none cursor-pointer accent-yellow-500 shadow-lg"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500 w-8">Max:</span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="5"
+                      step="1"
+                      value={ratingRange[1]}
+                      onChange={(e) => setRatingRange([ratingRange[0], parseInt(e.target.value)])}
+                      className="flex-1 h-2 bg-gradient-to-r from-yellow-200 to-yellow-400 rounded-lg appearance-none cursor-pointer accent-yellow-500 shadow-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* Clear Filters */}
               <Button
                 variant="outline"
                 onClick={() => {
                   setPriceRange([0, 10000]);
                   setSearchQuery('');
+                  setDiscountFilter('all');
+                  setRatingFilter(0);
+                  setDiscountRange([0, 100]);
+                  setRatingRange([0, 5]);
                 }}
                 className="w-full font-serif shadow-lg hover:shadow-xl transition-all duration-300"
               >
@@ -254,13 +412,17 @@ const ShopPage: React.FC = () => {
             {/* Toolbar */}
             <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-4 mb-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div className="text-gray-600 font-serif">
-                  Showing <span className="font-bold text-emerald-600">{filteredProducts.length}</span> of <span className="font-bold">{products.length}</span> products
-                  {debouncedSearchQuery && (
-                    <span className="ml-2 text-emerald-600 font-semibold">
-                      for "{debouncedSearchQuery}"
-                    </span>
-                  )}
+                {/* Search Bar */}
+                <div className="relative flex-1 max-w-lg w-full sm:w-auto">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 w-5 h-5 z-10" />
+                  <input
+                    type="text"
+                    placeholder={`Search ${category || 'products'} by name...`}
+                    maxLength={100}
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 sm:py-2 text-base sm:text-sm border border-gray-300/50 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm shadow-sm font-light placeholder-gray-400"
+                  />
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -270,7 +432,7 @@ const ShopPage: React.FC = () => {
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="border border-gray-300/50 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm font-serif shadow-lg"
+                      className="border border-gray-300/50 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white/80 backdrop-blur-sm font-serif shadow-sm"
                     >
                       <option value="name">Name</option>
                       <option value="price-low">Price: Low to High</option>
@@ -329,6 +491,8 @@ const ShopPage: React.FC = () => {
                     onClick={() => {
                       setPriceRange([0, 10000]);
                       setSearchQuery('');
+                      setDiscountRange([0, 100]);
+                      setRatingRange([0, 5]);
                     }}
                     variant="outline"
                     className="font-serif shadow-xl hover:shadow-2xl transition-all duration-300"
@@ -353,7 +517,7 @@ const ShopPage: React.FC = () => {
               <Button
                 variant="primary"
                 onClick={() => handleCustomOrderNavigation('painting')}
-                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center justify-center">
@@ -364,7 +528,7 @@ const ShopPage: React.FC = () => {
               <Button
                 variant="primary"
                 onClick={() => handleCustomOrderNavigation('apparel')}
-                className="w-full relative overflow-hidden group bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center justify-center">
@@ -375,11 +539,11 @@ const ShopPage: React.FC = () => {
               <Button
                 variant="primary"
                 onClick={() => handleCustomOrderNavigation('accessories')}
-                className="w-full relative overflow-hidden group bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500"
+                className="w-full relative overflow-hidden group bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400"
               >
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                  <Star className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                   <span>Create Custom Accessories</span>
                 </div>
               </Button>

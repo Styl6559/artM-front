@@ -105,7 +105,7 @@ const MyOrdersPage: React.FC = () => {
         <div className="mb-8">
           <Link to="/dashboard" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-4 group">
             <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
-            <span className="font-medium">Back to Dashboard</span>
+            <span className="font-medium">Back to Gallery</span>
           </Link>
           <div className="text-center">
             <div className="relative inline-block mb-4">

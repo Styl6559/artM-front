@@ -11,6 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import VerifyPage from './pages/VerifyPage';
 import Dashboard from './pages/Dashboard';
 import ShopPage from './pages/ShopPage';
+import ProductDetailPage from './pages/ProductDetailPage';
 import SearchPage from './pages/SearchPage';
 import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
@@ -128,6 +129,7 @@ function App() {
                           <Route path="/" element={<Navigate to="/dashboard" replace />} />
                           <Route path="/dashboard" element={<Dashboard />} />
                           <Route path="/shop/:category" element={<ShopPage />} />
+                          <Route path="/product/:id" element={<ProductDetailPage />} />
                           <Route path="/about" element={<AboutPage />} />
                           <Route path="/help" element={<HelpCenterPage />} />
                           <Route path="/privacy" element={<PrivacyPolicyPage />} />

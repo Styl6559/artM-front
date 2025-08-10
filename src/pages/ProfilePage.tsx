@@ -37,6 +37,9 @@ const ProfilePage: React.FC = () => {
 
   // Fetch user's order count
   useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     const fetchOrderCount = async () => {
       try {
         const response = await paymentAPI.getOrders();
@@ -153,22 +156,30 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-orange-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link to="/dashboard" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-4 font-serif text-lg">
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Dashboard
+          <Link to="/dashboard" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-6 group">
+            <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+            <span className="font-medium">Back to Gallery</span>
           </Link>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-emerald-600 bg-clip-text text-transparent font-serif">Profile Settings</h1>
-          <p className="text-xl text-slate-600 font-light">Manage your account information and preferences</p>
+          
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+              Profile Settings
+            </h1>
+            <p className="text-lg text-gray-600 font-light">
+              Manage your account information and preferences
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Profile Overview */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="max-w-4xl mx-auto">
+          {/* Profile Forms */}
+          <div className="space-y-6">
+            {/* Profile Overview */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
               <div className="text-center">
                 <div className="relative inline-block mb-4">
                   {profileData.avatar ? (
@@ -187,8 +198,8 @@ const ProfilePage: React.FC = () => {
                     <User className="w-12 h-12 text-white" />
                   </div>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-800 font-serif">{profileData.name}</h2>
-                <p className="text-slate-600 break-words max-w-xs mx-auto text-sm truncate font-light">
+                <h2 className="text-2xl font-bold text-gray-800 font-serif">{profileData.name}</h2>
+                <p className="text-gray-600 break-words max-w-xs mx-auto text-sm truncate font-light">
                   {profileData.email}
                 </p>
                 <div className="mt-4">
@@ -205,14 +216,11 @@ const ProfilePage: React.FC = () => {
                 )}
               </div>
             </div>
-          </div>
-
-          {/* Profile Forms */}
-          <div className="lg:col-span-2 space-y-6">
+            
             {/* Profile Information */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-slate-800 font-serif">Profile Information</h3>
+                <h3 className="text-2xl font-bold text-gray-800 font-serif">Profile Information</h3>
                 {!isEditing ? (
                   <Button
                     onClick={() => setIsEditing(true)}
@@ -280,9 +288,9 @@ const ProfilePage: React.FC = () => {
             </div>
 
             {/* Password Management */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-slate-800 font-serif">Password</h3>
+                <h3 className="text-2xl font-bold text-gray-800 font-serif">Password</h3>
                 {!isChangingPassword && !isCreatingPassword && (
                   <Button
                     onClick={() => {
@@ -305,11 +313,11 @@ const ProfilePage: React.FC = () => {
               {!isChangingPassword && !isCreatingPassword ? (
                 <div>
                   {hasPassword ? (
-                    <p className="text-slate-600 font-serif">
+                    <p className="text-gray-600 font-serif">
                       Keep your account secure by using a strong password and changing it regularly.
                     </p>
                   ) : (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
                       <p className="text-blue-800 text-sm font-serif">
                         <strong>Google Account:</strong> You signed up with Google. Create a password to enable 
                         direct login to your account.
@@ -464,18 +472,18 @@ const ProfilePage: React.FC = () => {
             </div>
 
             {/* Account Statistics */}
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-2xl font-bold text-slate-800 mb-4 font-serif">Account Statistics</h3>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4 font-serif">Account Statistics</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-4 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl">
                   <div className="text-2xl font-bold text-emerald-600 font-serif">{orderCount}</div>
-                  <div className="text-sm text-slate-600 font-serif">Orders Placed</div>
+                  <div className="text-sm text-gray-600 font-serif">Orders Placed</div>
                 </div>
                 <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl">
                   <div className="text-2xl font-bold text-orange-600 font-serif">
                     {new Date(user?.createdAt || Date.now()).getFullYear()}
                   </div>
-                  <div className="text-sm text-slate-600 font-serif">Member Since</div>
+                  <div className="text-sm text-gray-600 font-serif">Member Since</div>
                 </div>
               </div>
             </div>

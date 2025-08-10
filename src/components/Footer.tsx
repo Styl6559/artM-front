@@ -175,7 +175,7 @@ const Footer: React.FC = () => {
             </div>
             
             {/* Newsletter */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <h4 className="text-sm font-semibold mb-3 font-serif text-white">Newsletter</h4>
               <div className="flex">
                 <input
@@ -187,7 +187,7 @@ const Footer: React.FC = () => {
                   Subscribe
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
