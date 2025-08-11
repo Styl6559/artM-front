@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Palette, 
   Mail, 
   Phone, 
   MapPin, 
@@ -11,6 +10,7 @@ import {
   Youtube,
   ArrowUp
 } from 'lucide-react';
+import logo from '../assets/round.png';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -34,8 +34,8 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl shadow-xl">
-                <Palette className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg">
+                <img src={logo} alt="Rangleela Logo" className="w-full h-full object-cover" />
               </div>
               <span className="text-2xl font-bold font-serif">Rangleela</span>
             </div>
