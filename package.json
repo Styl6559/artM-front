@@ -1,5 +1,5 @@
 {
-  "name": "auth-system-google-otp",
+  "name": "rangleela",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,6 +17,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3",
+    "react-helmet-async": "^2.0.5",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.20.1",
     "recharts": "^2.8.0",
