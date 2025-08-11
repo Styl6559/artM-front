@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, DollarSign, Users, Package, Star, ShoppingCart, 
   Calendar, Award,
-  ArrowUp, ArrowDown, Minus
 } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
@@ -193,30 +192,46 @@ const AdminAnalytics: React.FC = () => {
       };
     });
 
-    // Process customer analytics
-    const customerMap = new Map();
+    // Process customer analytics - track spending by userId from non-pending orders
+    const customerSpendingMap = new Map();
+    
+    console.log('Orders data for debugging:', ordersArray.slice(0, 2)); // Debug first 2 orders
+    
     ordersArray.forEach((order: any) => {
-      const customerId = order.userId || order.userEmail;
-      if (customerId) {
-        if (!customerMap.has(customerId)) {
-          customerMap.set(customerId, {
-            name: order.userName || order.userEmail?.split('@')[0] || 'Customer',
-            email: order.userEmail || `customer${customerId}@example.com`,
+      const customerId = order.userId || order.user?._id || order.user;
+      console.log('Processing order:', { customerId, status: order.status, totalAmount: order.totalAmount }); // Debug
+      
+      // Only count spending from non-pending orders
+      if (customerId && order.status !== 'pending') {
+        if (!customerSpendingMap.has(customerId)) {
+          customerSpendingMap.set(customerId, {
+            userId: customerId,
             totalSpent: 0,
             orderCount: 0
           });
         }
-        const customer = customerMap.get(customerId);
+        const customer = customerSpendingMap.get(customerId);
         customer.totalSpent += order.totalAmount || 0;
         customer.orderCount += 1;
       }
     });
 
-    const topCustomers = Array.from(customerMap.values())
+    console.log('Customer spending map:', Array.from(customerSpendingMap.entries())); // Debug
+
+    // Convert to array and sort by total spent, then take top 5
+    const topCustomersBySpending = Array.from(customerSpendingMap.values())
       .sort((a: any, b: any) => b.totalSpent - a.totalSpent)
       .slice(0, 5);
 
-    const uniqueCustomers = customerMap.size;
+    // Create top customers array with user info (we'll use userId as display for now)
+    const topCustomers = topCustomersBySpending.map((customer: any) => ({
+      name: `Customer ${customer.userId.slice(-6)}`, // Show last 6 chars of userId
+      email: 'customer@rangleela.com', // Placeholder email
+      totalSpent: customer.totalSpent,
+      orderCount: customer.orderCount
+    }));
+
+    const uniqueCustomers = customerSpendingMap.size;
     const newCustomersThisMonth = new Set(
       thisMonthOrders.map((order: any) => order.userId || order.userEmail)
     ).size;
@@ -309,7 +324,7 @@ const AdminAnalytics: React.FC = () => {
       ? totalRevenue / ordersArray.length 
       : 0;
     
-    const returningCustomers = Array.from(customerMap.values())
+    const returningCustomers = Array.from(customerSpendingMap.values())
       .filter((customer: any) => customer.orderCount > 1).length;
     
     const returnCustomerRate = uniqueCustomers > 0 
