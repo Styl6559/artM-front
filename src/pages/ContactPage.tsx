@@ -257,7 +257,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <div className="text-lg font-semibold text-gray-800 font-serif">Address</div>
-                    <div className="text-gray-600 font-serif">Connaught Place, New Delhi, India</div>
+                    <div className="text-gray-600 font-serif">Awaz Vikas, Kashipur, Uttarakhand</div>
                   </div>
                 </div>
                 {/* Social Media Icons */}
@@ -450,14 +450,14 @@ const ContactPage: React.FC = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6 font-serif">Visit Our Gallery</h2>
             <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.674994343309!2d77.21802931508236!3d28.631006982421!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd0683329da9%3A0x1b2b1b1b1b1b1b1b!2sConnaught%20Place%2C%20New%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1640000000000!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13762.5!2d79.0193!3d29.2183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09addbd0ec5c5%3A0x1b5b5b5b5b5b5b5b!2sKashipur%2C%20Uttarakhand!5e0!3m2!1sen!2sin!4v1640000000000!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Location - Connaught Place, New Delhi"
+                title="Location - Awaz Vikas Kashipur, Udham Singh Nagar Uttarakhand"
               />
             </div>
             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -472,17 +472,17 @@ const ContactPage: React.FC = () => {
               <div className="text-center bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-xl border border-blue-200">
                 <h3 className="font-semibold text-gray-800 mb-3 font-serif">Parking</h3>
                 <p className="text-gray-600 text-sm font-light leading-relaxed">
-                  Paid parking available<br />
-                  Metro parking nearby<br />
-                  Auto/taxi stand at entrance
+                  Free parking available<br />
+                  Street parking nearby<br />
+                  Easy access by car
                 </p>
               </div>
               <div className="text-center bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
                 <h3 className="font-semibold text-gray-800 mb-3 font-serif">Public Transit</h3>
                 <p className="text-gray-600 text-sm font-light leading-relaxed">
-                  Metro: Rajiv Chowk Station<br />
-                  Bus: Multiple routes available<br />
-                  2 min walk from metro exit
+                  Bus: Local routes available<br />
+                  Auto/taxi readily available<br />
+                  Near city center
                 </p>
               </div>
             </div>
