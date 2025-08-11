@@ -1,0 +1,11 @@
+Contact: mailto:rangleela0506@gmail.com
+Expires: 2025-12-31T23:59:59.000Z
+Preferred-Languages: en, hi
+Canonical: https://rangleela.com/.well-known/security.txt
+Policy: https://rangleela.com/privacy-policy
+
+# This is a legitimate e-commerce website
+# We sell paintings, apparel, and accessories
+# All payment processing is handled by Razorpay (secure payment gateway)
+# We use Google OAuth for authentication (standard practice)
+# No malware, adware, or unwanted software is present
