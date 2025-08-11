@@ -181,7 +181,7 @@ const PrivacyPolicyPage: React.FC = () => {
             <div className="space-y-2 text-gray-600">
               <p><strong>Email:</strong> rangleela0506@gmail.com</p>
               <p><strong>Phone:</strong> +91 70177 34431</p>
-              <p><strong>Address:</strong> Connaught Place, New Delhi, India</p>
+              <p><strong>Address:</strong> Awaz Vikas, Kashipur, Uttarakhand</p>
             </div>
           </section>
         </div>
