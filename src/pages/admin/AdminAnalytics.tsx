@@ -484,7 +484,7 @@ const AdminAnalytics: React.FC = () => {
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Monthly Users</p>
+                <p className="text-sm font-medium text-gray-600">New Monthly Users</p>
                 <p className="text-2xl font-bold text-gray-900">{analytics.customers.totalCustomers}</p>
               </div>
               <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-full p-3">
@@ -586,25 +586,6 @@ const AdminAnalytics: React.FC = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Category Performance */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
-          <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-            <Package className="w-5 h-5 mr-2 text-indigo-600" />
-            Category Performance
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {analytics.orders.categoryDistribution.map((category, index) => (
-              <div key={index} className="text-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl">
-                <h4 className="font-bold text-gray-900 mb-2">{category.category}</h4>
-                <p className="text-2xl font-bold text-purple-600 mb-1">{category.count}</p>
-                <p className="text-sm text-gray-600 mb-2">Orders</p>
-                <p className="text-lg font-semibold text-green-600">{formatCurrency(category.value)}</p>
-                <p className="text-xs text-gray-500">Revenue</p>
-              </div>
-            ))}
           </div>
         </div>
       </div>
