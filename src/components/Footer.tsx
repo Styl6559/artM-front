@@ -168,9 +168,9 @@ const Footer: React.FC = () => {
                 <Phone className="w-5 h-5 text-blue-400" />
                 <span className="text-slate-300 text-sm font-serif">+91 70177 34431</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <MapPin className="w-5 h-5 text-orange-400" />
-                <span className="text-slate-300 text-sm font-serif">Connaught Place, New Delhi, India</span>
+                            <div className="flex items-center gap-3 mb-3">
+                <MapPin className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                <span className="text-slate-300 text-sm font-serif">Awaz Vikas, Kashipur, Uttarakhand</span>
               </div>
             </div>
             
