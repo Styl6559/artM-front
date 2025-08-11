@@ -36,6 +36,20 @@
     <meta name="msapplication-TileColor" content="#10b981" />
     <meta name="msapplication-TileImage" content="/src/assets/round.png" />
     
+    <!-- Performance & Security -->
+    <meta name="referrer" content="origin-when-cross-origin" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- Geo Location -->
+    <meta name="geo.country" content="IN" />
+    <meta name="geo.region" content="India" />
+    
+    <!-- Business Information -->
+    <meta name="rating" content="general" />
+    <meta name="distribution" content="global" />
+    <meta name="revisit-after" content="7 days" />
+    
     <!-- Canonical URL -->
     <link rel="canonical" href="https://rangleela.com" />
     
@@ -45,16 +59,50 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "RangLeela",
+      "alternateName": "Rang Leela",
       "description": "Unique paintings, apparel, and accessories from talented Indian creators",
       "url": "https://rangleela.com",
       "logo": "/src/assets/round.png",
+      "foundingDate": "2025",
+      "foundingLocation": "India",
       "sameAs": [
         "https://www.facebook.com/profile.php?id=61578559577048"
       ],
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "Customer Service",
-        "availableLanguage": ["English", "Hindi"]
+        "availableLanguage": ["English", "Hindi"],
+        "areaServed": "IN"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "RangLeela Products",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Paintings",
+              "category": "Art & Collectibles"
+            }
+          },
+          {
+            "@type": "Offer", 
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Apparel",
+              "category": "Clothing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product", 
+              "name": "Accessories",
+              "category": "Fashion Accessories"
+            }
+          }
+        ]
       }
     }
     </script>
