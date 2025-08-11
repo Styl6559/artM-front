@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, DollarSign, Users, Package, Star, ShoppingCart, 
-  Calendar, Award, Target, BarChart3, PieChart as PieChartIcon,
+  Calendar, Award,
   ArrowUp, ArrowDown, Minus
 } from 'lucide-react';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Area, AreaChart
-} from 'recharts';
 import Button from '../../components/ui/Button';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import { adminAPI } from '../../lib/adminApi';
@@ -69,11 +65,10 @@ const AdminAnalytics: React.FC = () => {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [timeRange, setTimeRange] = useState('30d');
 
   useEffect(() => {
     fetchAnalytics();
-  }, [timeRange]);
+  }, []);
 
   const fetchAnalytics = async () => {
     try {
@@ -114,6 +109,7 @@ const AdminAnalytics: React.FC = () => {
 
     // Calculate date ranges
     const now = new Date();
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     const endLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
@@ -129,16 +125,34 @@ const AdminAnalytics: React.FC = () => {
       order.status === 'completed' || order.status === 'delivered'
     );
 
-    // Calculate revenue
-    const totalRevenue = completedOrders.reduce((sum: number, order: any) => 
+    // Calculate monthly orders (past 30 days, excluding pending)
+    const monthlyOrders = ordersArray.filter((order: any) => {
+      const orderDate = new Date(order.createdAt);
+      return orderDate >= thirtyDaysAgo && order.status !== 'pending';
+    });
+    const monthlyOrdersThisMonth = thisMonthOrders.filter((order: any) => 
+      order.status !== 'pending'
+    ).length;
+
+    // Calculate revenue (excluding pending orders)
+    const totalRevenue = ordersArray
+      .filter((order: any) => order.status !== 'pending')
+      .reduce((sum: number, order: any) => sum + (order.totalAmount || 0), 0);
+    
+    // Monthly revenue (past 30 days based on createdAt, excluding pending)
+    const monthlyRevenueAmount = ordersArray.filter((order: any) => {
+      const orderDate = new Date(order.createdAt);
+      return orderDate >= thirtyDaysAgo && order.status !== 'pending';
+    }).reduce((sum: number, order: any) => 
       sum + (order.totalAmount || 0), 0
     );
-    const thisMonthRevenue = thisMonthOrders.reduce((sum: number, order: any) => 
-      sum + (order.totalAmount || 0), 0
-    );
-    const lastMonthRevenue = lastMonthOrders.reduce((sum: number, order: any) => 
-      sum + (order.totalAmount || 0), 0
-    );
+    
+    const thisMonthRevenue = thisMonthOrders
+      .filter((order: any) => order.status !== 'pending')
+      .reduce((sum: number, order: any) => sum + (order.totalAmount || 0), 0);
+    const lastMonthRevenue = lastMonthOrders
+      .filter((order: any) => order.status !== 'pending')
+      .reduce((sum: number, order: any) => sum + (order.totalAmount || 0), 0);
     const revenueGrowth = lastMonthRevenue > 0 
       ? ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 
       : 0;
@@ -209,7 +223,8 @@ const AdminAnalytics: React.FC = () => {
     const productRatingsMap = new Map();
 
     ordersArray.forEach((order: any) => {
-      if (order.items) {
+      // Only count products from non-pending orders
+      if (order.status !== 'pending' && order.items) {
         order.items.forEach((item: any) => {
           const productId = item.productId || item.product?._id;
           if (productId) {
@@ -236,7 +251,7 @@ const AdminAnalytics: React.FC = () => {
           name: product.name,
           category: product.category,
           rating: product.rating,
-          reviewCount: product.reviewCount || 0
+          reviewCount: product.reviews || 0
         });
       }
     });
@@ -301,7 +316,7 @@ const AdminAnalytics: React.FC = () => {
     return {
       revenue: {
         total: totalRevenue,
-        thisMonth: thisMonthRevenue,
+        thisMonth: monthlyRevenueAmount, // Past 30 days revenue
         lastMonth: lastMonthRevenue,
         growth: revenueGrowth,
         dailyRevenue,
@@ -320,8 +335,8 @@ const AdminAnalytics: React.FC = () => {
         outOfStock: productsArray.filter((p: any) => p.stock === 0).length
       },
       orders: {
-        total: ordersArray.length,
-        thisMonth: thisMonthOrders.length,
+        total: monthlyOrders.length, // Monthly orders (past 30 days, non-pending)
+        thisMonth: monthlyOrdersThisMonth, // This month orders (non-pending)
         pending: ordersArray.filter((o: any) => o.status === 'pending').length,
         completed: completedOrders.length,
         cancelled: ordersArray.filter((o: any) => o.status === 'cancelled').length,
@@ -338,20 +353,6 @@ const AdminAnalytics: React.FC = () => {
   };
 
   const formatCurrency = (amount: number) => `₹${amount.toLocaleString()}`;
-  
-  const getGrowthIcon = (growth: number) => {
-    if (growth > 0) return <ArrowUp className="w-4 h-4 text-green-500" />;
-    if (growth < 0) return <ArrowDown className="w-4 h-4 text-red-500" />;
-    return <Minus className="w-4 h-4 text-gray-500" />;
-  };
-
-  const getGrowthColor = (growth: number) => {
-    if (growth > 0) return 'text-green-600';
-    if (growth < 0) return 'text-red-600';
-    return 'text-gray-600';
-  };
-
-  const COLORS = ['#8b5cf6', '#f59e0b', '#10b981', '#ef4444', '#3b82f6'];
 
   if (isLoading) {
     return (
@@ -369,7 +370,7 @@ const AdminAnalytics: React.FC = () => {
       <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
           <div className="bg-red-100/80 backdrop-blur-sm rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-xl">
-            <BarChart3 className="w-8 h-8 text-red-600" />
+            <TrendingUp className="w-8 h-8 text-red-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-4 font-serif">Error Loading Analytics</h2>
           <p className="text-red-600 mb-6">{error}</p>
@@ -419,12 +420,6 @@ const AdminAnalytics: React.FC = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Total Revenue</p>
                 <p className="text-2xl font-bold text-gray-900">{formatCurrency(analytics.revenue.total)}</p>
-                <div className="flex items-center mt-2">
-                  {getGrowthIcon(analytics.revenue.growth)}
-                  <span className={`text-sm font-medium ml-1 ${getGrowthColor(analytics.revenue.growth)}`}>
-                    {Math.abs(analytics.revenue.growth)}%
-                  </span>
-                </div>
               </div>
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 rounded-full p-3">
                 <DollarSign className="w-6 h-6 text-white" />
@@ -437,12 +432,6 @@ const AdminAnalytics: React.FC = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">This Month</p>
                 <p className="text-2xl font-bold text-gray-900">{formatCurrency(analytics.revenue.thisMonth)}</p>
-                <div className="flex items-center mt-2">
-                  <ArrowUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium text-green-600 ml-1">
-                    {((analytics.revenue.thisMonth - analytics.revenue.lastMonth) / analytics.revenue.lastMonth * 100).toFixed(1)}%
-                  </span>
-                </div>
               </div>
               <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full p-3">
                 <Calendar className="w-6 h-6 text-white" />
@@ -453,14 +442,8 @@ const AdminAnalytics: React.FC = () => {
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Orders</p>
+                <p className="text-sm font-medium text-gray-600">Monthly Orders</p>
                 <p className="text-2xl font-bold text-gray-900">{analytics.orders.total}</p>
-                <div className="flex items-center mt-2">
-                  <ArrowUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium text-green-600 ml-1">
-                    {analytics.orders.thisMonth} this month
-                  </span>
-                </div>
               </div>
               <div className="bg-gradient-to-r from-purple-500 to-violet-500 rounded-full p-3">
                 <ShoppingCart className="w-6 h-6 text-white" />
@@ -484,41 +467,6 @@ const AdminAnalytics: React.FC = () => {
                 <Users className="w-6 h-6 text-white" />
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Revenue Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-              <BarChart3 className="w-5 h-5 mr-2 text-purple-600" />
-              Daily Revenue (Last 30 Days)
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={analytics.revenue.dailyRevenue}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip formatter={(value) => [formatCurrency(Number(value)), 'Revenue']} />
-                <Area type="monotone" dataKey="amount" stroke="#8b5cf6" fill="#8b5cf6" fillOpacity={0.3} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-              <BarChart3 className="w-5 h-5 mr-2 text-indigo-600" />
-              Monthly Revenue Trend
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={analytics.revenue.monthlyRevenue}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip formatter={(value) => [formatCurrency(Number(value)), 'Revenue']} />
-                <Bar dataKey="amount" fill="#6366f1" />
-              </BarChart>
-            </ResponsiveContainer>
           </div>
         </div>
 
@@ -617,64 +565,10 @@ const AdminAnalytics: React.FC = () => {
           </div>
         </div>
 
-        {/* Order Analytics */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-              <PieChartIcon className="w-5 h-5 mr-2 text-blue-600" />
-              Order Status Distribution
-            </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={analytics.orders.statusDistribution}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, value }) => `${name}: ${value}`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="count"
-                >
-                  {analytics.orders.statusDistribution.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-              <Target className="w-5 h-5 mr-2 text-purple-600" />
-              Key Performance Metrics
-            </h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">Conversion Rate</span>
-                <span className="font-bold text-purple-600">{analytics.performance.conversionRate}%</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">Avg. Order Value</span>
-                <span className="font-bold text-green-600">{formatCurrency(analytics.performance.averageOrderValue)}</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">Customer LTV</span>
-                <span className="font-bold text-blue-600">{formatCurrency(analytics.performance.customerLifetimeValue)}</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                <span className="font-medium text-gray-700">Return Customer Rate</span>
-                <span className="font-bold text-orange-600">{analytics.performance.returnCustomerRate}%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Category Performance */}
         <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
           <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center">
-            <BarChart3 className="w-5 h-5 mr-2 text-indigo-600" />
+            <Package className="w-5 h-5 mr-2 text-indigo-600" />
             Category Performance
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
