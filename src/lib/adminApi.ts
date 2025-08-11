@@ -221,6 +221,23 @@ export const adminAPI = {
       };
     }
   },
+
+  // Users
+  getUsers: async () => {
+    try {
+      const response = await adminApi.get('/users');
+      return {
+        success: true,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('Error fetching users:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to fetch users'
+      };
+    }
+  },
 };
 
 export default adminApi;
