@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { Toaster, toast } from 'react-hot-toast';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
@@ -75,11 +76,12 @@ function App() {
   }
 
   return (
-    <Router>
-      <AuthProvider>
-        <ProductProvider>
-          <CartProvider>
-            <SearchProvider>
+    <HelmetProvider>
+      <Router>
+        <AuthProvider>
+          <ProductProvider>
+            <CartProvider>
+              <SearchProvider>
               <div className="App min-h-screen flex flex-col">
                 <Routes>
                   {/* Auth Routes */}
@@ -198,6 +200,7 @@ function App() {
         </ProductProvider>
       </AuthProvider>
     </Router>
+    </HelmetProvider>
   );
 }
 
