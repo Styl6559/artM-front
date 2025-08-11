@@ -103,9 +103,12 @@ const AdminAnalytics: React.FC = () => {
   };
 
   const processRealData = async (data: any): Promise<AnalyticsData> => {
-    const { orders, products } = data;
+    const { orders, products, analytics } = data;
     const ordersArray = orders?.orders || [];
     const productsArray = products?.products || [];
+    
+    // Get monthly users from analytics data
+    const monthlyUsers = analytics?.overview?.monthlyUsers || 0;
 
     // Calculate date ranges
     const now = new Date();
@@ -324,7 +327,7 @@ const AdminAnalytics: React.FC = () => {
       },
       customers: {
         topCustomers,
-        totalCustomers: uniqueCustomers,
+        totalCustomers: monthlyUsers, // Use monthly users from backend (past 30 days)
         newThisMonth: newCustomersThisMonth,
         returningCustomers
       },
@@ -454,14 +457,8 @@ const AdminAnalytics: React.FC = () => {
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Customers</p>
+                <p className="text-sm font-medium text-gray-600">Monthly Users</p>
                 <p className="text-2xl font-bold text-gray-900">{analytics.customers.totalCustomers}</p>
-                <div className="flex items-center mt-2">
-                  <ArrowUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium text-green-600 ml-1">
-                    {analytics.customers.newThisMonth} new
-                  </span>
-                </div>
               </div>
               <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-full p-3">
                 <Users className="w-6 h-6 text-white" />
