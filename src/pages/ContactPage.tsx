@@ -7,6 +7,7 @@ import { contactAPI } from '../lib/api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import { useSearchParams } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const ContactPage: React.FC = () => {
   const { isAuthenticated, user } = useAuth();
@@ -201,6 +202,12 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50">
+      <SEO 
+        title="Contact RangLeela - Get in Touch | Customer Support & Inquiries"
+        description="Contact RangLeela for customer support, product inquiries, or artist collaboration. We're here to help with your art and fashion needs. Get in touch today!"
+        keywords="contact RangLeela, customer support, product inquiry, artist collaboration, help center, customer service"
+        url="https://rangleela.com/contact"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-8">
