@@ -75,10 +75,11 @@ const AdminAnalytics: React.FC = () => {
       setError(null);
       
       // Fetch real data from multiple endpoints
-      const [analyticsResponse, ordersResponse, productsResponse] = await Promise.all([
+      const [analyticsResponse, ordersResponse, productsResponse, usersResponse] = await Promise.all([
         adminAPI.getAnalytics(),
         adminAPI.getOrders(),
-        adminAPI.getProducts()
+        adminAPI.getProducts(),
+        adminAPI.getUsers()
       ]);
       
       if (analyticsResponse.success || ordersResponse.success || productsResponse.success) {
@@ -86,7 +87,8 @@ const AdminAnalytics: React.FC = () => {
         const processedAnalytics = await processRealData({
           analytics: analyticsResponse.success ? analyticsResponse.data : null,
           orders: ordersResponse.success ? ordersResponse.data : { orders: [] },
-          products: productsResponse.success ? productsResponse.data : { products: [] }
+          products: productsResponse.success ? productsResponse.data : { products: [] },
+          users: usersResponse.success ? usersResponse.data : []
         });
         
         setAnalytics(processedAnalytics);
@@ -102,9 +104,10 @@ const AdminAnalytics: React.FC = () => {
   };
 
   const processRealData = async (data: any): Promise<AnalyticsData> => {
-    const { orders, products, analytics } = data;
+    const { orders, products, analytics, users } = data;
     const ordersArray = orders?.orders || [];
     const productsArray = products?.products || [];
+    const usersArray = users || [];
     
     // Get monthly users from analytics data
     const monthlyUsers = analytics?.overview?.monthlyUsers || 0;
@@ -223,13 +226,22 @@ const AdminAnalytics: React.FC = () => {
       .sort((a: any, b: any) => b.totalSpent - a.totalSpent)
       .slice(0, 5);
 
-    // Create top customers array with user info (we'll use userId as display for now)
-    const topCustomers = topCustomersBySpending.map((customer: any) => ({
-      name: `Customer ${customer.userId.slice(-6)}`, // Show last 6 chars of userId
-      email: 'customer@rangleela.com', // Placeholder email
-      totalSpent: customer.totalSpent,
-      orderCount: customer.orderCount
-    }));
+    // Create user lookup map for faster user data access
+    const userLookup = new Map();
+    usersArray.forEach((user: any) => {
+      userLookup.set(user._id, user);
+    });
+
+    // Create top customers array with real user info
+    const topCustomers = topCustomersBySpending.map((customer: any) => {
+      const user = userLookup.get(customer.userId);
+      return {
+        name: user?.name || `Customer ${customer.userId.slice(-6)}`,
+        email: user?.email || 'customer@rangleela.com',
+        totalSpent: customer.totalSpent,
+        orderCount: customer.orderCount
+      };
+    });
 
     const uniqueCustomers = customerSpendingMap.size;
     const newCustomersThisMonth = new Set(
