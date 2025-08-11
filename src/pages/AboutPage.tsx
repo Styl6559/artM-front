@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Palette, Heart, Users, Award, ArrowRight, ArrowLeft, Target } from 'lucide-react';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 
 const AboutPage: React.FC = () => {
   const scrollToTop = () => {
@@ -10,6 +11,12 @@ const AboutPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50">
+      <SEO 
+        title="About RangLeela - Our Story & Mission | Indian Art & Fashion Platform"
+        description="Learn about RangLeela's journey to support Indian artists and creators. Discover how we connect talented painters, fashion designers, and artisans with art lovers worldwide."
+        keywords="about RangLeela, Indian artists, art platform, creative community, handmade art, artistic mission, support artists"
+        url="https://rangleela.com/about"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <div className="mb-8">
