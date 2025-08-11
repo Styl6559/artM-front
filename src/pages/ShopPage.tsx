@@ -6,6 +6,7 @@ import { useDebounce } from '../hooks/useDebounce';
 import ProductCard from '../components/ProductCard';
 import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 
 const ShopPage: React.FC = () => {
   const { category } = useParams<{ category: 'painting' | 'apparel' | 'accessories' }>();
@@ -146,6 +147,25 @@ const ShopPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100">
+      <SEO 
+        title={category 
+          ? `${category.charAt(0).toUpperCase() + category.slice(1)} Collection - RangLeela`
+          : "Shop All Products - RangLeela | Paintings, Apparel & Accessories"
+        }
+        description={category 
+          ? `Explore our exclusive ${category} collection. ${
+              category === 'painting' ? 'Unique handcrafted paintings by Indian artists.' :
+              category === 'apparel' ? 'Artistic clothing and fashion apparel.' :
+              'Beautiful accessories to complement your style.'
+            }`
+          : "Shop unique paintings, artistic apparel, and accessories from talented Indian creators. Discover authentic handcrafted items where creativity meets style."
+        }
+        keywords={category 
+          ? `${category}, ${category} online, buy ${category}, Indian ${category}, handmade ${category}, RangLeela`
+          : "paintings, apparel, accessories, art, fashion, handmade, Indian art, creative clothing"
+        }
+        url={`https://rangleela.com/shop${category ? `/${category}` : ''}`}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
