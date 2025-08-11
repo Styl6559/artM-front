@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Security scanners
+User-agent: Nikto
+Disallow: /
+
+User-agent: sqlmap
+Disallow: /
+
+User-agent: w3af
+Disallow: /
+
+# Sitemap
+Sitemap: https://rangleela.com/sitemap.xml
+
+# Prevent access to sensitive areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+Disallow: /server/
