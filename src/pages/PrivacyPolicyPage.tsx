@@ -12,7 +12,7 @@ const PrivacyPolicyPage: React.FC = () => {
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
           <p className="text-xl text-gray-600">
-            Last updated: December 2024
+            Last updated: August 8, 2025
           </p>
         </div>
 
@@ -179,9 +179,9 @@ const PrivacyPolicyPage: React.FC = () => {
               If you have any questions about this Privacy Policy or our data practices, please contact us:
             </p>
             <div className="space-y-2 text-gray-600">
-              <p><strong>Email:</strong> privacy@artisanaura.com</p>
-              <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-              <p><strong>Address:</strong> 123 Art Street, Creative District, New York, NY 10001</p>
+              <p><strong>Email:</strong> rangleela0506@gmail.com</p>
+              <p><strong>Phone:</strong> +91 70177 34431</p>
+              <p><strong>Address:</strong> Awaz Vikas, Kashipur, Uttarakhand</p>
             </div>
           </section>
         </div>

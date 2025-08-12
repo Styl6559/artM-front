@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Palette, 
   Mail, 
   Phone, 
   MapPin, 
@@ -11,6 +10,7 @@ import {
   Youtube,
   ArrowUp
 } from 'lucide-react';
+import logo from '../assets/round.png';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -34,8 +34,8 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl shadow-xl">
-                <Palette className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg">
+                <img src={logo} alt="Rangleela Logo" className="w-full h-full object-cover" />
               </div>
               <span className="text-2xl font-bold font-serif">Rangleela</span>
             </div>
@@ -137,6 +137,15 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link 
+                  to="/refund-policy" 
+                  onClick={scrollToTop}
+                  className="text-slate-300 hover:text-white transition-colors text-sm font-serif inline-block"
+                >
+                  Refund Policy
+                </Link>
+              </li>
+              <li>
+                <Link 
                   to="/contact" 
                   onClick={scrollToTop}
                   className="text-slate-300 hover:text-white transition-colors text-sm font-serif inline-block"
@@ -159,14 +168,14 @@ const Footer: React.FC = () => {
                 <Phone className="w-5 h-5 text-blue-400" />
                 <span className="text-slate-300 text-sm font-serif">+91 70177 34431</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <MapPin className="w-5 h-5 text-orange-400" />
-                <span className="text-slate-300 text-sm font-serif">Connaught Place, New Delhi, India</span>
+                            <div className="flex items-center gap-3 mb-3">
+                <MapPin className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                <span className="text-slate-300 text-sm font-serif">Awaz Vikas, Kashipur, Uttarakhand</span>
               </div>
             </div>
             
             {/* Newsletter */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <h4 className="text-sm font-semibold mb-3 font-serif text-white">Newsletter</h4>
               <div className="flex">
                 <input
@@ -178,7 +187,7 @@ const Footer: React.FC = () => {
                   Subscribe
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

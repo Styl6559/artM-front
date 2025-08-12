@@ -50,6 +50,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
+  discountPrice?: number;
   image: string;
   category: 'painting' | 'apparel' | 'accessories';
   size?: string;

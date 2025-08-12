@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Search, Filter, Upload, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, Filter, Upload, ToggleLeft, ToggleRight, Package } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import { adminAPI } from '../../lib/adminApi';
@@ -18,6 +18,7 @@ const AdminProducts: React.FC = () => {
     name: '',
     description: '',
     price: '',
+    discountPrice: '',
     category: 'painting',
     size: '',
     material: '',
@@ -33,14 +34,11 @@ const AdminProducts: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
-      console.log('Fetching products...');
       
       const response = await adminAPI.getProducts();
-      console.log('Products response:', response);
       
       if (response.success) {
         setProducts(response.data.products || []);
-        console.log('Products loaded:', response.data.products?.length || 0);
       } else {
         console.error('Failed to fetch products:', response.message);
         toast.error(response.message || 'Failed to fetch products');
@@ -57,12 +55,14 @@ const AdminProducts: React.FC = () => {
     e.preventDefault();
     
     if (isSubmitting) return;
-    
-    console.log('Submitting form...', formData);
-    
-    // Validation
+
+    // Frontend validation with character limits
     if (!formData.name.trim()) {
       toast.error('Product name is required');
+      return;
+    }
+    if (formData.name.trim().length > 100) {
+      toast.error('Product name must be less than 100 characters');
       return;
     }
     
@@ -70,9 +70,35 @@ const AdminProducts: React.FC = () => {
       toast.error('Product description is required');
       return;
     }
+    if (formData.description.trim().length > 2000) {
+      toast.error('Product description must be less than 2000 characters');
+      return;
+    }
     
     if (!formData.price || parseFloat(formData.price) <= 0) {
       toast.error('Valid price is required');
+      return;
+    }
+    
+    // Validate discount price if provided
+    if (formData.discountPrice && parseFloat(formData.discountPrice) <= 0) {
+      toast.error('Valid discount price is required');
+      return;
+    }
+    
+    // Ensure discount price is less than original price
+    if (formData.discountPrice && parseFloat(formData.discountPrice) >= parseFloat(formData.price)) {
+      toast.error('Discount price must be less than original price');
+      return;
+    }
+    
+    if (formData.size.trim().length > 50) {
+      toast.error('Size must be less than 50 characters');
+      return;
+    }
+    
+    if (formData.material.trim().length > 100) {
+      toast.error('Material must be less than 100 characters');
       return;
     }
     
@@ -92,6 +118,9 @@ const AdminProducts: React.FC = () => {
       formDataToSend.append('name', formData.name.trim());
       formDataToSend.append('description', formData.description.trim());
       formDataToSend.append('price', formData.price);
+      if (formData.discountPrice) {
+        formDataToSend.append('discountPrice', formData.discountPrice);
+      }
       formDataToSend.append('category', formData.category);
 
       formDataToSend.append('size', formData.size.trim());
@@ -104,7 +133,6 @@ const AdminProducts: React.FC = () => {
         formDataToSend.append('image', formData.image);
       }
 
-      console.log('Sending FormData...');
 
       let response;
       if (editingProduct) {
@@ -113,7 +141,6 @@ const AdminProducts: React.FC = () => {
         response = await adminAPI.createProduct(formDataToSend);
       }
 
-      console.log('Submit response:', response);
 
       if (response.success) {
         toast.success(editingProduct ? 'Product updated successfully!' : 'Product created successfully!');
@@ -172,6 +199,7 @@ const AdminProducts: React.FC = () => {
       name: '',
       description: '',
       price: '',
+      discountPrice: '',
       category: 'painting',
 
       size: '',
@@ -188,6 +216,7 @@ const AdminProducts: React.FC = () => {
       name: product.name || '',
       description: product.description || '',
       price: product.price?.toString() || '',
+      discountPrice: product.discountPrice?.toString() || '',
       category: product.category || 'painting',
 
       size: product.size || '',
@@ -206,30 +235,55 @@ const AdminProducts: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
+      <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <h1 className="text-2xl font-bold text-gray-900 font-serif">Product Management</h1>
-            <Button
-              onClick={() => {
-                resetForm();
-                setEditingProduct(null);
-                setShowAddModal(true);
-              }}
-              className="bg-gradient-to-r from-purple-600 to-orange-500"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Product
-            </Button>
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center">
+              <div className="relative">
+                <div className="absolute inset-0 bg-white/20 rounded-xl blur-md"></div>
+                <div className="relative bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4 border border-white/30">
+                  <Plus className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-white font-serif">Product Management</h1>
+                <p className="text-white/90 font-light">Add, edit, or remove products</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <div className="absolute inset-0 bg-white/20 rounded-xl blur-sm"></div>
+                <Button
+                  onClick={() => window.history.back()}
+                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg"
+                >
+                  ← Back
+                </Button>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-0 bg-white/20 rounded-xl blur-sm"></div>
+                <Button
+                  onClick={() => {
+                    resetForm();
+                    setEditingProduct(null);
+                    setShowAddModal(true);
+                  }}
+                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Add Product
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-6 mb-6">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -239,16 +293,16 @@ const AdminProducts: React.FC = () => {
                   placeholder="Search products..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/70 backdrop-blur-sm"
                 />
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-gray-400" />
+              <Filter className="w-5 h-5 text-gray-500" />
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/70 backdrop-blur-sm"
               >
                 <option value="">All Categories</option>
                 <option value="painting">Paintings</option>
@@ -262,42 +316,64 @@ const AdminProducts: React.FC = () => {
         {/* Products Grid */}
         {isLoading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading products...</p>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full blur-sm opacity-30"></div>
+              <div className="relative animate-spin rounded-full h-12 w-12 border-4 border-purple-500 border-t-transparent mx-auto"></div>
+            </div>
+            <p className="mt-4 text-gray-700 font-serif">Loading products...</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-              <div key={product._id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div key={product._id} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 overflow-hidden hover:shadow-xl transition-all duration-300 group">
                 <div className="relative">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = 'https://via.placeholder.com/300x200?text=No+Image';
                     }}
                   />
                   {!product.inStock && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                      <span className="text-white font-semibold bg-red-600 px-3 py-1 rounded-full text-sm">
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                      <span className="text-white font-semibold bg-red-500/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm border border-white/20">
                         Out of Stock
                       </span>
                     </div>
                   )}
                   {product.featured && (
-                    <div className="absolute top-2 left-2">
-                      <span className="bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
                         Featured
                       </span>
                     </div>
                   )}
+                  {product.discountPrice && product.discountPrice < product.price && (
+                    <div className="absolute top-3 right-3">
+                      <span className="bg-gradient-to-r from-red-500 to-red-600 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
+                        {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">{product.name}</h3>
-
-                  <p className="text-lg font-bold text-purple-600 mb-3">₹{product.price}</p>
+                <div className="p-5">
+                  <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 font-serif">{product.name}</h3>
+                  
+                  {/* Price Display with Discount */}
+                  <div className="mb-3">
+                    {product.discountPrice && product.discountPrice < product.price ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                          ₹{product.discountPrice}
+                        </span>
+                        <span className="text-sm text-gray-500 line-through">₹{product.price}</span>
+                      </div>
+                    ) : (
+                      <p className="text-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">₹{product.price}</p>
+                    )}
+                  </div>
                   
                   {/* Stock Toggle */}
                   <div className="flex items-center justify-between mb-3">
@@ -316,21 +392,19 @@ const AdminProducts: React.FC = () => {
                     </button>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <Button
                       onClick={() => openEditModal(product)}
-                      variant="outline"
                       size="sm"
-                      className="flex-1"
+                      className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white border-0"
                     >
                       <Edit className="w-4 h-4 mr-1" />
                       Edit
                     </Button>
                     <Button
                       onClick={() => handleDelete(product._id)}
-                      variant="outline"
                       size="sm"
-                      className="text-red-600 border-red-600 hover:bg-red-50"
+                      className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-0"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -343,18 +417,21 @@ const AdminProducts: React.FC = () => {
 
         {filteredProducts.length === 0 && !isLoading && (
           <div className="text-center py-12">
-            <div className="text-gray-500 mb-4">No products found</div>
-            <Button
-              onClick={() => {
-                resetForm();
-                setEditingProduct(null);
-                setShowAddModal(true);
-              }}
-              className="bg-gradient-to-r from-purple-600 to-orange-500"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add First Product
-            </Button>
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-8 max-w-md mx-auto border border-white/20">
+              <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <div className="text-gray-600 mb-4 font-serif">No products found</div>
+              <Button
+                onClick={() => {
+                  resetForm();
+                  setEditingProduct(null);
+                  setShowAddModal(true);
+                }}
+                className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add First Product
+              </Button>
+            </div>
           </div>
         )}
 
@@ -371,6 +448,7 @@ const AdminProducts: React.FC = () => {
                   <Input
                     label="Product Name"
                     minLength={2}
+                    maxLength={100}
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     required
@@ -378,13 +456,14 @@ const AdminProducts: React.FC = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Description
+                      Description <span className="text-sm text-gray-500">({formData.description.length}/2000)</span>
                     </label>
                     <textarea
                       value={formData.description}
                       onChange={(e) => setFormData({...formData, description: e.target.value})}
                       rows={3}
                       minLength={10}
+                      maxLength={2000}
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       required
                     />
@@ -392,7 +471,7 @@ const AdminProducts: React.FC = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <Input
-                      label="Price (₹)"
+                      label="Original Price (₹)"
                       type="number"
                       step="1"
                       min="0"
@@ -401,6 +480,18 @@ const AdminProducts: React.FC = () => {
                       required
                     />
 
+                    <Input
+                      label="Discount Price (₹) - Optional"
+                      type="number"
+                      step="1"
+                      min="0"
+                      value={formData.discountPrice}
+                      onChange={(e) => setFormData({...formData, discountPrice: e.target.value.replace(/\D/, '')})}
+                      placeholder="Leave empty for no discount"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Category
@@ -418,17 +509,32 @@ const AdminProducts: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* Display discount calculation */}
+                  {formData.price && formData.discountPrice && parseFloat(formData.discountPrice) < parseFloat(formData.price) && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                      <div className="text-sm text-green-800">
+                        <span className="font-semibold">Discount: </span>
+                        {Math.round(((parseFloat(formData.price) - parseFloat(formData.discountPrice)) / parseFloat(formData.price)) * 100)}% off
+                      </div>
+                      <div className="text-sm text-green-600">
+                        Customers save: ₹{parseFloat(formData.price) - parseFloat(formData.discountPrice)}
+                      </div>
+                    </div>
+                  )}
+
 
 
                   <div className="grid grid-cols-2 gap-4">
                     <Input
                       label="Size (optional)"
+                      maxLength={50}
                       value={formData.size}
                       onChange={(e) => setFormData({...formData, size: e.target.value})}
                     />
 
                     <Input
                       label="Material (optional)"
+                      maxLength={100}
                       value={formData.material}
                       onChange={(e) => setFormData({...formData, material: e.target.value})}
                     />
