@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Package, Clock, CheckCircle, Truck, Star, ShoppingCart, Eye, Sparkles } from 'lucide-react';
 import { paymentAPI } from '../lib/api';
 import { useCart } from '../context/CartContext';
-import { useProducts } from '../context/ProductContext';
 import Button from '../components/ui/Button';
 import toast from 'react-hot-toast';
 
@@ -14,7 +13,6 @@ const MyOrdersPage: React.FC = () => {
   const [ratings, setRatings] = useState<{[key: string]: number}>({});
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const { addToCart } = useCart();
-  const { getProductById } = useProducts();
 
   useEffect(() => {
     fetchOrders();
@@ -79,20 +77,9 @@ const MyOrdersPage: React.FC = () => {
     }
   };
 
-  const handleAddToCart = (orderProduct: any) => {
-    const productId = orderProduct._id || orderProduct.id;
-    const currentProduct = getProductById(productId);
-    if (!currentProduct) {
-      toast.error('Product no longer available');
-      return;
-    }
-    
-    if (!currentProduct.inStock) {
-      toast.error('Product is currently out of stock');
-      return;
-    }
-    
-    addToCart(currentProduct);
+  const handleAddToCart = (product: any) => {
+    addToCart(product);
+    toast.success('Added to cart!');
   };
 
   if (isLoading) {
@@ -118,7 +105,7 @@ const MyOrdersPage: React.FC = () => {
         <div className="mb-8">
           <Link to="/dashboard" className="inline-flex items-center text-emerald-600 hover:text-emerald-700 mb-4 group">
             <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
-            <span className="font-medium">Back to Gallery</span>
+            <span className="font-medium">Back to Dashboard</span>
           </Link>
           <div className="text-center">
             <div className="relative inline-block mb-4">
@@ -132,9 +119,9 @@ const MyOrdersPage: React.FC = () => {
           </div>
         </div>
 
-        {orders.filter(order => order.status !== 'pending').length > 0 ? (
+        {orders.length > 0 ? (
           <div className="space-y-6">
-            {orders.filter(order => order.status !== 'pending').map((order) => (
+            {orders.map((order) => (
               <div key={order._id} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300">
                 {/* Order Header */}
                 <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-4 border-b border-gray-200/50">

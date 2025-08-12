@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, CreditCard, AlertTriangle, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -16,26 +16,13 @@ declare global {
 }
 
 const CartPage: React.FC = () => {
-  const { items, updateQuantity, removeFromCart, clearCart, validateCartItems } = useCart();
+  const { items, updateQuantity, removeFromCart, getTotalPrice, clearCart, validateCartItems } = useCart();
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [showClearCartConfirmation, setShowClearCartConfirmation] = useState(false);
   const [validItems, setValidItems] = useState(items);
   const [removedItems, setRemovedItems] = useState<string[]>([]);
-  const [isLoadingPincode, setIsLoadingPincode] = useState(false);
-  const [autoFilledFromPincode, setAutoFilledFromPincode] = useState({ city: false, state: false });
-  const [validationErrors, setValidationErrors] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    pincode: ''
-  });
   const [shippingAddress, setShippingAddress] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -47,190 +34,48 @@ const CartPage: React.FC = () => {
     country: 'India'
   });
 
-  // Live validation function
-  const validateField = (name: string, value: string) => {
-    let error = '';
-    
-    switch (name) {
-      case 'name':
-        if (!value.trim()) {
-          error = 'Name is required';
-        } else if (value.trim().length < 2) {
-          error = 'Name must be at least 2 characters';
-        } else if (value.trim().length > 30) {
-          error = 'Name must not exceed 30 characters';
-        }
-        break;
-      case 'email':
-        if (!value.trim()) {
-          error = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(value)) {
-          error = 'Please enter a valid email address';
-        } else if (value.length > 50) {
-          error = 'Email must not exceed 50 characters';
-        }
-        break;
-      case 'phone':
-        if (!value.trim()) {
-          error = 'Phone number is required';
-        } else if (!/^\d{10}$/.test(value.trim())) {
-          error = 'Phone number must be 10 digits';
-        }
-        break;
-      case 'address':
-        if (!value.trim()) {
-          error = 'Address is required';
-        } else if (value.trim().length < 10) {
-          error = 'Address must be at least 10 characters';
-        } else if (value.trim().length > 100) {
-          error = 'Address must not exceed 100 characters';
-        }
-        break;
-      case 'city':
-        if (!value.trim()) {
-          error = 'City is required';
-        } else if (value.trim().length < 2) {
-          error = 'City must be at least 2 characters';
-        } else if (value.trim().length > 50) {
-          error = 'City must not exceed 50 characters';
-        }
-        break;
-      case 'state':
-        if (!value.trim()) {
-          error = 'State is required';
-        } else if (value.trim().length < 2) {
-          error = 'State must be at least 2 characters';
-        } else if (value.trim().length > 50) {
-          error = 'State must not exceed 50 characters';
-        }
-        break;
-      case 'pincode':
-        if (!value.trim()) {
-          error = 'Pincode is required';
-        } else if (!/^\d{6}$/.test(value.trim())) {
-          error = 'Pincode must be 6 digits';
-        }
-        break;
-    }
-    
-    setValidationErrors(prev => ({ ...prev, [name]: error }));
-    return error === '';
-  };
-
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setShippingAddress(prev => ({ ...prev, [name]: value }));
-
-    // Live validation
-    validateField(name, value);
-
-    // Reset auto-fill indicators if user manually changes city or state
-    if (name === 'city' || name === 'state') {
-      setAutoFilledFromPincode(prev => ({ ...prev, [name]: false }));
-    }
-
-    // If pincode is changed and is 6 digits, fetch city and state
-    if (name === 'pincode') {
-      if (value.length === 6 && /^\d{6}$/.test(value)) {
-        fetchLocationFromPincode(value);
-      } else {
-        // Clear auto-fill indicators if pincode is not 6 digits
-        setAutoFilledFromPincode({ city: false, state: false });
-      }
-    }
-  };
-
-  const fetchLocationFromPincode = async (pincode: string) => {
-    setIsLoadingPincode(true);
-    try {
-      const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
-      const data = await response.json();
-      
-      if (data && data[0] && data[0].Status === 'Success' && data[0].PostOffice && data[0].PostOffice.length > 0) {
-        const postOffice = data[0].PostOffice[0];
-        const newCity = postOffice.District || '';
-        const newState = postOffice.State || '';
-        
-        // Only update if we got valid data
-        if (newCity && newState) {
-          setShippingAddress(prev => ({
-            ...prev,
-            city: newCity,
-            state: newState
-          }));
-          
-          setAutoFilledFromPincode({
-            city: true,
-            state: true
-          });
-          
-          // Removed success toast - silent auto-fill
-        } else {
-          toast.error('Incomplete location data for this pincode');
-        }
-      } else {
-        toast.error('Invalid pincode or location not found');
-      }
-    } catch (error) {
-      console.error('Error fetching pincode data:', error);
-      toast.error('Failed to fetch location data. Please enter manually.');
-    } finally {
-      setIsLoadingPincode(false);
-    }
   };
 
   const validateAddress = () => {
     const { name, email, phone, address, city, state, pincode } = shippingAddress;
-    
-    // Validate all fields
-    const nameValid = validateField('name', name);
-    const emailValid = validateField('email', email);
-    const phoneValid = validateField('phone', phone);
-    const addressValid = validateField('address', address);
-    const cityValid = validateField('city', city);
-    const stateValid = validateField('state', state);
-    const pincodeValid = validateField('pincode', pincode);
 
-    // Return true only if all fields are valid
-    const allValid = nameValid && emailValid && phoneValid && addressValid && cityValid && stateValid && pincodeValid;
-    
-    return allValid;
-  };
-
-  // Handle clear cart with confirmation
-  const handleClearCart = () => {
-    setShowClearCartConfirmation(true);
-  };
-
-  const confirmClearCart = () => {
-    clearCart();
-    setShowClearCartConfirmation(false);
-  };
-
-  // Check if form has any errors or empty required fields
-  const hasFormErrors = () => {
-    const { name, email, phone, address, city, state, pincode } = shippingAddress;
-    
-    // Check if any validation errors exist
-    const hasErrors = Object.values(validationErrors).some(error => error !== '');
-    
-    // Check if any required fields are empty
-    const hasEmptyFields = !name.trim() || !email.trim() || !phone.trim() || 
-                          !address.trim() || !city.trim() || !state.trim() || !pincode.trim();
-    
-    return hasErrors || hasEmptyFields;
+    if (!name.trim() || name.trim().length < 2) {
+      toast.error('Name must be at least 2 characters');
+      return false;
+    }
+    if (!email.trim() || !/\S+@\S+\.\S+/.test(email)) {
+      toast.error('Valid Email is required');
+      return false;
+    }
+    if (!phone.trim() || !/^\d{10,}$/.test(phone.trim())) {
+      toast.error('Phone number must be at least 10 digits');
+      return false;
+    }
+    if (!address.trim() || address.trim().length < 10) {
+      toast.error('Address must be at least 10 characters');
+      return false;
+    }
+    if (!city.trim() || city.trim().length < 2) {
+      toast.error('City must be at least 2 characters');
+      return false;
+    }
+    if (!state.trim() || state.trim().length < 2) {
+      toast.error('State must be at least 2 characters');
+      return false;
+    }
+    if (!pincode.trim() || !/^\d{6,}$/.test(pincode.trim())) {
+      toast.error('Pincode must be at least 6 digits');
+      return false;
+    }
+    return true;
   };
 
   const handleProceedToCheckout = async () => {
     if (items.length === 0) {
       toast.error('Your cart is empty');
-      return;
-    }
-
-    // Check if user is authenticated
-    if (!user) {
-      toast.error('Please login to proceed with checkout');
-      setTimeout(() => navigate('/login'), 1500); // Redirect after 1.5 seconds
       return;
     }
 
@@ -272,13 +117,6 @@ const CartPage: React.FC = () => {
   };
 
   const handleCheckout = async () => {
-    // Check if user is authenticated
-    if (!user) {
-      toast.error('Please login to proceed with checkout');
-      setTimeout(() => navigate('/login'), 1500); // Redirect after 1.5 seconds
-      return;
-    }
-
     const itemsToCheckout = validItems.length > 0 ? validItems : items.filter(item => item.product.inStock);
     
     if (itemsToCheckout.length === 0) {
@@ -344,12 +182,10 @@ const CartPage: React.FC = () => {
               });
 
               if (verifyResponse.success) {
-                toast.success('Payment successful! Redirecting to your orders...');
+                toast.success('Payment successful! Order placed.');
                 // Remove only checked out items from cart
                 itemsToCheckout.forEach(item => removeFromCart(item.product.id));
                 setShowCheckout(false);
-                // Redirect to my-orders page after successful payment
-                setTimeout(() => navigate('/my-orders'), 1500);
               } else {
                 toast.error('Payment verification failed');
               }
@@ -372,7 +208,7 @@ const CartPage: React.FC = () => {
         toast.error('Failed to load payment gateway');
       };
 
-    } catch (error: any) {
+    } catch (error) {
       console.error('Checkout error:', error);
       const backendMsg = error?.response?.data?.message;
       if (backendMsg) {
@@ -412,23 +248,7 @@ const CartPage: React.FC = () => {
     );
   }
 
-  const subtotal = items.reduce((total, item) => {
-    // Use discount price if available and valid, otherwise use regular price
-    const effectivePrice = item.product.discountPrice && item.product.discountPrice < item.product.price 
-      ? item.product.discountPrice 
-      : item.product.price;
-    return total + (effectivePrice * item.quantity);
-  }, 0);
-  
-  // Calculate total savings from discounts
-  const totalSavings = items.reduce((savings, item) => {
-    if (item.product.discountPrice && item.product.discountPrice < item.product.price) {
-      const itemSavings = (item.product.price - item.product.discountPrice) * item.quantity;
-      return savings + itemSavings;
-    }
-    return savings;
-  }, 0);
-  
+  const subtotal = items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   const gst = subtotal * 0.18;
   const total = subtotal + gst;
 
@@ -450,24 +270,6 @@ const CartPage: React.FC = () => {
             </p>
           </div>
         </div>
-
-        {/* Login Prompt for Non-authenticated Users */}
-        {!user && items.length > 0 && (
-          <div className="mb-6">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="text-blue-600 text-sm">
-                    <strong>� Ready to Checkout?</strong> Login to save your cart and complete your purchase!
-                  </div>
-                </div>
-                <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium text-sm border border-blue-300 px-3 py-1 rounded-lg hover:bg-blue-50 transition-colors">
-                  Login to Checkout
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
 
         {!showCheckout ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -492,28 +294,12 @@ const CartPage: React.FC = () => {
                       <h3 className="text-lg font-semibold text-gray-800 mb-1 font-serif">
                         {item.product.name}
                       </h3>
-                      <p className="text-xs font-medium text-emerald-600 uppercase tracking-wide mb-2 capitalize">
-                        {item.product.category}
-                      </p>
                       {item.selectedSize && (
                         <p className="text-sm text-gray-600 mb-2">Size: {item.selectedSize}</p>
                       )}
-                      <div className="flex items-center gap-2">
-                        {item.product.discountPrice && item.product.discountPrice < item.product.price ? (
-                          <>
-                            <p className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-                              ₹{item.product.discountPrice}
-                            </p>
-                            <p className="text-sm text-gray-500 line-through">
-                              ₹{item.product.price}
-                            </p>
-                          </>
-                        ) : (
-                          <p className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-                            ₹{item.product.price}
-                          </p>
-                        )}
-                      </div>
+                      <p className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                        ₹{item.product.price}
+                      </p>
                       
                       {!item.product.inStock && (
                         <div className="mt-2 flex items-center">
@@ -554,11 +340,7 @@ const CartPage: React.FC = () => {
                   <div className="mt-4 pt-4 border-t border-gray-200/50">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-600">Subtotal:</span>
-                      <span className="font-semibold text-lg text-gray-800">
-                        ₹{((item.product.discountPrice && item.product.discountPrice < item.product.price 
-                          ? item.product.discountPrice 
-                          : item.product.price) * item.quantity).toFixed(2)}
-                      </span>
+                      <span className="font-semibold text-lg text-gray-800">₹{(item.product.price * item.quantity).toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
@@ -568,7 +350,7 @@ const CartPage: React.FC = () => {
               <div className="flex justify-end">
                 <Button
                   variant="outline"
-                  onClick={handleClearCart}
+                  onClick={clearCart}
                   className="text-red-600 border-red-300 hover:bg-red-50"
                 >
                   Clear Cart
@@ -586,19 +368,17 @@ const CartPage: React.FC = () => {
                     <span className="text-gray-600">Subtotal ({items.length} items):</span>
                     <span className="font-semibold text-gray-800">₹{subtotal.toFixed(2)}</span>
                   </div>
-                  {totalSavings > 0 && (
-                    <div className="flex justify-between text-emerald-600 bg-emerald-50 px-3 py-2 rounded-lg">
-                      <span className="font-medium">🎉 You Saved:</span>
-                      <span className="font-bold">₹{totalSavings.toFixed(2)}</span>
-                    </div>
-                  )}
                   <div className="flex justify-between">
                     <span className="text-gray-600">Shipping:</span>
                     <span className="font-semibold text-emerald-600">Free</span>
                   </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">GST (18%):</span>
+                    <span className="font-semibold text-gray-800">₹{gst.toFixed(2)}</span>
+                  </div>
                   <div className="border-t border-gray-200/50 pt-4">
                     <div className="flex justify-between">
-                      <span className="text-lg font-semibold text-gray-800">Total (incl. all taxes):</span>
+                      <span className="text-lg font-semibold text-gray-800">Total:</span>
                       <span className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
                         ₹{total.toFixed(2)}
                       </span>
@@ -611,7 +391,7 @@ const CartPage: React.FC = () => {
                   className="w-full bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hover:from-emerald-600 hover:via-blue-600 hover:to-purple-600 mb-4 py-3 shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   <CreditCard className="w-5 h-5 mr-2" />
-                  Checkout
+                  Proceed to Checkout
                 </Button>
 
                 <div className="text-center">
@@ -638,70 +418,39 @@ const CartPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <Input
-                    label="Full Name"
-                    name="name"
-                    maxLength={30}
-                    value={shippingAddress.name}
-                    onChange={handleAddressChange}
-                    required
-                  />
-                  {validationErrors.name && (
-                    <p className="text-red-600 text-xs mt-1">{validationErrors.name}</p>
-                  )}
-                </div>
-                <div>
-                  <Input
-                    label="Email"
-                    type="email"
-                    name="email"
-                    maxLength={50}
-                    value={shippingAddress.email}
-                    onChange={handleAddressChange}
-                    required
-                  />
-                  {validationErrors.email && (
-                    <p className="text-red-600 text-xs mt-1">{validationErrors.email}</p>
-                  )}
-                </div>
-                <div>
-                  <Input
-                    label="Phone"
-                    name="phone"
-                    maxLength={10}
-                    value={shippingAddress.phone}
-                    onChange={handleAddressChange}
-                    required
-                  />
-                  {validationErrors.phone && (
-                    <p className="text-red-600 text-xs mt-1">{validationErrors.phone}</p>
-                  )}
-                </div>
-                <div className="relative">
-                  <Input
-                    label="Pincode"
-                    name="pincode"
-                    maxLength={6}
-                    value={shippingAddress.pincode}
-                    onChange={handleAddressChange}
-                    required
-                    placeholder="Enter 6-digit pincode"
-                  />
-                  {isLoadingPincode && (
-                    <div className="absolute right-3 top-9 text-blue-500">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-500"></div>
-                    </div>
-                  )}
-                  {validationErrors.pincode && (
-                    <p className="text-red-600 text-xs mt-1">{validationErrors.pincode}</p>
-                  )}
-                  {!validationErrors.pincode && !isLoadingPincode && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      City and state will be auto-filled based on pincode
-                    </p>
-                  )}
-                </div>
+                <Input
+                  label="Full Name"
+                  name="name"
+                  maxLength={30}
+                  value={shippingAddress.name}
+                  onChange={handleAddressChange}
+                  required
+                />
+                <Input
+                  label="Email"
+                  type="email"
+                  name="email"
+                  maxLength={50}
+                  value={shippingAddress.email}
+                  onChange={handleAddressChange}
+                  required
+                />
+                <Input
+                  label="Phone"
+                  name="phone"
+                  maxLength={15}
+                  value={shippingAddress.phone}
+                  onChange={handleAddressChange}
+                  required
+                />
+                <Input
+                  label="Pincode"
+                  name="pincode"
+                  maxLength={10}
+                  value={shippingAddress.pincode}
+                  onChange={handleAddressChange}
+                  required
+                />
               </div>
 
               <div className="mb-6">
@@ -713,50 +462,25 @@ const CartPage: React.FC = () => {
                   onChange={handleAddressChange}
                   required
                 />
-                {validationErrors.address && (
-                  <p className="text-red-600 text-xs mt-1">{validationErrors.address}</p>
-                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <Input
-                    label="City"
-                    name="city"
-                    maxLength={50}
-                    value={shippingAddress.city}
-                    onChange={handleAddressChange}
-                    required
-                  />
-                  {validationErrors.city && (
-                    <p className="text-red-600 text-xs mt-1">{validationErrors.city}</p>
-                  )}
-                  {autoFilledFromPincode.city && !validationErrors.city && (
-                    <p className="text-blue-600 text-xs mt-1 flex items-center">
-                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-1"></span>
-                      Auto-filled from pincode
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <Input
-                    label="State"
-                    name="state"
-                    maxLength={50}
-                    value={shippingAddress.state}
-                    onChange={handleAddressChange}
-                    required
-                  />
-                  {validationErrors.state && (
-                    <p className="text-red-600 text-xs mt-1">{validationErrors.state}</p>
-                  )}
-                  {autoFilledFromPincode.state && !validationErrors.state && (
-                    <p className="text-blue-600 text-xs mt-1 flex items-center">
-                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-1"></span>
-                      Auto-filled from pincode
-                    </p>
-                  )}
-                </div>
+                <Input
+                  label="City"
+                  name="city"
+                  maxLength={50}
+                  value={shippingAddress.city}
+                  onChange={handleAddressChange}
+                  required
+                />
+                <Input
+                  label="State"
+                  name="state"
+                  maxLength={50}
+                  value={shippingAddress.state}
+                  onChange={handleAddressChange}
+                  required
+                />
               </div>
 
               {/* Order Summary */}
@@ -767,79 +491,24 @@ const CartPage: React.FC = () => {
                     <span className="text-gray-700">Subtotal:</span>
                     <span className="font-semibold text-gray-800">₹{subtotal.toFixed(2)}</span>
                   </div>
-                  {totalSavings > 0 && (
-                    <div className="flex justify-between text-emerald-600 bg-emerald-100 px-3 py-2 rounded-lg">
-                      <span className="font-medium">🎉 You Saved:</span>
-                      <span className="font-bold">₹{totalSavings.toFixed(2)}</span>
-                    </div>
-                  )}
+                  <div className="flex justify-between">
+                    <span className="text-gray-700">GST (18%):</span>
+                    <span className="font-semibold text-gray-800">₹{gst.toFixed(2)}</span>
+                  </div>
                   <div className="flex justify-between font-semibold text-lg border-t pt-3">
-                    <span className="text-gray-800">Total (incl. all taxes):</span>
+                    <span className="text-gray-800">Total:</span>
                     <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">₹{total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
 
-              {/* Policy Note */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                <p className="text-sm text-blue-700 text-center">
-                  By proceeding with checkout, you agree to our{' '}
-                  <Link to="/terms" className="text-blue-600 hover:text-blue-800 underline font-medium">
-                    Terms of Service
-                  </Link>{' '}
-                  and{' '}
-                  <Link to="/refund-policy" className="text-blue-600 hover:text-blue-800 underline font-medium">
-                    Refund Policy
-                  </Link>
-                  . Read our 7-day return policy for peace of mind.
-                </p>
-              </div>
-
               <Button
                 onClick={handleCheckout}
                 isLoading={isProcessing}
-                disabled={isProcessing || hasFormErrors()}
-                className="w-full bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hover:from-emerald-600 hover:via-blue-600 hover:to-purple-600 py-3 shadow-xl hover:shadow-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hover:from-emerald-600 hover:via-blue-600 hover:to-purple-600 py-3 shadow-xl hover:shadow-2xl transition-all duration-300"
               >
-                {isProcessing ? 'Processing...' : 'Proceed with Razorpay'}
+                {isProcessing ? 'Processing...' : 'Pay with Razorpay'}
               </Button>
-              
-              {hasFormErrors() && !isProcessing && (
-                <p className="text-red-600 text-xs mt-2 text-center">
-                  Please complete all required fields correctly to proceed
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Clear Cart Confirmation Modal */}
-        {showClearCartConfirmation && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-white/95 backdrop-blur-sm rounded-xl max-w-md w-full p-6 shadow-2xl">
-              <div className="text-center mb-6">
-                <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Clear Cart</h3>
-                <p className="text-gray-600">
-                  Are you sure you want to remove all items from your cart? This action cannot be undone.
-                </p>
-              </div>
-              
-              <div className="flex gap-4">
-                <Button
-                  onClick={() => setShowClearCartConfirmation(false)}
-                  variant="outline"
-                  className="flex-1"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={confirmClearCart}
-                  className="flex-1 bg-red-500 hover:bg-red-600 text-white"
-                >
-                  Clear Cart
-                </Button>
-              </div>
             </div>
           </div>
         )}

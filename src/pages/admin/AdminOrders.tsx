@@ -71,39 +71,16 @@ const AdminOrders: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 shadow-xl">
+      <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center">
-              <div className="relative">
-                <div className="absolute inset-0 bg-white/20 rounded-xl blur-md"></div>
-                <div className="relative bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4 border border-white/30">
-                  <Package className="w-8 h-8 text-white" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-white font-serif">Order Management</h1>
-                <p className="text-white/90 font-light">Track and manage customer orders</p>
-              </div>
-            </div>
+          <div className="flex justify-between items-center h-16">
+            <h1 className="text-2xl font-bold text-gray-900 font-serif">Order Management</h1>
             <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-white/20 rounded-xl blur-sm"></div>
-                <Button
-                  onClick={() => window.history.back()}
-                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg"
-                >
-                  ← Back
-                </Button>
-              </div>
-              <div className="relative bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/30 shadow-lg">
-                <div className="absolute inset-0 bg-white/20 rounded-lg blur-sm"></div>
-                <span className="relative text-white font-medium">
-                  {orders.filter(o => o.status === 'paid' || o.status === 'processing').length} pending orders
-                </span>
-              </div>
+              <span className="text-sm text-gray-600">
+                {orders.filter(o => o.status === 'paid' || o.status === 'processing').length} pending orders
+              </span>
             </div>
           </div>
         </div>
@@ -114,13 +91,13 @@ const AdminOrders: React.FC = () => {
           {/* Orders List */}
           <div className="lg:col-span-2">
             {/* Filters */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-4 mb-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
               <div className="flex items-center gap-4">
-                <Filter className="w-5 h-5 text-gray-500" />
+                <Filter className="w-5 h-5 text-gray-400" />
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/70 backdrop-blur-sm"
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 >
                   <option value="">All Status</option>
                   <option value="pending">Pending</option>

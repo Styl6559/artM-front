@@ -1,14 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, Trash2, ArrowLeft, Sparkles } from 'lucide-react';
+import { Heart, ShoppingCart, Trash2, ArrowLeft, Star, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
-import ProductCard from '../components/ProductCard';
 import Button from '../components/ui/Button';
 
 const WishlistPage: React.FC = () => {
-  const { wishlist, addToCart } = useCart();
-  const { user } = useAuth();
+  const { wishlist, removeFromWishlist, addToCart } = useCart();
+
+  const handleAddToCart = (productId: string) => {
+    const wishlistItem = wishlist.find(item => item.product.id === productId);
+    if (wishlistItem) {
+      addToCart(wishlistItem.product);
+      removeFromWishlist(productId);
+    }
+  };
 
   if (wishlist.length === 0) {
     return (
@@ -61,11 +66,77 @@ const WishlistPage: React.FC = () => {
         {/* Wishlist Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {wishlist.map((item) => (
-            <div key={item.product.id} className="relative">
-              <ProductCard 
-                product={item.product}
-                onViewDetails={() => {}} 
-              />
+              <div
+                key={item.product.id}
+                className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 overflow-hidden group hover:shadow-2xl transition-all duration-300"
+              >
+              <div className="relative aspect-square overflow-hidden">
+                <img
+                  src={item.product.image}
+                  alt={item.product.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute top-2 right-2">
+                  <button
+                    onClick={() => removeFromWishlist(item.product.id)}
+                    className="p-2 bg-red-500/90 backdrop-blur-sm text-white rounded-full hover:bg-red-600 transition-colors shadow-xl hover:shadow-2xl transform hover:scale-110 duration-300"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                {!item.product.inStock && (
+                  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center">
+                    <span className="text-white font-semibold bg-red-600/90 backdrop-blur-sm px-2 py-1 rounded text-xs shadow-xl">
+                      Out of Stock
+                    </span>
+                  </div>
+                )}
+              </div>
+              
+              <div className="p-3">
+                <div className="mb-1">
+                  <span className="text-xs font-medium text-emerald-600 uppercase tracking-wide bg-emerald-100 px-2 py-1 rounded-full">
+                    {item.product.category}
+                  </span>
+                </div>
+                
+                <h3 className="font-medium text-gray-800 mb-1 text-sm line-clamp-2 font-serif">{item.product.name}</h3>
+                
+                {/* Rating */}
+                <div className="flex items-center gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-3 h-3 ${
+                        i < Math.floor(item.product.rating || 0)
+                          ? 'text-yellow-400 fill-current'
+                          : 'text-gray-300'
+                      }`}
+                    />
+                  ))}
+                  <span className="text-xs text-gray-500 ml-1 font-light">
+                    ({item.product.reviews || 0})
+                  </span>
+                </div>
+                
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">₹{item.product.price}</span>
+                  <span className="text-xs text-gray-500 font-light">
+                    {new Date(item.addedAt).toLocaleDateString()}
+                  </span>
+                </div>
+                
+                <Button
+                  onClick={() => handleAddToCart(item.product.id)}
+                  disabled={!item.product.inStock}
+                  className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 shadow-lg hover:shadow-xl transition-all duration-300"
+                  size="sm"
+                >
+                  <ShoppingCart className="w-3 h-3 mr-1" />
+                  Add to Cart
+                </Button>
+              </div>
             </div>
           ))}
         </div>
@@ -80,7 +151,7 @@ const WishlistPage: React.FC = () => {
                 wishlist.forEach(item => {
                   if (item.product.inStock) {
                     addToCart(item.product);
-                    // Removed removeFromWishlist - items stay in wishlist
+                    removeFromWishlist(item.product.id);
                   }
                 });
               }}

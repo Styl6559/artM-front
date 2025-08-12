@@ -37,14 +37,10 @@ const LoginPage: React.FC = () => {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email';
-    } else if (formData.email.length > 50) {
-      newErrors.email = 'Email must be less than 50 characters';
     }
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length > 32) {
-      newErrors.password = 'Password must be less than 32 characters';
     }
 
     setErrors(newErrors);
@@ -119,7 +115,6 @@ const LoginPage: React.FC = () => {
               label="Email Address"
               type="email"
               name="email"
-              maxLength={50}
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
@@ -133,7 +128,6 @@ const LoginPage: React.FC = () => {
                 label="Password"
                 type={showPassword ? 'text' : 'password'}
                 name="password"
-                maxLength={32}
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="Enter your password"

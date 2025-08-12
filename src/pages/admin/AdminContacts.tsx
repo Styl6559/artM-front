@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Filter, Eye, MessageSquare, CheckCircle, Send, Download } from 'lucide-react';
+import { Search, Filter, Eye, MessageSquare, CheckCircle } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { adminAPI } from '../../lib/adminApi';
 import toast from 'react-hot-toast';
@@ -10,33 +10,6 @@ const AdminContacts: React.FC = () => {
   const [selectedContact, setSelectedContact] = useState<any>(null);
   const [statusFilter, setStatusFilter] = useState('');
   const [subjectFilter, setSubjectFilter] = useState('');
-  const [reply, setReply] = useState('');
-  const [isSendingReply, setIsSendingReply] = useState(false);
-
-  const downloadImage = async (imageUrl: string, filename: string) => {
-    try {
-      // For Cloudinary images, we need to fetch and create blob
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename || 'image.jpg';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Clean up the blob URL
-      window.URL.revokeObjectURL(url);
-      toast.success('Image downloaded successfully!');
-    } catch (error) {
-      console.error('Download failed:', error);
-      // Fallback: open in new tab if download fails
-      window.open(imageUrl, '_blank');
-      toast.error('Download failed, opened in new tab instead');
-    }
-  };
 
   useEffect(() => {
     fetchContacts();
@@ -56,13 +29,6 @@ const AdminContacts: React.FC = () => {
   };
 
   const updateContactStatus = async (id: string, status: string) => {
-    // Add confirmation for resolve action
-    if (status === 'resolved') {
-      if (!confirm('Are you sure you want to resolve and delete this contact? This action cannot be undone.')) {
-        return;
-      }
-    }
-
     try {
       const response = await adminAPI.updateContact(id, { status });
       if (response.success) {
@@ -74,6 +40,7 @@ const AdminContacts: React.FC = () => {
             setSelectedContact(null);
           }
         } else {
+          toast.success('Contact updated!');
           fetchContacts();
           if (selectedContact?._id === id) {
             setSelectedContact(response.data.contact);
@@ -102,39 +69,16 @@ const AdminContacts: React.FC = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 shadow-xl">
+      <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center">
-              <div className="relative">
-                <div className="absolute inset-0 bg-white/20 rounded-xl blur-md"></div>
-                <div className="relative bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4 border border-white/30">
-                  <MessageSquare className="w-8 h-8 text-white" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-white font-serif">Contact Management</h1>
-                <p className="text-white/90 font-light">Manage customer inquiries</p>
-              </div>
-            </div>
+          <div className="flex justify-between items-center h-16">
+            <h1 className="text-2xl font-bold text-gray-900 font-serif">Contact Management</h1>
             <div className="flex items-center space-x-4">
-              <div className="relative">
-                <div className="absolute inset-0 bg-white/20 rounded-xl blur-sm"></div>
-                <Button
-                  onClick={() => window.history.back()}
-                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg"
-                >
-                  ← Back
-                </Button>
-              </div>
-              <div className="relative bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/30 shadow-lg">
-                <div className="absolute inset-0 bg-white/20 rounded-lg blur-sm"></div>
-                <span className="relative text-white font-medium">
-                  {contacts.filter(c => c.status === 'new').length} new messages
-                </span>
-              </div>
+              <span className="text-sm text-gray-600">
+                {contacts.filter(c => c.status === 'new').length} new messages
+              </span>
             </div>
           </div>
         </div>
@@ -145,14 +89,14 @@ const AdminContacts: React.FC = () => {
           {/* Contacts List */}
           <div className="lg:col-span-2">
             {/* Filters */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-white/20 p-4 mb-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-5 h-5 text-gray-500" />
+                  <Filter className="w-5 h-5 text-gray-400" />
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/70 backdrop-blur-sm"
+                    className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     <option value="">All Status</option>
                     <option value="new">New</option>
@@ -164,14 +108,13 @@ const AdminContacts: React.FC = () => {
                   <select
                     value={subjectFilter}
                     onChange={(e) => setSubjectFilter(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white/70 backdrop-blur-sm"
+                    className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     <option value="">All Subjects</option>
                     <option value="general">General</option>
                     <option value="order">Order</option>
                     <option value="shipping">Shipping</option>
                     <option value="return">Return</option>
-                    <option value="custom">Custom Design</option>
                     <option value="artist">Artist</option>
                     <option value="wholesale">Wholesale</option>
                     <option value="press">Press</option>
@@ -198,12 +141,6 @@ const AdminContacts: React.FC = () => {
                         <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(contact.status)}`}>
                           {contact.status}
                         </span>
-                        {contact.images && contact.images.length > 0 && (
-                          <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 flex items-center gap-1">
-                            <Eye className="w-3 h-3" />
-                            {contact.images.length} images
-                          </span>
-                        )}
                       </div>
                       <p className="text-sm text-gray-600 mb-1">{contact.email}</p>
                       <p className="text-sm text-gray-500 mb-2">Subject: {contact.subject}</p>
@@ -247,46 +184,6 @@ const AdminContacts: React.FC = () => {
                     <label className="text-sm font-medium text-gray-700">Message</label>
                     <p className="text-gray-900 bg-gray-50 p-3 rounded-lg">{selectedContact.message}</p>
                   </div>
-
-                  {/* Images Section */}
-                  {selectedContact.images && selectedContact.images.length > 0 && (
-                    <div>
-                      <label className="text-sm font-medium text-gray-700 mb-2 block">
-                        Attached Images ({selectedContact.images.length})
-                      </label>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {selectedContact.images.map((image: any, index: number) => (
-                          <div key={index} className="group relative">
-                            <div
-                              className="relative w-full h-32 cursor-pointer rounded-lg border-2 border-gray-300 hover:border-purple-500 transition-all duration-200 overflow-hidden bg-gray-50"
-                              onClick={() => {
-                                downloadImage(image.url, image.filename);
-                              }}
-                              onContextMenu={(e) => {
-                                e.preventDefault();
-                                downloadImage(image.url, image.filename);
-                              }}
-                              title="Click to download image"
-                            >
-                              <img
-                                src={image.url}
-                                alt={`Attachment ${index + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center">
-                                <div className="bg-white bg-opacity-90 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                                  <Download className="w-5 h-5 text-gray-700" />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="mt-1 text-xs text-gray-500 truncate" title={image.filename}>
-                              {image.filename}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                   
                   <div>
                     <label className="text-sm font-medium text-gray-700">Date</label>
@@ -303,75 +200,27 @@ const AdminContacts: React.FC = () => {
                       <option value="new">New</option>
                       <option value="read">Read</option>
                       <option value="replied">Replied</option>
+                      <option value="resolved">Resolved (Delete)</option>
                     </select>
                   </div>
 
-                  {/* Reply Section */}
-                  <div className="mt-4">
-                    <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Reply Message <span className="text-sm text-gray-500">({reply.length}/5000)</span>
-                    </label>
-                    <textarea
-                      value={reply}
-                      onChange={(e) => setReply(e.target.value)}
-                      maxLength={5000}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent min-h-[120px]"
-                      placeholder="Type your reply here..."
-                    />
-                    <div className="mt-2 space-y-2">
-                      <Button
-                        onClick={async () => {
-                          if (!reply.trim()) {
-                            toast.error('Please type a reply first');
-                            return;
-                          }
-                          if (reply.length > 5000) {
-                            toast.error('Reply must be less than 5000 characters');
-                            return;
-                          }
-                          setIsSendingReply(true);
-                          try {
-                            const response = await adminAPI.replyToContact(selectedContact._id, reply);
-                            if (response.success) {
-                              toast.success('Reply sent successfully');
-                              setReply('');
-                              // Update the contact status to replied
-                              await updateContactStatus(selectedContact._id, 'replied');
-                            } else {
-                              toast.error(response.message || 'Failed to send reply');
-                            }
-                          } catch (error) {
-                            toast.error('Failed to send reply');
-                          } finally {
-                            setIsSendingReply(false);
-                          }
-                        }}
-                        disabled={isSendingReply || !reply.trim() || reply.length > 5000}
-                        className="w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                        size="sm"
-                      >
-                        {isSendingReply ? (
-                          <span className="flex items-center justify-center">
-                            <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin mr-2" />
-                            Sending...
-                          </span>
-                        ) : (
-                          <span className="flex items-center justify-center">
-                            <Send className="w-4 h-4 mr-2" />
-                            Send Reply
-                          </span>
-                        )}
-                      </Button>
-                      
-                      <Button
-                        onClick={() => updateContactStatus(selectedContact._id, 'resolved')}
-                        className="w-full bg-green-600 hover:bg-green-700"
-                        size="sm"
-                      >
-                        <CheckCircle className="w-4 h-4 mr-1" />
-                        Resolve & Delete
-                      </Button>
-                    </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => updateContactStatus(selectedContact._id, 'replied')}
+                      className="flex-1 bg-blue-600 hover:bg-blue-700"
+                      size="sm"
+                    >
+                      <MessageSquare className="w-4 h-4 mr-1" />
+                      Mark Replied
+                    </Button>
+                    <Button
+                      onClick={() => updateContactStatus(selectedContact._id, 'resolved')}
+                      className="flex-1 bg-green-600 hover:bg-green-700"
+                      size="sm"
+                    >
+                      <CheckCircle className="w-4 h-4 mr-1" />
+                      Resolve & Delete
+                    </Button>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useProducts } from '../context/ProductContext';
@@ -14,10 +14,6 @@ const Dashboard: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
   const { wishlist, getTotalItems } = useCart();
   const { products, featuredProducts, isLoading, error } = useProducts();
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   // Memoize derived data to prevent unnecessary recalculations
   const { newArrivals, paintingProducts, apparelProducts, accessoryProducts } = useMemo(() => {
@@ -68,42 +64,45 @@ const Dashboard: React.FC = () => {
     ];
   }, [isAuthenticated, user, wishlist.length, getTotalItems]);
 
-
-  // Hero gallery images from API
-  const [heroImages, setHeroImages] = useState<any[]>([]);
-  const [heroLoading, setHeroLoading] = useState(true);
-  const [galleryIndex, setGalleryIndex] = useState(0);
-  
-  useEffect(() => {
-    const fetchHeroImages = async () => {
-      setHeroLoading(true);
-      try {
-        const res = await import('../lib/adminApi').then(m => m.adminAPI.getHeroImages());
-        if (res.success && Array.isArray(res.images)) {
-          setHeroImages(res.images);
-        } else {
-          setHeroImages([]);
-        }
-      } catch {
-        setHeroImages([]);
-      } finally {
-        setHeroLoading(false);
-      }
-    };
-    fetchHeroImages();
-  }, []);
-
-  // Gallery images (category: 'gallery') for auto-scroll carousel
-  const galleryImages = heroImages.filter(img => img.category === 'gallery');
-  
-  // Auto-scroll for gallery carousel
-  useEffect(() => {
-    if (galleryImages.length <= 1) return;
-    const interval = setInterval(() => {
-      setGalleryIndex(prev => (prev + 1) % galleryImages.length);
-    }, 4000); // Change image every 4 seconds
-    return () => clearInterval(interval);
-  }, [galleryImages.length]);
+  // Hero gallery images
+  const heroImages = [
+    {
+      url: "https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Abstract Masterpieces",
+      subtitle: "Modern art that speaks to the soul",
+      category: "painting"
+    },
+    {
+      url: "https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Contemporary Portraits",
+      subtitle: "Capturing human emotion in every stroke",
+      category: "painting"
+    },
+    {
+      url: "https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Artistic Apparel",
+      subtitle: "Wearable art for the creative spirit",
+      category: "apparel"
+    },
+    {
+      url: "https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Gallery Collection",
+      subtitle: "Curated pieces from emerging artists",
+      category: "painting"
+    },
+    {
+      url: "https://images.pexels.com/photos/1266808/pexels-photo-1266808.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Limited Editions",
+      subtitle: "Exclusive artworks in limited quantities",
+      category: "painting"
+    },
+    {
+      url: "https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=800",
+      title: "Artistic Accessories",
+      subtitle: "Complete your look with designer pieces",
+      category: "accessories"
+    }
+  ];
 
   const scrollGallery = (direction: 'left' | 'right') => {
     const gallery = document.getElementById('hero-gallery');
@@ -136,55 +135,42 @@ const Dashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section with Gallery Carousel */}
+        {/* Hero Section with Image Gallery */}
         <div className="relative mb-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 overflow-hidden">
-            {/* Gallery Carousel replacing Welcome Header */}
-            {galleryImages.length > 0 ? (
-              <div className="relative w-full h-64 md:h-80 overflow-hidden">
-                {galleryImages.map((image, idx) => (
-                  <div
-                    key={image._id || idx}
-                    className={`absolute inset-0 transition-opacity duration-1000 ${
-                      idx === galleryIndex ? 'opacity-100' : 'opacity-0'
-                    }`}
-                  >
-                    <img
-                      src={image.image}
-                      alt={image.title || 'Gallery Image'}
-                      className="w-full h-full object-cover"
-                    />
-                    {/* Simple gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10"></div>
+            {/* Welcome Header */}
+            <div className="relative bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 px-6 py-8">
+              <div className="absolute inset-0 bg-black/10"></div>
+              <div className="relative text-center">
+                <div className="mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 shadow-2xl">
+                    <Sparkles className="w-8 h-8 text-white animate-pulse" />
                   </div>
-                ))}
-                
-                {/* Dots indicator */}
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1.5">
-                  {galleryImages.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setGalleryIndex(idx)}
-                      className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
-                        idx === galleryIndex 
-                          ? 'bg-white scale-110' 
-                          : 'bg-white/50 hover:bg-white/75'
-                      }`}
-                    />
-                  ))}
                 </div>
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 font-serif leading-tight">
+                  {isAuthenticated ? (
+                    <>
+                      <span className="block text-xl md:text-2xl font-light opacity-90 mb-1">Welcome back,</span>
+                      <span className="bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">
+                        {user?.name}
+                      </span>
+                      <span className="inline-block ml-2 text-3xl">🎨</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="block">Welcome to</span>
+                      <span className="bg-gradient-to-r from-yellow-200 to-pink-200 bg-clip-text text-transparent">
+                        Rangleela
+                      </span>
+                      <span className="inline-block ml-2 text-3xl">🎨</span>
+                    </>
+                  )}
+                </h1>
+                <p className="text-lg text-white/90 font-light">
+                  Discover unique paintings, artistic apparel, and designer accessories from talented creators worldwide
+                </p>
               </div>
-            ) : heroLoading ? (
-              <div className="w-full h-64 md:h-80 bg-gray-200 animate-pulse rounded-lg"></div>
-            ) : (
-              <div className="w-full h-64 md:h-80 bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <Sparkles className="w-16 h-16 mx-auto mb-4 animate-pulse" />
-                  <h1 className="text-3xl md:text-4xl font-bold mb-2 font-serif">Welcome to Rangleela</h1>
-                  <p className="text-lg opacity-90">No gallery images uploaded yet</p>
-                </div>
-              </div>
-            )}
+            </div>
 
             {/* Scrollable Image Gallery */}
             <div className="relative p-6">
@@ -215,68 +201,55 @@ const Dashboard: React.FC = () => {
                   className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-2"
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                  {heroLoading ? (
-                    // Show 3 skeleton cards matching the gallery card size
-                    Array.from({ length: 3 }).map((_, i) => (
-                      <div key={i} className="group flex-shrink-0 w-80 relative">
-                        <div className="relative overflow-hidden rounded-lg shadow-xl transition-all duration-500">
-                          <div className="w-full h-48 bg-gray-200/60 animate-pulse rounded-lg" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/5 to-transparent rounded-lg"></div>
-                        </div>
-                      </div>
-                    ))
-                  ) : heroImages.filter(img => img.category !== 'gallery').length === 0 ? (
-                    <div className="w-full text-center py-8 text-gray-400">No collection images</div>
-                  ) : (
-                    heroImages.filter(img => img.category !== 'gallery').map((image, index) => (
-                      <Link
-                        key={image._id || index}
-                        to={image.link || `/shop/${image.category || 'painting'}`}
-                        className="group flex-shrink-0 w-80 relative"
-                      >
-                        <div className="relative overflow-hidden rounded-lg shadow-xl transition-all duration-500">
-                          <ImageWithSkeleton
-                            src={image.image}
-                            alt={image.title}
-                            className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
-                            skeletonClassName="w-full h-48"
-                          />
-                          {/* Gradient Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 group-hover:from-emerald-500/30 group-hover:to-blue-500/30 transition-all duration-500"></div>
-                          {/* Content */}
-                          <div className="absolute bottom-4 left-4 right-4 text-white">
-                            <div className="flex items-center mb-2">
-                              {image.category === 'painting' ? (
-                                <Brush className="w-4 h-4 mr-2" />
-                              ) : image.category === 'apparel' ? (
-                                <Crown className="w-4 h-4 mr-2" />
-                              ) : (
-                                <Sparkles className="w-4 h-4 mr-2" />
-                              )}
-                              <h3 className="text-lg font-bold font-serif">{image.title}</h3>
-                            </div>
-                            {image.subtitle && (
-                              <p className="text-white/90 text-sm mb-3 font-light">{image.subtitle}</p>
+                  {heroImages.map((image, index) => (
+                    <Link
+                      key={index}
+                      to={`/shop/${image.category}`}
+                      className="group flex-shrink-0 w-80 relative"
+                    >
+                      <div className="relative overflow-hidden rounded-lg shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
+                        <ImageWithSkeleton
+                          src={image.url}
+                          alt={image.title}
+                          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700"
+                          skeletonClassName="w-full h-48"
+                        />
+                        
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 group-hover:from-emerald-500/30 group-hover:to-blue-500/30 transition-all duration-500"></div>
+                        
+                        {/* Content */}
+                        <div className="absolute bottom-4 left-4 right-4 text-white">
+                          <div className="flex items-center mb-2">
+                            {image.category === 'painting' ? (
+                              <Brush className="w-4 h-4 mr-2" />
+                            ) : image.category === 'apparel' ? (
+                              <Crown className="w-4 h-4 mr-2" />
+                            ) : (
+                              <Sparkles className="w-4 h-4 mr-2" />
                             )}
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs font-medium text-yellow-300 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">
-                                {image.category === 'painting' ? 'Paintings' 
-                                  : image.category === 'apparel' ? 'Apparel' 
-                                  : 'Accessories'}
-                              </span>
-                              <div className="flex items-center text-white/80 group-hover:text-white transition-colors">
-                                <Eye className="w-3 h-3 mr-1" />
-                                <span className="text-xs font-medium">Explore</span>
-                              </div>
+                            <h3 className="text-lg font-bold font-serif">{image.title}</h3>
+                          </div>
+                          <p className="text-white/90 text-sm mb-3 font-light">{image.subtitle}</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-medium text-yellow-300 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">
+                              {image.category === 'painting' ? 'Paintings' 
+                                : image.category === 'apparel' ? 'Apparel' 
+                                : 'Accessories'}
+                            </span>
+                            <div className="flex items-center text-white/80 group-hover:text-white transition-colors">
+                              <Eye className="w-3 h-3 mr-1" />
+                              <span className="text-xs font-medium">Explore</span>
                             </div>
                           </div>
-                          {/* Hover Effect Border (removed border grow on hover, only subtle border) */}
-                          <div className="absolute inset-0 border-2 border-transparent rounded-lg transition-all duration-300"></div>
                         </div>
-                      </Link>
-                    ))
-                  )}
+
+                        {/* Hover Effect Border */}
+                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/30 rounded-lg transition-all duration-300"></div>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
 
@@ -339,33 +312,43 @@ const Dashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Featured Products */}
-        {featuredProducts.length > 0 && (
-          <div className="mb-8">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">Featured Artworks</h2>
-                <p className="text-gray-600">Handpicked selections from our curators</p>
-              </div>
-              <Link to="/shop/painting">
-                <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                  View All
-                </Button>
-              </Link>
+        {/* New Arrivals Section */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">New Arrivals</h2>
+              <p className="text-gray-600">Fresh artworks, apparel and added accessories</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {featuredProducts.slice(0, 4).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
+            <Link to="/shop/painting">
+              <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                View All
+              </Button>
+            </Link>
           </div>
-        )}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {isLoading ? (
+              [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
+            ) : newArrivals.length > 0 ? (
+              newArrivals.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            ) : (
+              <div className="col-span-4 text-center py-8">
+                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">
+                  <Palette className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2 font-serif">No Products Yet</h3>
+                  <p className="text-gray-600 text-sm">Start by adding some beautiful artworks!</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Featured Categories */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center font-serif bg-gradient-to-r from-emerald-600 to-purple-600 bg-clip-text text-transparent">Shop by Category</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Link to="/shop/painting" onClick={scrollToTop} className="group">
+            <Link to="/shop/painting" className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
                   src="https://images.pexels.com/photos/1183992/pexels-photo-1183992.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -389,7 +372,7 @@ const Dashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/shop/apparel" onClick={scrollToTop} className="group">
+            <Link to="/shop/apparel" className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
                   src="https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -413,7 +396,7 @@ const Dashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/shop/accessories" onClick={scrollToTop} className="group">
+            <Link to="/shop/accessories" className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
                   src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -439,37 +422,27 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-
-        {/* New Arrivals Section */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">New Arrivals</h2>
-              <p className="text-gray-600">Fresh artworks, apparel and added accessories</p>
-            </div>
-            <Link to="/shop/painting">
-              <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                View All
-              </Button>
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {isLoading ? (
-              [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
-            ) : newArrivals.length > 0 ? (
-              newArrivals.slice(0, 4).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))
-            ) : (
-              <div className="col-span-4 text-center py-8">
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">
-                  <Palette className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2 font-serif">No Internet Connection</h3>
-                </div>
+        {/* Featured Products */}
+        {featuredProducts.length > 0 && (
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800 mb-1 font-serif bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">Featured Artworks</h2>
+                <p className="text-gray-600">Handpicked selections from our curators</p>
               </div>
-            )}
+              <Link to="/shop/painting">
+                <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white text-sm px-4 py-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                  View All
+                </Button>
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {featuredProducts.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Trending Section */}
         <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6">

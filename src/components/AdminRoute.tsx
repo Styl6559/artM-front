@@ -10,6 +10,10 @@ interface AdminRouteProps {
 const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   const { user, isLoading, isAuthenticated } = useAuth();
 
+  console.log('AdminRoute - User:', user);
+  console.log('AdminRoute - IsLoading:', isLoading);
+  console.log('AdminRoute - IsAuthenticated:', isAuthenticated);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -22,6 +26,7 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   }
 
   if (!isAuthenticated) {
+    console.log('AdminRoute - Not authenticated, redirecting to login');
     return <Navigate to="/login" replace />;
   }
 

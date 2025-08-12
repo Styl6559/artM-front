@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
-import { Toaster, toast } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import Header from './components/Header';
@@ -12,7 +11,6 @@ import RegisterPage from './pages/RegisterPage';
 import VerifyPage from './pages/VerifyPage';
 import Dashboard from './pages/Dashboard';
 import ShopPage from './pages/ShopPage';
-import ProductDetailPage from './pages/ProductDetailPage';
 import SearchPage from './pages/SearchPage';
 import CartPage from './pages/CartPage';
 import WishlistPage from './pages/WishlistPage';
@@ -24,13 +22,10 @@ import ShippingInfoPage from './pages/ShippingInfoPage';
 import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
-import RefundPolicyPage from './pages/RefundPolicyPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminContacts from './pages/admin/AdminContacts';
-import AdminHeroImages from './pages/admin/AdminHeroImages';
-import AdminAnalytics from './pages/admin/AdminAnalytics';
 import { AuthProvider } from './context/AuthContext';
 import { ProductProvider } from './context/ProductContext';
 import { CartProvider } from './context/CartContext';
@@ -46,26 +41,6 @@ function App() {
       .catch(() => setServerAwake(true)); // Even on error, let app load
   }, []);
 
-  // Add global click listener to dismiss toasts when clicked
-  useEffect(() => {
-    const handleToastClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      // Check if clicked element is part of a toast notification
-      // React-hot-toast uses div with role="status" and specific class names
-      const toastElement = target.closest('[role="status"]') || 
-                          target.closest('[data-hot-toast]') || 
-                          target.closest('.react-hot-toast') ||
-                          target.closest('[class*="hot-toast"]');
-      
-      if (toastElement) {
-        toast.dismiss(); // Dismiss all toasts on click
-      }
-    };
-
-    document.addEventListener('click', handleToastClick);
-    return () => document.removeEventListener('click', handleToastClick);
-  }, []);
-
   if (!serverAwake) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
@@ -76,12 +51,11 @@ function App() {
   }
 
   return (
-    <HelmetProvider>
-      <Router>
-        <AuthProvider>
-          <ProductProvider>
-            <CartProvider>
-              <SearchProvider>
+    <Router>
+      <AuthProvider>
+        <ProductProvider>
+          <CartProvider>
+            <SearchProvider>
               <div className="App min-h-screen flex flex-col">
                 <Routes>
                   {/* Auth Routes */}
@@ -110,16 +84,6 @@ function App() {
                       <AdminContacts />
                     </AdminRoute>
                   } />
-                  <Route path="/admin/hero-images" element={
-                    <AdminRoute>
-                      <AdminHeroImages />
-                    </AdminRoute>
-                  } />
-                  <Route path="/admin/analytics" element={
-                    <AdminRoute>
-                      <AdminAnalytics />
-                    </AdminRoute>
-                  } />
                   
                   {/* Public and Protected Routes with Header/Footer */}
                   <Route path="/*" element={
@@ -131,14 +95,12 @@ function App() {
                           <Route path="/" element={<Navigate to="/dashboard" replace />} />
                           <Route path="/dashboard" element={<Dashboard />} />
                           <Route path="/shop/:category" element={<ShopPage />} />
-                          <Route path="/product/:id" element={<ProductDetailPage />} />
                           <Route path="/about" element={<AboutPage />} />
                           <Route path="/help" element={<HelpCenterPage />} />
                           <Route path="/privacy" element={<PrivacyPolicyPage />} />
                           <Route path="/terms" element={<TermsOfServicePage />} />
                           <Route path="/contact" element={<ContactPage />} />
                           <Route path="/shipping" element={<ShippingInfoPage />} />
-                          <Route path="/refund-policy" element={<RefundPolicyPage />} />
                           
                           {/* Protected Routes */}
                           <Route path="/search" element={
@@ -146,8 +108,16 @@ function App() {
                               <SearchPage />
                             </ProtectedRoute>
                           } />
-                          <Route path="/cart" element={<CartPage />} />
-                          <Route path="/wishlist" element={<WishlistPage />} />
+                          <Route path="/cart" element={
+                            <ProtectedRoute>
+                              <CartPage />
+                            </ProtectedRoute>
+                          } />
+                          <Route path="/wishlist" element={
+                            <ProtectedRoute>
+                              <WishlistPage />
+                            </ProtectedRoute>
+                          } />
                           <Route path="/profile" element={
                             <ProtectedRoute>
                               <ProfilePage />
@@ -158,9 +128,6 @@ function App() {
                               <MyOrdersPage />
                             </ProtectedRoute>
                           } />
-                          
-                          {/* Catch-all route - redirect unknown routes to dashboard */}
-                          <Route path="*" element={<Navigate to="/dashboard" replace />} />
                         </Routes>
                       </main>
                       <Footer />
@@ -171,22 +138,21 @@ function App() {
                 <Toaster
                   position="top-right"
                   toastOptions={{
-                    duration: 2000, // Shorter duration for better UX
+                    duration: 4000,
                     style: {
                       background: '#363636',
                       color: '#fff',
                       fontFamily: 'Inter, sans-serif',
-                      cursor: 'pointer', // Indicate clickable
                     },
                     success: {
-                      duration: 1500, // Very short for success messages
+                      duration: 3000,
                       iconTheme: {
                         primary: '#10b981',
                         secondary: '#fff',
                       },
                     },
                     error: {
-                      duration: 3000,
+                      duration: 4000,
                       iconTheme: {
                         primary: '#ef4444',
                         secondary: '#fff',
@@ -200,7 +166,6 @@ function App() {
         </ProductProvider>
       </AuthProvider>
     </Router>
-    </HelmetProvider>
   );
 }
 

@@ -261,6 +261,18 @@ const RegisterPage: React.FC = () => {
             </p>
           </div>
         </div>
+
+        {/* Security Features */}
+        <div className="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl p-4 border border-white/30">
+          <h3 className="text-sm font-semibold text-gray-900 mb-2 font-serif">🎨 Why Join Rangleela?</h3>
+          <ul className="text-xs text-gray-600 space-y-1 font-serif">
+            <li>• Discover unique paintings from talented artists</li>
+            <li>• Shop exclusive artistic apparel</li>
+            <li>• Browse designer accessories</li>
+            <li>• Secure account with email verification</li>
+            <li>• Personalized recommendations</li>
+          </ul>
+        </div>
       </div>
     </div>
   );

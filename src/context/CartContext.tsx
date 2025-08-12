@@ -155,13 +155,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   const getTotalPrice = () => {
-    return items.reduce((total, item) => {
-      // Use discount price if available and valid, otherwise use regular price
-      const effectivePrice = item.product.discountPrice && item.product.discountPrice < item.product.price 
-        ? item.product.discountPrice 
-        : item.product.price;
-      return total + (effectivePrice * item.quantity);
-    }, 0);
+    return items.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   };
 
   const getTotalItems = () => {

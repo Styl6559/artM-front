@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { AuthResponse } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Create axios instance
 const api = axios.create({
@@ -178,22 +178,6 @@ export const contactAPI = {
       return error.response?.data || { 
         success: false, 
         message: 'Failed to send message.' 
-      };
-    }
-  },
-
-  submitContactWithImages: async (formData: FormData) => {
-    try {
-      const response = await api.post('/contact/with-images', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data;
-    } catch (error: any) {
-      return error.response?.data || { 
-        success: false, 
-        message: 'Failed to send message with images.' 
       };
     }
   }
