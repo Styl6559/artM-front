@@ -123,10 +123,10 @@ const ContactPage: React.FC = () => {
       return;
     }
 
-    // Validate file sizes (15MB per file)
-    const oversizedFiles = files.filter(file => file.size > 15 * 1024 * 1024);
+    // Validate file sizes (10MB per file)
+    const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024);
     if (oversizedFiles.length > 0) {
-      toast.error('Each image must be less than 15MB');
+      toast.error('Each image must be less than 10MB');
       return;
     }
 
@@ -352,7 +352,7 @@ const ContactPage: React.FC = () => {
                                formData.subject === 'order' ? 'Order' :
                                formData.subject === 'return' ? 'Return/Exchange' :
                                formData.subject === 'artist' ? 'Portfolio' : ''} Images 
-                        (Max {maxImages} image{maxImages > 1 ? 's' : ''}, 15MB each)
+                        (Max {maxImages} image{maxImages > 1 ? 's' : ''}, 10MB each)
                       </label>
                       <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-purple-400 transition-colors">
                         <div className="space-y-1 text-center">
@@ -375,7 +375,7 @@ const ContactPage: React.FC = () => {
                             </label>
                             <p className="pl-1">or drag and drop</p>
                           </div>
-                          <p className="text-xs text-gray-500">PNG, JPG, GIF, WebP up to 15MB each</p>
+                          <p className="text-xs text-gray-500">PNG, JPG, GIF, WebP up to 10MB each</p>
                         </div>
                       </div>
                     </div>
