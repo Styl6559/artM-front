@@ -85,33 +85,35 @@ const AdminHeroImages: React.FC = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-4 sm:py-0 sm:h-20 gap-4 sm:gap-0">
             <div className="flex items-center">
               <div className="relative">
                 <div className="absolute inset-0 bg-white/20 rounded-xl blur-md"></div>
                 <div className="relative bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4 border border-white/30">
-                  <Image className="w-8 h-8 text-white" />
+                  <Image className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
                 </div>
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-white font-serif">Gallery Management</h1>
-                <p className="text-white/90 font-light">Manage gallery and collection images</p>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white font-serif">Gallery Management</h1>
+                <p className="text-white/90 font-light text-sm sm:text-base">Manage gallery and collection images</p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
               <div className="relative">
                 <div className="absolute inset-0 bg-white/20 rounded-xl blur-sm"></div>
                 <Button
                   onClick={() => window.history.back()}
-                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg"
+                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg text-sm sm:text-base px-3 sm:px-4 py-2"
                 >
-                  ← Back
+                  <span className="hidden sm:inline">← Back</span>
+                  <span className="sm:hidden">←</span>
                 </Button>
               </div>
-              <div className="relative bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/30 shadow-lg">
+              <div className="relative bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-4 py-2 border border-white/30 shadow-lg">
                 <div className="absolute inset-0 bg-white/20 rounded-lg blur-sm"></div>
-                <span className="relative text-white font-medium">
-                  {images.length} total images
+                <span className="relative text-white font-medium text-xs sm:text-sm">
+                  <span className="hidden sm:inline">{images.length} total images</span>
+                  <span className="sm:hidden">{images.length} images</span>
                 </span>
               </div>
             </div>

@@ -239,27 +239,28 @@ const AdminProducts: React.FC = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-4 sm:py-0 sm:h-20 gap-4 sm:gap-0">
             <div className="flex items-center">
               <div className="relative">
                 <div className="absolute inset-0 bg-white/20 rounded-xl blur-md"></div>
                 <div className="relative bg-white/20 backdrop-blur-sm rounded-xl p-3 mr-4 border border-white/30">
-                  <Plus className="w-8 h-8 text-white" />
+                  <Plus className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
                 </div>
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-white font-serif">Product Management</h1>
-                <p className="text-white/90 font-light">Add, edit, or remove products</p>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white font-serif">Product Management</h1>
+                <p className="text-white/90 font-light text-sm sm:text-base">Add, edit, or remove products</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <div className="relative">
                 <div className="absolute inset-0 bg-white/20 rounded-xl blur-sm"></div>
                 <Button
                   onClick={() => window.history.back()}
-                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg"
+                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg text-sm sm:text-base px-3 sm:px-4 py-2"
                 >
-                  ← Back
+                  <span className="hidden sm:inline">← Back</span>
+                  <span className="sm:hidden">←</span>
                 </Button>
               </div>
               <div className="relative">
@@ -270,10 +271,11 @@ const AdminProducts: React.FC = () => {
                     setEditingProduct(null);
                     setShowAddModal(true);
                   }}
-                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg"
+                  className="relative bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border border-white/30 transition-all duration-300 shadow-lg text-sm sm:text-base px-3 sm:px-4 py-2"
                 >
-                  <Plus className="w-5 h-5 mr-2" />
-                  Add Product
+                  <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Add Product</span>
+                  <span className="sm:hidden">Add</span>
                 </Button>
               </div>
             </div>
