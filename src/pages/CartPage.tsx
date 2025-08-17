@@ -475,7 +475,90 @@ const CartPage: React.FC = () => {
             <div className="lg:col-span-2 space-y-6">
               {items.map((item) => (
                 <div key={`${item.product.id}-${item.selectedSize}`} className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
-                  <div className="flex items-start space-x-4">
+                  {/* Mobile Layout: Stack everything vertically */}
+                  <div className="flex sm:hidden flex-col space-y-4">
+                    <div className="flex items-start space-x-4">
+                      <div className="relative">
+                        <ImageWithSkeleton
+                          src={item.product.image}
+                          alt={item.product.name}
+                          className="w-20 h-20 object-cover rounded-lg shadow-md"
+                          skeletonClassName="w-20 h-20 rounded-lg"
+                        />
+                        <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs font-bold">{item.quantity}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-1 font-serif">
+                          {item.product.name}
+                        </h3>
+                        <p className="text-xs font-medium text-emerald-600 uppercase tracking-wide mb-2 capitalize">
+                          {item.product.category}
+                        </p>
+                        {item.selectedSize && (
+                          <p className="text-sm text-gray-600 mb-2">Size: {item.selectedSize}</p>
+                        )}
+                        <div className="flex items-center gap-2">
+                          {item.product.discountPrice && item.product.discountPrice < item.product.price ? (
+                            <>
+                              <p className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                                ₹{item.product.discountPrice}
+                              </p>
+                              <p className="text-sm text-gray-500 line-through">
+                                ₹{item.product.price}
+                              </p>
+                            </>
+                          ) : (
+                            <p className="text-lg font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                              ₹{item.product.price}
+                            </p>
+                          )}
+                        </div>
+                        
+                        {!item.product.inStock && (
+                          <div className="mt-2 flex items-center">
+                            <AlertTriangle className="w-4 h-4 text-orange-500 mr-1" />
+                            <span className="text-sm text-orange-600 font-medium">Out of Stock</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Quantity controls moved below on mobile */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        {/* Quantity Controls */}
+                        <div className="flex items-center bg-gray-100/80 backdrop-blur-sm rounded-lg border border-gray-200/50 shadow-lg">
+                          <button
+                            onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                            className="p-2 hover:bg-gray-200/80 transition-colors rounded-l-lg"
+                          >
+                            <Minus className="w-4 h-4 text-gray-600" />
+                          </button>
+                          <span className="px-4 py-2 font-semibold text-gray-800">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                            className="p-2 hover:bg-gray-200/80 transition-colors rounded-r-lg"
+                          >
+                            <Plus className="w-4 h-4 text-gray-600" />
+                          </button>
+                        </div>
+
+                        {/* Remove Button */}
+                        <button
+                          onClick={() => removeFromCart(item.product.id)}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors shadow-lg hover:shadow-xl"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desktop Layout: Keep original horizontal layout */}
+                  <div className="hidden sm:flex items-start space-x-4">
                     <div className="relative">
                       <ImageWithSkeleton
                         src={item.product.image}
