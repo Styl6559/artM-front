@@ -10,7 +10,7 @@ import {
   Youtube,
   ArrowUp
 } from 'lucide-react';
-import logo from '../assets/round.png';
+import logo from '../assets/logo.png';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
