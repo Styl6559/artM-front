@@ -18,6 +18,7 @@ import { useCart } from '../context/CartContext';
 import { productsAPI } from '../lib/api';
 import Button from '../components/ui/Button';
 import ImageWithSkeleton from '../components/ImageWithSkeleton';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -69,14 +70,18 @@ const ProductDetailPage: React.FC = () => {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-blue-50/30 to-emerald-50/20">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h2>
-          <p className="text-gray-600 mb-6">{error}</p>
-          <Button onClick={() => navigate('/shop')}>
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Shop
-          </Button>
+          <div className="mb-6 flex justify-center">
+            <LoadingSpinner size="lg" className="text-emerald-600" />
+          </div>
+          {error && <p className="text-gray-600 mb-6">{error}</p>}
+          <div>
+            <Button onClick={() => navigate('/shop')} className="bg-white/80 border">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Shop
+            </Button>
+          </div>
         </div>
       </div>
     );
