@@ -181,7 +181,7 @@ const Dashboard: React.FC = () => {
                 <div className="text-center text-white">
                   <Sparkles className="w-16 h-16 mx-auto mb-4 animate-pulse" />
                   <h1 className="text-3xl md:text-4xl font-bold mb-2 font-serif">Welcome to Rangleela</h1>
-                  <p className="text-lg opacity-90">No gallery images uploaded yet</p>
+                  <p className="text-lg opacity-90">No Internet</p>
                 </div>
               </div>
             )}
@@ -226,7 +226,7 @@ const Dashboard: React.FC = () => {
                       </div>
                     ))
                   ) : heroImages.filter(img => img.category !== 'gallery').length === 0 ? (
-                    <div className="w-full text-center py-8 text-gray-400">No collection images</div>
+                    <div className="w-full text-center py-8 text-gray-400">Please check your connection</div>
                   ) : (
                     heroImages.filter(img => img.category !== 'gallery').map((image, index) => (
                       <Link
