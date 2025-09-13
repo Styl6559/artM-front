@@ -70,7 +70,7 @@ function App() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto"></div>
-        <p className="mt-4 text-gray-600">Please wait...</p>
+        <p className="mt-4 text-gray-600">Loading, please wait...</p>
       </div>
     );
   }
