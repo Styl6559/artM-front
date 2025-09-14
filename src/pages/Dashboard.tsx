@@ -69,7 +69,74 @@ const Dashboard: React.FC = () => {
   }, [isAuthenticated, user, wishlist.length, getTotalItems]);
 
 
-  // Hero gallery images from API
+  // Image cache utilities
+  const HERO_CACHE_KEY = 'hero_images_cache';
+  const CACHE_DURATION_HOURS = 1; // 1 hour as requested
+  
+  const imageCache = {
+    set: (key: string, data: any, expiryHours: number = 1) => {
+      try {
+        const cacheItem = {
+          data,
+          timestamp: Date.now(),
+          expiry: Date.now() + (expiryHours * 60 * 60 * 1000) // Convert hours to milliseconds
+        };
+        localStorage.setItem(`cache_${key}`, JSON.stringify(cacheItem));
+      } catch (error) {
+        console.warn('Failed to cache data:', error);
+      }
+    },
+
+    get: (key: string) => {
+      try {
+        const cached = localStorage.getItem(`cache_${key}`);
+        if (!cached) return null;
+
+        const cacheItem = JSON.parse(cached);
+        
+        // Check if cache has expired
+        if (Date.now() > cacheItem.expiry) {
+          localStorage.removeItem(`cache_${key}`);
+          return null;
+        }
+
+        return cacheItem.data;
+      } catch (error) {
+        console.warn('Failed to retrieve cached data:', error);
+        return null;
+      }
+    },
+
+    clear: (key: string) => {
+      try {
+        localStorage.removeItem(`cache_${key}`);
+      } catch (error) {
+        console.warn('Failed to clear cache:', error);
+      }
+    }
+  };
+
+  // Function to manually refresh hero images (clears cache and fetches fresh)
+  const refreshHeroImages = async () => {
+    imageCache.clear(HERO_CACHE_KEY);
+    setHeroLoading(true);
+    try {
+      const res = await import('../lib/adminApi').then(m => m.adminAPI.getHeroImages());
+      if (res.success && Array.isArray(res.images)) {
+        setHeroImages(res.images);
+        imageCache.set(HERO_CACHE_KEY, res.images, CACHE_DURATION_HOURS);
+      } else {
+        setHeroImages([]);
+      }
+    } catch (error) {
+      console.error('Error refreshing hero images:', error);
+      setHeroImages([]);
+    } finally {
+      setHeroLoading(false);
+    }
+  };
+
+  // Hero gallery images from API with caching
   const [heroImages, setHeroImages] = useState<any[]>([]);
   const [heroLoading, setHeroLoading] = useState(true);
   const [galleryIndex, setGalleryIndex] = useState(0);
@@ -78,14 +145,32 @@ const Dashboard: React.FC = () => {
     const fetchHeroImages = async () => {
       setHeroLoading(true);
       try {
+        // Try to get from cache first
+        const cachedImages = imageCache.get(HERO_CACHE_KEY);
+        if (cachedImages) {
+          setHeroImages(cachedImages);
+          setHeroLoading(false);
+          return;
+        }
+
+        // Fetch from API if not in cache
         const res = await import('../lib/adminApi').then(m => m.adminAPI.getHeroImages());
         if (res.success && Array.isArray(res.images)) {
           setHeroImages(res.images);
+          // Cache the successful response for 1 hour
+          imageCache.set(HERO_CACHE_KEY, res.images, CACHE_DURATION_HOURS);
         } else {
           setHeroImages([]);
         }
-      } catch {
-        setHeroImages([]);
+      } catch (error) {
+        console.error('Error fetching hero images:', error);
+        // If API fails, try to use cached data even if expired
+        const cachedImages = imageCache.get(HERO_CACHE_KEY);
+        if (cachedImages) {
+          setHeroImages(cachedImages);
+        } else {
+          setHeroImages([]);
+        }
       } finally {
         setHeroLoading(false);
       }
