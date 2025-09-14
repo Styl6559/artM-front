@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
 ShoppingCart, 
@@ -23,10 +23,43 @@ import logo from '../assets/logo.png';
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const { user, logout, isAuthenticated } = useAuth();
   const { getTotalItems, wishlist } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Close dropdowns when clicking outside or pressing Escape
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Close user menu if clicked outside
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+      // Close mobile menu if clicked outside
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsUserMenuOpen(false);
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isUserMenuOpen || isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [isUserMenuOpen, isMenuOpen]);
 
   const handleLogout = () => {
     logout();
@@ -157,7 +190,7 @@ const Header: React.FC = () => {
                 </Link>
 
                 {/* User Menu */}
-                <div className="relative">
+                <div className="relative" ref={userMenuRef}>
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                     className="hidden lg:flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-all duration-300"
@@ -290,7 +323,7 @@ const Header: React.FC = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
+          <div ref={mobileMenuRef} className="lg:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
             <div className="px-4 py-4 space-y-2">
               {navLinks.map((link) => (
               <Link
