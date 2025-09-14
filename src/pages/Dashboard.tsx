@@ -8,7 +8,9 @@ import Button from '../components/ui/Button';
 import ProductCard from '../components/ProductCard';
 import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import ImageWithSkeleton from '../components/ImageWithSkeleton';
+import CachedHeroImage from '../components/CachedHeroImage';
 import { formatDate } from '../lib/utils';
+import { heroImageCache } from '../lib/heroImageCache';
 
 const Dashboard: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
@@ -81,6 +83,12 @@ const Dashboard: React.FC = () => {
         const res = await import('../lib/adminApi').then(m => m.adminAPI.getHeroImages());
         if (res.success && Array.isArray(res.images)) {
           setHeroImages(res.images);
+          
+          // Preload hero images for faster loading
+          const imageUrls = res.images.map(img => img.image).filter(Boolean);
+          if (imageUrls.length > 0) {
+            heroImageCache.preloadImages(imageUrls);
+          }
         } else {
           setHeroImages([]);
         }
@@ -149,7 +157,7 @@ const Dashboard: React.FC = () => {
                       idx === galleryIndex ? 'opacity-100' : 'opacity-0'
                     }`}
                   >
-                    <img
+                    <CachedHeroImage
                       src={image.image}
                       alt={image.title || 'Gallery Image'}
                       className="w-full h-full object-cover"
@@ -235,11 +243,10 @@ const Dashboard: React.FC = () => {
                         className="group flex-shrink-0 w-80 relative"
                       >
                         <div className="relative overflow-hidden rounded-lg shadow-xl transition-all duration-500">
-                          <ImageWithSkeleton
+                          <CachedHeroImage
                             src={image.image}
                             alt={image.title}
                             className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
-                            skeletonClassName="w-full h-48"
                           />
                           {/* Gradient Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
