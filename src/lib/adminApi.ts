@@ -65,7 +65,7 @@ export const adminAPI = {
       return response.data;
     } catch (error: any) {
       console.error('Add hero image API error:', error);
-      return error.response?.data || { success: false, message: 'Failed to add hero image' };
+      return error.response?.data || { success: false, message: 'Image size too large' };
     }
   },
 
@@ -146,7 +146,7 @@ export const adminAPI = {
       console.error('Create product API error:', error);
       return error.response?.data || { 
         success: false, 
-        message: 'Failed to create product: ' + (error.message || 'Unknown error')
+        message: 'Image size too large: ' + (error.message || 'Unknown error')
       };
     }
   },
@@ -164,7 +164,7 @@ export const adminAPI = {
       console.error('Update product API error:', error);
       return error.response?.data || { 
         success: false, 
-        message: 'Failed to update product: ' + (error.message || 'Unknown error')
+        message: 'Image size too large: ' + (error.message || 'Unknown error')
       };
     }
   },
