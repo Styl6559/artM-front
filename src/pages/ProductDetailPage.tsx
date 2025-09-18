@@ -11,7 +11,11 @@ import {
   Shield,
   Truck,
   Eye,
-  Shirt
+  Shirt,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  X
 } from 'lucide-react';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
@@ -26,8 +30,32 @@ const ProductDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   const { addToCart, addToWishlist, removeFromWishlist, isInWishlist } = useCart();
+
+  // Create media array from product data
+  const getMediaItems = (product: Product) => {
+    const mediaItems: Array<{type: 'image' | 'video', url: string}> = [];
+    
+    // Add primary image
+    mediaItems.push({ type: 'image', url: product.image });
+    
+    // Add additional images
+    if (product.additionalImages) {
+      product.additionalImages.forEach(img => {
+        mediaItems.push({ type: 'image', url: img.url });
+      });
+    }
+    
+    // Add video
+    if (product.video) {
+      mediaItems.push({ type: 'video', url: product.video.url });
+    }
+    
+    return mediaItems;
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -67,13 +95,24 @@ const ProductDetailPage: React.FC = () => {
     }
   };
 
-  if (error || !product) {
+  if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto"></div>
       </div>
     );
   }
+
+  if (error || !product) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+        <div className="text-center py-8 text-red-600">{error || 'Product not found'}</div>
+      </div>
+    );
+  }
+
+  const mediaItems = getMediaItems(product);
+  const currentMedia = mediaItems[selectedMediaIndex];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-emerald-50/20">
@@ -92,16 +131,106 @@ const ProductDetailPage: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-          {/* Product Image */}
+          {/* Product Media Gallery */}
           <div className="flex flex-col-reverse">
             <div className="w-full">
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <ImageWithSkeleton
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-96 lg:h-[500px] object-cover"
-                />
+                {/* Main Media Display */}
+                <div className="relative h-96 lg:h-[500px]">
+                  {currentMedia?.type === 'video' ? (
+                    <video
+                      controls
+                      preload="metadata"
+                      className="w-full h-full object-cover cursor-pointer"
+                      onClick={() => setIsFullscreen(true)}
+                    >
+                      <source src={currentMedia.url} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <div 
+                      className="w-full h-full cursor-pointer"
+                      onClick={() => setIsFullscreen(true)}
+                    >
+                      <ImageWithSkeleton
+                        src={currentMedia?.url || product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  
+                  {/* Navigation Arrows */}
+                  {mediaItems.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => setSelectedMediaIndex(prev => 
+                          prev === 0 ? mediaItems.length - 1 : prev - 1
+                        )}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+                      >
+                        <ChevronLeft className="w-5 h-5 text-gray-700" />
+                      </button>
+                      <button
+                        onClick={() => setSelectedMediaIndex(prev => 
+                          prev === mediaItems.length - 1 ? 0 : prev + 1
+                        )}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+                      >
+                        <ChevronRight className="w-5 h-5 text-gray-700" />
+                      </button>
+                    </>
+                  )}
+                  
+                  {/* Video Play Indicator */}
+                  {currentMedia?.type === 'video' && (
+                    <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded-md text-sm flex items-center">
+                      <Play className="w-4 h-4 mr-1" />
+                      Video
+                    </div>
+                  )}
+                </div>
               </div>
+              
+              {/* Media Thumbnails - Moved outside and up */}
+              {mediaItems.length > 1 && (
+                <div className="mt-6">
+                  <div className="flex gap-2 justify-center">
+                    {mediaItems.map((media, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setSelectedMediaIndex(index)}
+                        className={`relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                          selectedMediaIndex === index 
+                            ? 'border-emerald-500 shadow-md' 
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        {media.type === 'video' ? (
+                          <div className="relative w-full h-full">
+                            <video
+                              className="w-full h-full object-cover"
+                              muted
+                              preload="metadata"
+                            >
+                              <source src={media.url} type="video/mp4" />
+                            </video>
+                            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                              <Play className="w-5 h-5 text-white" />
+                            </div>
+                          </div>
+                        ) : (
+                          <img
+                            src={media.url}
+                            alt={`${product.name} ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -279,6 +408,64 @@ const ProductDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* Fullscreen Modal */}
+      {isFullscreen && (
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
+          <div className="relative max-w-7xl max-h-screen w-full h-full flex items-center justify-center p-4">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsFullscreen(false)}
+              className="absolute top-4 right-4 z-10 bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors duration-200"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+            
+            {/* Navigation Arrows in Fullscreen */}
+            {mediaItems.length > 1 && (
+              <>
+                <button
+                  onClick={() => setSelectedMediaIndex(prev => 
+                    prev === 0 ? mediaItems.length - 1 : prev - 1
+                  )}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 rounded-full p-3 transition-all duration-200"
+                >
+                  <ChevronLeft className="w-8 h-8 text-white" />
+                </button>
+                <button
+                  onClick={() => setSelectedMediaIndex(prev => 
+                    prev === mediaItems.length - 1 ? 0 : prev + 1
+                  )}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 rounded-full p-3 transition-all duration-200"
+                >
+                  <ChevronRight className="w-8 h-8 text-white" />
+                </button>
+              </>
+            )}
+            
+            {/* Fullscreen Media Content */}
+            <div className="w-full h-full flex items-center justify-center">
+              {currentMedia?.type === 'video' ? (
+                <video
+                  controls
+                  autoPlay
+                  preload="metadata"
+                  className="max-w-full max-h-full object-contain"
+                >
+                  <source src={currentMedia.url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <img
+                  src={currentMedia?.url || product.image}
+                  alt={product.name}
+                  className="max-w-full max-h-full object-contain"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
