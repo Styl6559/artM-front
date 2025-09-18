@@ -582,23 +582,62 @@ const AdminProducts: React.FC = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Product Images (up to 3) {editingProduct && '(leave empty to keep current images)'}
                     </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={(e) => {
-                        const files = Array.from(e.target.files || []).slice(0, 3);
-                        setFormData({...formData, images: files});
-                      }}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      required={!editingProduct && formData.images.length === 0}
-                    />
-                    <p className="text-xs text-gray-500 mt-1">First image will be the main product image</p>
+                    
+                    {/* Image Previews */}
                     {formData.images.length > 0 && (
-                      <div className="mt-2">
-                        <p className="text-sm text-green-600">{formData.images.length} image(s) selected</p>
+                      <div className="mb-4 grid grid-cols-3 gap-4">
+                        {formData.images.map((file, index) => (
+                          <div key={index} className="relative">
+                            <img
+                              src={URL.createObjectURL(file)}
+                              alt={`Preview ${index + 1}`}
+                              className="w-full h-24 object-cover rounded-lg border-2 border-gray-300"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newImages = formData.images.filter((_, i) => i !== index);
+                                setFormData({...formData, images: newImages});
+                              }}
+                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                            >
+                              ×
+                            </button>
+                            {index === 0 && (
+                              <div className="absolute bottom-1 left-1 bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                                Main
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     )}
+                    
+                    {/* Add Image Button */}
+                    {formData.images.length < 3 && (
+                      <div className="mb-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const newFile = e.target.files?.[0];
+                            if (newFile) {
+                              setFormData({...formData, images: [...formData.images, newFile]});
+                            }
+                            // Reset the input
+                            e.target.value = '';
+                          }}
+                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          required={!editingProduct && formData.images.length === 0}
+                        />
+                      </div>
+                    )}
+                    
+                    <p className="text-xs text-gray-500 mt-1">
+                      {formData.images.length === 0 ? 'Select images one by one' : 
+                       formData.images.length === 3 ? 'Maximum 3 images selected' : 
+                       `${formData.images.length}/3 images selected. First image will be the main product image`}
+                    </p>
                   </div>
 
                   {/* Product Video */}
