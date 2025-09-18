@@ -580,7 +580,7 @@ const AdminProducts: React.FC = () => {
                   {/* Product Images */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Product Images (up to 3) {editingProduct && '(leave empty to keep current images)'}
+                      Product Images (up to 5) {editingProduct && '(leave empty to keep current images)'}
                     </label>
                     
                     {/* Image Previews */}
@@ -614,7 +614,7 @@ const AdminProducts: React.FC = () => {
                     )}
                     
                     {/* Add Image Button */}
-                    {formData.images.length < 3 && (
+                    {formData.images.length < 5 && (
                       <div className="mb-2">
                         <input
                           type="file"
@@ -635,8 +635,8 @@ const AdminProducts: React.FC = () => {
                     
                     <p className="text-xs text-gray-500 mt-1">
                       {formData.images.length === 0 ? 'Select images one by one' : 
-                       formData.images.length === 3 ? 'Maximum 3 images selected' : 
-                       `${formData.images.length}/3 images selected. First image will be the main product image`}
+                       formData.images.length === 5 ? 'Maximum 5 images selected' : 
+                       `${formData.images.length}/5 images selected. First image will be the main product image`}
                     </p>
                   </div>
 
