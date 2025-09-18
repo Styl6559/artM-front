@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Mail, ArrowLeft, RefreshCw, Palette } from 'lucide-react';
+import { Mail, ArrowLeft, RefreshCw } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
 import toast from 'react-hot-toast';
@@ -144,31 +144,35 @@ const VerifyPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-orange-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-orange-50 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Artistic Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-20 w-32 h-32 bg-emerald-300/20 rounded-full animate-float"></div>
+        <div className="absolute top-40 right-32 w-24 h-24 bg-blue-300/20 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-32 left-40 w-28 h-28 bg-orange-300/20 rounded-full animate-float" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute bottom-20 right-20 w-36 h-36 bg-violet-300/20 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
+      </div>
+
+      <div className="max-w-md w-full relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-orange-500 rounded-2xl mb-4">
-            <Palette className="w-8 h-8 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Verify Your Email</h1>
-          <p className="text-gray-600">
+          <p className="text-xl text-slate-600 font-light">
             We've sent a 6-digit code to{' '}
-            <span className="font-medium text-gray-900">{email}</span>
+            <span className="font-medium text-slate-800">{email}</span>
           </p>
           {message && (
-            <div className="mt-3 p-3 bg-purple-50 border border-purple-200 rounded-lg">
-              <p className="text-sm text-purple-800">{message}</p>
+            <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+              <p className="text-sm text-emerald-800 font-serif">{message}</p>
             </div>
           )}
         </div>
 
         {/* Verification Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/30">
           <div className="space-y-6">
             {/* Code Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3 text-center">
+              <label className="block text-sm font-medium text-gray-700 mb-3 text-center font-serif">
                 Enter Verification Code
               </label>
               <div className="flex justify-center space-x-3" onPaste={handlePaste}>
@@ -183,7 +187,7 @@ const VerifyPage: React.FC = () => {
                     value={digit}
                     onChange={e => handleInputChange(index, e.target.value)}
                     onKeyDown={e => handleKeyDown(index, e)}
-                    className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200 transition-colors"
+                    className="w-12 h-12 text-center text-xl font-bold border-2 border-gray-300 rounded-lg focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200 transition-colors"
                     disabled={isLoading}
                   />
                 ))}
@@ -193,12 +197,12 @@ const VerifyPage: React.FC = () => {
             {/* Timer */}
             <div className="text-center">
               {timeLeft > 0 ? (
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-slate-600 font-serif">
                   Code expires in{' '}
-                  <span className="font-medium text-orange-600">{formatTime(timeLeft)}</span>
+                  <span className="font-medium text-emerald-600">{formatTime(timeLeft)}</span>
                 </p>
               ) : (
-                <p className="text-sm text-red-600 font-medium">
+                <p className="text-sm text-red-600 font-medium font-serif">
                   Verification code has expired
                 </p>
               )}
@@ -207,7 +211,7 @@ const VerifyPage: React.FC = () => {
             {/* Verify Button */}
             <Button
               onClick={() => handleVerify()}
-              className="w-full bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600"
+              className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 font-serif text-lg py-3"
               isLoading={isLoading}
               disabled={isLoading || code.some(digit => digit === '')}
             >
@@ -216,12 +220,12 @@ const VerifyPage: React.FC = () => {
 
             {/* Resend Code */}
             <div className="text-center">
-              <p className="text-sm text-gray-600 mb-2">Didn't receive the code?</p>
+              <p className="text-sm text-slate-600 mb-2 font-serif">Didn't receive the code?</p>
               <Button
                 variant="ghost"
                 onClick={handleResend}
                 disabled={!canResend || isResending}
-                className="text-purple-600 hover:text-purple-700"
+                className="text-emerald-600 hover:text-emerald-700 font-serif"
               >
                 {isResending ? (
                   <>
@@ -240,22 +244,11 @@ const VerifyPage: React.FC = () => {
         <div className="mt-6 text-center">
           <Link
             to="/login"
-            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors"
+            className="inline-flex items-center text-sm text-slate-600 hover:text-slate-800 transition-colors font-serif"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
             Back to Login
           </Link>
-        </div>
-
-        {/* Security Notice */}
-        <div className="mt-6 bg-white rounded-xl p-4 border border-gray-100">
-          <h3 className="text-sm font-semibold text-gray-900 mb-2">🎨 Welcome to RangLeela</h3>
-          <ul className="text-xs text-gray-600 space-y-1">
-            <li>• Check your spam/junk folder if you don't see the email</li>
-            <li>• The code is valid for 10 minutes only</li>
-            <li>• Never share your verification code with anyone</li>
-            <li>• Contact support if you continue having issues</li>
-          </ul>
         </div>
       </div>
     </div>
