@@ -79,7 +79,6 @@ const CookieConsent: React.FC = () => {
                 </h4>
                 <ul className="space-y-2 text-sm text-slate-600">
                   <li>• <strong>Essential:</strong> Authentication tokens, cart items, preferences</li>
-                  <li>• <strong>Functional:</strong> Language settings, theme preferences</li>
                   <li>• <strong>Analytics:</strong> Anonymous usage data to improve our service</li>
                   <li>• <strong>Marketing:</strong> Personalized art recommendations (optional)</li>
                 </ul>
@@ -115,9 +114,8 @@ const CookieConsent: React.FC = () => {
             {/* Privacy Notice */}
             <div className="text-center">
               <p className="text-xs text-slate-500 font-serif">
-                🎨 By continuing, you agree to our artistic cookie policy. 
+                🎨 By continuing, you agree to our cookie policy.
                 <br />
-                You can change your preferences anytime in settings.
               </p>
             </div>
           </div>
