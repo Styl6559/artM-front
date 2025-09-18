@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, Palette } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -127,9 +127,6 @@ const RegisterPage: React.FC = () => {
       <div className="max-w-md w-full relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-3xl mb-6 shadow-2xl">
-            <Palette className="w-10 h-10 text-white" />
-          </div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-emerald-600 bg-clip-text text-transparent mb-3 font-serif">Join Rangleela</h1>
           <p className="text-xl text-slate-600 font-light">Create your account to discover unique art</p>
         </div>
