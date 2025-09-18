@@ -24,7 +24,8 @@ const AdminProducts: React.FC = () => {
     material: '',
     featured: false,
     inStock: true,
-    image: null as File | null
+    images: [] as File[],
+    video: null as File | null
   });
 
   useEffect(() => {
@@ -104,8 +105,8 @@ const AdminProducts: React.FC = () => {
     
 
     
-    if (!editingProduct && !formData.image) {
-      toast.error('Product image is required');
+    if (!editingProduct && formData.images.length === 0) {
+      toast.error('At least one product image is required');
       return;
     }
 
@@ -128,9 +129,14 @@ const AdminProducts: React.FC = () => {
       formDataToSend.append('featured', formData.featured.toString());
       formDataToSend.append('inStock', formData.inStock.toString());
       
-      // Add image if present
-      if (formData.image) {
-        formDataToSend.append('image', formData.image);
+      // Add images
+      formData.images.forEach((image) => {
+        formDataToSend.append('images', image);
+      });
+      
+      // Add video if present
+      if (formData.video) {
+        formDataToSend.append('video', formData.video);
       }
 
 
@@ -201,12 +207,12 @@ const AdminProducts: React.FC = () => {
       price: '',
       discountPrice: '',
       category: 'painting',
-
       size: '',
       material: '',
       featured: false,
       inStock: true,
-      image: null
+      images: [],
+      video: null
     });
   };
 
@@ -218,12 +224,12 @@ const AdminProducts: React.FC = () => {
       price: product.price?.toString() || '',
       discountPrice: product.discountPrice?.toString() || '',
       category: product.category || 'painting',
-
       size: product.size || '',
       material: product.material || '',
       featured: product.featured || false,
       inStock: product.inStock !== false,
-      image: null
+      images: [],
+      video: null
     });
     setShowAddModal(true);
   };
@@ -571,17 +577,47 @@ const AdminProducts: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* Product Images */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Product Image {editingProduct && '(leave empty to keep current image)'}
+                      Product Images (up to 3) {editingProduct && '(leave empty to keep current images)'}
                     </label>
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => setFormData({...formData, image: e.target.files?.[0] || null})}
+                      multiple
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files || []).slice(0, 3);
+                        setFormData({...formData, images: files});
+                      }}
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      required={!editingProduct}
+                      required={!editingProduct && formData.images.length === 0}
                     />
+                    <p className="text-xs text-gray-500 mt-1">First image will be the main product image</p>
+                    {formData.images.length > 0 && (
+                      <div className="mt-2">
+                        <p className="text-sm text-green-600">{formData.images.length} image(s) selected</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Product Video */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Product Video (optional) {editingProduct && '(leave empty to keep current video)'}
+                    </label>
+                    <input
+                      type="file"
+                      accept="video/mp4,video/mov,video/avi"
+                      onChange={(e) => setFormData({...formData, video: e.target.files?.[0] || null})}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Supports MP4, MOV, AVI formats (max 50MB)</p>
+                    {formData.video && (
+                      <div className="mt-2">
+                        <p className="text-sm text-green-600">Video selected: {formData.video.name}</p>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex gap-4 pt-4">
@@ -597,7 +633,7 @@ const AdminProducts: React.FC = () => {
                     <Button
                       type="submit"
                       isLoading={isSubmitting}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-orange-500"
+                      className="flex-1 bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600"
                       disabled={isSubmitting}
                     >
                       <Upload className="w-4 h-4 mr-2" />
