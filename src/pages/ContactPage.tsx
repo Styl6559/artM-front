@@ -262,7 +262,7 @@ const ContactPage: React.FC = () => {
                 </div>
                 {/* Social Media Icons */}
                 <div className="flex items-center gap-4 mt-8">
-                  <a href="https://www.facebook.com/profile.php?id=61578559577048" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 hover:bg-blue-100 shadow transition-all duration-300">
+                  <a href="https://www.facebook.com/people/Rangleela/61580277759832" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 hover:bg-blue-100 shadow transition-all duration-300">
                     <Facebook className="w-6 h-6 text-blue-600" />
                   </a>
                   <a href="https://x.com/rangleela_X" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 hover:bg-slate-100 shadow transition-all duration-300">
@@ -494,3 +494,4 @@ const ContactPage: React.FC = () => {
 };
 
 export default ContactPage;
+
