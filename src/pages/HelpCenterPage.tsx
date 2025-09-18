@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ChevronDown, ChevronRight, MessageCircle, Mail, Phone, ArrowLeft, HelpCircle } from 'lucide-react';
-import Button from '../components/ui/Button';
 
 const HelpCenterPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -204,13 +203,13 @@ const HelpCenterPage: React.FC = () => {
               <p className="text-gray-600 text-sm mb-4 font-light">
                 Send us a detailed message with attachments
               </p>
-              <Button className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white font-medium">
+              <div className="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
                 Send Message
-              </Button>
+              </div>
             </Link>
             
-            <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-xl">
-              <Mail className="w-8 h-8 text-blue-600 mx-auto mb-4" />
+            <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-xl hover:shadow-lg hover:scale-100 transition-all duration-300 group">
+              <Mail className="w-8 h-8 text-blue-600 mx-auto mb-4 group-hover:text-blue-700" />
               <h3 className="font-semibold text-gray-800 mb-2 font-serif">Email Support</h3>
               <p className="text-gray-600 text-sm mb-4 font-light">
                 Direct email for detailed assistance
@@ -223,8 +222,8 @@ const HelpCenterPage: React.FC = () => {
               </a>
             </div>
             
-            <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl">
-              <Phone className="w-8 h-8 text-purple-600 mx-auto mb-4" />
+            <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-xl hover:shadow-lg hover:scale-100 transition-all duration-300 group">
+              <Phone className="w-8 h-8 text-purple-600 mx-auto mb-4 group-hover:text-purple-700" />
               <h3 className="font-semibold text-gray-800 mb-2 font-serif">Phone Support</h3>
               <p className="text-gray-600 text-sm mb-4 font-light">
                 Speak directly with our team
