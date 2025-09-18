@@ -51,7 +51,17 @@ export interface Product {
   description: string;
   price: number;
   discountPrice?: number;
-  image: string;
+  image: string; // Primary image (for backward compatibility)
+  additionalImages?: Array<{
+    url: string;
+    cloudinaryId: string;
+  }>;
+  video?: {
+    url: string;
+    cloudinaryId: string;
+    fileSize: number;
+    mimeType: string;
+  };
   category: 'painting' | 'apparel' | 'accessories';
   size?: string;
   material?: string;
