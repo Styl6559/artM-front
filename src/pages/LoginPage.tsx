@@ -105,7 +105,7 @@ const LoginPage: React.FC = () => {
       <div className="max-w-md w-full relative z-10">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-emerald-600 bg-clip-text text-transparent mb-3 font-serif">Welcome Back</h1>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-800 to-emerald-600 bg-clip-text text-transparent mb-3 font-serif">Welcome</h1>
           <p className="text-xl text-slate-600 font-light">Sign in to your Rangleela account</p>
         </div>
 
