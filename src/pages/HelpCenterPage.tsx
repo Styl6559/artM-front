@@ -33,10 +33,6 @@ const HelpCenterPage: React.FC = () => {
       answer: "We clearly indicate whether each piece is an original painting or high-quality print. Original paintings come with authenticity certificates from our featured artists. All artworks are carefully packaged for safe delivery."
     },
     {
-      question: "How do I care for my artwork and apparel?",
-      answer: "Keep paintings away from direct sunlight and humidity. For apparel, follow care instructions on labels. We provide detailed care guides with each purchase to ensure longevity of your items."
-    },
-    {
       question: "Do you offer custom designs or commissions?",
       answer: "Yes! Many of our artists accept custom commissions for both paintings and apparel designs. Contact us through our form with 'Custom Design' subject, and we'll connect you with suitable artists."
     },
@@ -75,7 +71,7 @@ const HelpCenterPage: React.FC = () => {
     },
     {
       title: "Product Information",
-      description: "Paintings, apparel, authenticity, care instructions, and quality details",
+      description: "Paintings, apparel, authenticity, and quality details",
       icon: "🎨",
       link: "/contact?subject=general"
     },
@@ -111,7 +107,6 @@ const HelpCenterPage: React.FC = () => {
             <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
             <span className="font-medium">Back to Gallery</span>
           </Link>
-          
           <div className="text-center mb-12">
             <div className="relative inline-block mb-6">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
@@ -123,18 +118,6 @@ const HelpCenterPage: React.FC = () => {
             <p className="text-lg text-gray-600 mb-8 font-light">
               Find answers to your questions about Rangleela's art collection and services
             </p>
-            
-            {/* Search Bar */}
-            <div className="max-w-2xl mx-auto relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search help articles and FAQs..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-white/80 backdrop-blur-sm border border-white/20 rounded-2xl shadow-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-lg font-serif placeholder-gray-500"
-              />
-            </div>
           </div>
         </div>
 
@@ -159,6 +142,17 @@ const HelpCenterPage: React.FC = () => {
 
         {/* FAQ Section */}
         <div className="mb-16">
+          {/* Search Bar above FAQ */}
+          <div className="relative mb-8">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600 w-6 h-6 z-10" />
+            <input
+              type="text"
+              placeholder="Search help articles and FAQs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-4 bg-white border-2 border-gray-200 rounded-xl shadow-md focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-800 font-serif placeholder-gray-400 hover:border-gray-300 transition-colors"
+            />
+          </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-8 font-serif">Frequently Asked Questions</h2>
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20">
             {filteredFaqs.length > 0 ? (
@@ -203,7 +197,7 @@ const HelpCenterPage: React.FC = () => {
             <Link 
               to="/contact"
               onClick={scrollToTop}
-              className="text-center p-6 bg-gradient-to-br from-emerald-50 to-blue-50 border border-emerald-200 rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 group"
+              className="text-center p-6 bg-gradient-to-br from-emerald-50 to-blue-50 border border-emerald-200 rounded-xl hover:shadow-lg hover:scale-100 transition-all duration-300 group"
             >
               <MessageCircle className="w-8 h-8 text-emerald-600 mx-auto mb-4 group-hover:text-emerald-700" />
               <h3 className="font-semibold text-gray-800 mb-2 font-serif">Contact Form</h3>
