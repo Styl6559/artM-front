@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import Button from './ui/Button';
+import OptimizedImage from './OptimizedImage';
 
 interface ProductCardProps {
   product: Product;
@@ -39,10 +40,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, className }) => {
       onClick={handleCardClick}
     >
       <div className="relative aspect-square overflow-hidden">
-        <img
+        <OptimizedImage
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          width={300}
+          height={300}
         />
         
         {/* Overlay Actions */}
