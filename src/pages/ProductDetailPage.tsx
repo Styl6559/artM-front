@@ -21,7 +21,7 @@ import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import { productsAPI } from '../lib/api';
 import Button from '../components/ui/Button';
-import ImageWithSkeleton from '../components/ImageWithSkeleton';
+import OptimizedImage from '../components/OptimizedImage';
 
 const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -152,10 +152,13 @@ const ProductDetailPage: React.FC = () => {
                       className="w-full h-full cursor-pointer"
                       onClick={() => setIsFullscreen(true)}
                     >
-                      <ImageWithSkeleton
+                      <OptimizedImage
                         src={currentMedia?.url || product.image}
                         alt={product.name}
                         className="w-full h-full object-cover"
+                        priority={selectedMediaIndex === 0} // Priority for first image
+                        width={600}
+                        height={600}
                       />
                     </div>
                   )}
@@ -220,10 +223,12 @@ const ProductDetailPage: React.FC = () => {
                             </div>
                           </div>
                         ) : (
-                          <img
+                          <OptimizedImage
                             src={media.url}
                             alt={`${product.name} ${index + 1}`}
                             className="w-full h-full object-cover"
+                            width={100}
+                            height={100}
                           />
                         )}
                       </button>
@@ -433,7 +438,7 @@ const ProductDetailPage: React.FC = () => {
                   onClick={() => setSelectedMediaIndex(prev => 
                     prev === 0 ? mediaItems.length - 1 : prev - 1
                   )}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 rounded-full p-3 transition-all duration-200"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 rounded-full p-3 transition-all duration-200 z-20"
                 >
                   <ChevronLeft className="w-8 h-8 text-white" />
                 </button>
@@ -441,7 +446,7 @@ const ProductDetailPage: React.FC = () => {
                   onClick={() => setSelectedMediaIndex(prev => 
                     prev === mediaItems.length - 1 ? 0 : prev + 1
                   )}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 rounded-full p-3 transition-all duration-200"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 rounded-full p-3 transition-all duration-200 z-20"
                 >
                   <ChevronRight className="w-8 h-8 text-white" />
                 </button>
@@ -461,10 +466,13 @@ const ProductDetailPage: React.FC = () => {
                   Your browser does not support the video tag.
                 </video>
               ) : (
-                <img
+                <OptimizedImage
                   src={currentMedia?.url || product.image}
                   alt={product.name}
                   className="max-w-full max-h-full object-contain"
+                  priority={true} // Fullscreen should load immediately
+                  width={1200}
+                  height={1200}
                 />
               )}
             </div>
