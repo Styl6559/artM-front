@@ -300,7 +300,16 @@ const ProductDetailPage: React.FC = () => {
                   Description
                 </h3>
                 <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-                  <p className="text-gray-700 leading-relaxed text-sm">{product.description}</p>
+                  <div 
+                    className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-700 leading-relaxed text-sm resize-none whitespace-pre-wrap"
+                    style={{ 
+                      whiteSpace: 'pre-wrap',
+                      fontFamily: 'inherit',
+                      minHeight: '60px'
+                    }}
+                  >
+                    {product.description}
+                  </div>
                 </div>
               </div>
 
