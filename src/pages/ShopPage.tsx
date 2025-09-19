@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Filter, Grid, List, SortAsc, Search, Palette, Crown, Sparkles, ChevronDown, ChevronUp, Star } from 'lucide-react';
 import { useProducts } from '../context/ProductContext';
@@ -21,6 +21,8 @@ const ShopPage: React.FC = () => {
   const [ratingFilter, setRatingFilter] = useState<number>(0);
   const [discountRange, setDiscountRange] = useState([0, 100]);
   const [ratingRange, setRatingRange] = useState([0, 5]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(12); // Show 12 products per page
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -109,6 +111,17 @@ const ShopPage: React.FC = () => {
 
     return filtered;
   }, [products, category, debouncedSearchQuery, priceRange, sortBy, discountFilter, ratingFilter, discountRange, ratingRange]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchQuery, priceRange, sortBy, discountFilter, ratingFilter, discountRange, ratingRange]);
 
   const categoryTitle = category === 'painting' ? 'Original Paintings' 
     : category === 'apparel' ? 'Designer Apparel' 
@@ -481,18 +494,56 @@ const ShopPage: React.FC = () => {
             </div>
 
             {/* Products */}
-            {filteredProducts.length > 0 ? (
-              <div className={`grid gap-4 ${
-                viewMode === 'grid' 
-                  ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3' 
-                  : 'grid-cols-1'
-              }`}>
-                {filteredProducts.map((product) => (
-                  <div className="w-full" key={product.id}>
-                    <ProductCard product={product} className="w-full max-w-xl mx-auto" />
+            {currentProducts.length > 0 ? (
+              <>
+                <div className={`grid gap-4 ${
+                  viewMode === 'grid' 
+                    ? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3' 
+                    : 'grid-cols-1'
+                }`}>
+                  {currentProducts.map((product) => (
+                    <div className="w-full" key={product.id}>
+                      <ProductCard product={product} className="w-full max-w-xl mx-auto" />
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center items-center mt-8 space-x-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="px-3 py-1 text-sm"
+                    >
+                      Previous
+                    </Button>
+                    
+                    <div className="flex space-x-1">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                        <Button
+                          key={page}
+                          variant={currentPage === page ? "primary" : "outline"}
+                          onClick={() => setCurrentPage(page)}
+                          className="px-3 py-1 text-sm min-w-[2rem]"
+                        >
+                          {page}
+                        </Button>
+                      ))}
+                    </div>
+                    
+                    <Button
+                      variant="outline"
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="px-3 py-1 text-sm"
+                    >
+                      Next
+                    </Button>
                   </div>
-                ))}
-              </div>
+                )}
+              </>
             ) : (
               <div className="text-center py-12">
                 <div className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-8">
