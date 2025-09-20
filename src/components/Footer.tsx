@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-4">
               <div className="flex items-center gap-6">
-                <a href="https://www.facebook.com/people/Rangleela/61580277759832" target="_blank" rel="noopener noreferrer" className="group">
+                <a href="https://www.facebook.com/profile.php?id=61578559577048" target="_blank" rel="noopener noreferrer" className="group">
                   <Facebook className="w-6 h-6 text-slate-400 group-hover:text-blue-500 transition-colors duration-300" />
                 </a>
                 <a href="https://x.com/rangleela_X" target="_blank" rel="noopener noreferrer" className="group">
@@ -166,11 +166,11 @@ const Footer: React.FC = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-blue-400" />
-                <span className="text-slate-300 text-sm font-serif">+91 70177 34431</span>
+                <span className="text-slate-300 text-sm font-serif">+91 93895 56890</span>
               </div>
                             <div className="flex items-center gap-3 mb-3">
                 <MapPin className="h-5 w-5 text-emerald-500 flex-shrink-0" />
-                <span className="text-slate-300 text-sm font-serif">Awaz Vikas, Kashipur, Uttarakhand</span>
+                <span className="text-slate-300 text-sm font-serif">Purshottam Vihar, Haridwar, Uttarakhand</span>
               </div>
             </div>
             
