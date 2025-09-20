@@ -248,7 +248,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <div className="text-lg font-semibold text-gray-800 font-serif">Phone</div>
-                    <div className="text-gray-600 font-serif">+91 70177 34431</div>
+                    <div className="text-gray-600 font-serif">+91 93895 56890</div>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -257,12 +257,12 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <div className="text-lg font-semibold text-gray-800 font-serif">Address</div>
-                    <div className="text-gray-600 font-serif">Awaz Vikas, Kashipur, Uttarakhand</div>
+                    <div className="text-gray-600 font-serif">Purshottam Vihar, Haridwar, Uttarakhand</div>
                   </div>
                 </div>
                 {/* Social Media Icons */}
                 <div className="flex items-center gap-4 mt-8">
-                  <a href="https://www.facebook.com/people/Rangleela/61580277759832" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 hover:bg-blue-100 shadow transition-all duration-300">
+                  <a href="https://www.facebook.com/profile.php?id=61578559577048" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 hover:bg-blue-100 shadow transition-all duration-300">
                     <Facebook className="w-6 h-6 text-blue-600" />
                   </a>
                   <a href="https://x.com/rangleela_X" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 hover:bg-slate-100 shadow transition-all duration-300">
@@ -450,14 +450,14 @@ const ContactPage: React.FC = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6 font-serif">Visit Our Gallery</h2>
             <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13762.5!2d79.0193!3d29.2183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09addbd0ec5c5%3A0x1b5b5b5b5b5b5b5b!2sKashipur%2C%20Uttarakhand!5e0!3m2!1sen!2sin!4v1640000000000!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13762.5!2d79.0193!3d29.2183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09addbd0ec5c5%3A0x1b5b5b5b5b5b5b5b!2sPurshottam+Vihar%2C+Kankhal%2C+Haridwar%2C+Uttarakhand!5e0!3m2!1sen!2sin!4v1695241684000!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Location - Awaz Vikas Kashipur, Udham Singh Nagar Uttarakhand"
+                title="Location - Purshottam Vihar, Kankhal, Haridwar Uttarakhand"
               />
             </div>
             <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -494,4 +494,3 @@ const ContactPage: React.FC = () => {
 };
 
 export default ContactPage;
-
