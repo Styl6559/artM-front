@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-4">
               <div className="flex items-center gap-6">
-                <a href="https://www.facebook.com/profile.php?id=61578559577048" target="_blank" rel="noopener noreferrer" className="group">
+                <a href="https://www.facebook.com/share/1R8pbkqDuE" target="_blank" rel="noopener noreferrer" className="group">
                   <Facebook className="w-6 h-6 text-slate-400 group-hover:text-blue-500 transition-colors duration-300" />
                 </a>
                 <a href="https://x.com/rangleela_X" target="_blank" rel="noopener noreferrer" className="group">
