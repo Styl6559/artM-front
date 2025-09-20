@@ -193,8 +193,8 @@ const TermsOfServicePage: React.FC = () => {
             </p>
             <div className="space-y-2 text-gray-600">
               <p><strong>Email:</strong> rangleela0506@gmail.com</p>
-              <p><strong>Phone:</strong> +91 70177 34431</p>
-              <p><strong>Address:</strong> Awaz Vikas, Kashipur, Uttarakhand</p>
+              <p><strong>Phone:</strong> +91 93895 56890</p>
+              <p><strong>Address:</strong> Purshottam Vihar, Haridwar, Uttarakhand</p>
             </div>
           </section>
         </div>
