@@ -450,7 +450,7 @@ const ContactPage: React.FC = () => {
             <h2 className="text-2xl font-bold text-gray-800 mb-6 font-serif">Visit Our Gallery</h2>
             <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13762.5!2d79.0193!3d29.2183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a09addbd0ec5c5%3A0x1b5b5b5b5b5b5b5b!2sPurshottam%20Vihar%2C%20Kankhal%2C%20Haridwar%2C%20Uttarakhand!5e0!3m2!1sen!2sin!4v1695241684000!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13972.72219811516!2d78.1642496!3d29.9574825!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d3f1c5f5f5b5b%3A0x5a5a5a5a5a5a5a5a!2sKankhal%2C+Haridwar%2C+Uttarakhand%2C+India!5e0!3m2!1sen!2sin!4v1632748285000!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -494,4 +494,5 @@ const ContactPage: React.FC = () => {
 };
 
 export default ContactPage;
+
 
