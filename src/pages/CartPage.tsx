@@ -474,7 +474,7 @@ const CartPage: React.FC = () => {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-6">
               {items.map((item) => (
-                <div key={`${item.product.id}-${item.selectedSize}`} className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300">
+                <div key={`${item.product.id}-${item.selectedSize}`} className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-xl border border-white/20">
                   {/* Mobile Layout: Stack everything vertically */}
                   <div className="flex sm:hidden flex-col space-y-4">
                     <div className="flex items-start space-x-4">
