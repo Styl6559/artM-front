@@ -25,7 +25,7 @@ const ShopPage: React.FC = () => {
   const [itemsPerPage] = useState(12); // Show 12 products per page
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 180, behavior: 'smooth' }); // Scroll to 200px from top for better positioning
   };
 
   const handleCustomOrderNavigation = (category: string) => {
@@ -525,7 +525,10 @@ const ShopPage: React.FC = () => {
                         <Button
                           key={page}
                           variant={currentPage === page ? "primary" : "outline"}
-                          onClick={() => setCurrentPage(page)}
+                          onClick={() => {
+                            setCurrentPage(page);
+                            scrollToTop();
+                          }}
                           className="px-3 py-1 text-sm min-w-[2rem]"
                         >
                           {page}
@@ -535,7 +538,10 @@ const ShopPage: React.FC = () => {
                     
                     <Button
                       variant="outline"
-                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      onClick={() => {
+                        setCurrentPage(prev => Math.min(prev + 1, totalPages));
+                        scrollToTop();
+                      }}
                       disabled={currentPage === totalPages}
                       className="px-3 py-1 text-sm"
                     >
