@@ -140,6 +140,8 @@ const ProductDetailPage: React.FC = () => {
                   {currentMedia?.type === 'video' ? (
                     <video
                       controls
+                      autoPlay
+                      muted
                       preload="metadata"
                       className="w-full h-full object-cover cursor-pointer"
                       onClick={() => setIsFullscreen(true)}
@@ -421,8 +423,8 @@ const ProductDetailPage: React.FC = () => {
       
       {/* Fullscreen Modal */}
       {isFullscreen && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
-          <div className="relative max-w-7xl max-h-screen w-full h-full flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-95 z-50">
+          <div className="relative w-full h-full">
             {/* Close Button */}
             <button
               onClick={() => setIsFullscreen(false)}
