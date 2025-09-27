@@ -5,7 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import ImageWithSkeleton from '../components/ImageWithSkeleton';
+import OptimizedImage from '../components/OptimizedImage';
 import { paymentAPI } from '../lib/api';
 import toast from 'react-hot-toast';
 
@@ -479,11 +479,13 @@ const CartPage: React.FC = () => {
                   <div className="flex sm:hidden flex-col space-y-4">
                     <div className="flex items-start space-x-4">
                       <div className="relative">
-                        <ImageWithSkeleton
+                        <OptimizedImage
                           src={item.product.image}
                           alt={item.product.name}
                           className="w-20 h-20 object-cover rounded-lg shadow-md"
-                          skeletonClassName="w-20 h-20 rounded-lg"
+                          width={80}
+                          height={80}
+                          priority={true}
                         />
                         <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full flex items-center justify-center">
                           <span className="text-white text-xs font-bold">{item.quantity}</span>
@@ -560,11 +562,13 @@ const CartPage: React.FC = () => {
                   {/* Desktop Layout: Keep original horizontal layout */}
                   <div className="hidden sm:flex items-start space-x-4">
                     <div className="relative">
-                      <ImageWithSkeleton
+                      <OptimizedImage
                         src={item.product.image}
                         alt={item.product.name}
                         className="w-20 h-20 object-cover rounded-lg shadow-md"
-                        skeletonClassName="w-20 h-20 rounded-lg"
+                        width={80}
+                        height={80}
+                        priority={true}
                       />
                       <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-full flex items-center justify-center">
                         <span className="text-white text-xs font-bold">{item.quantity}</span>
