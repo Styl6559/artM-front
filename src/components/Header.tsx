@@ -82,13 +82,13 @@ const Header: React.FC = () => {
       description: 'Original Works',
       gradient: 'from-teal-500 to-cyan-500'
     },
-    { 
-      name: 'Apparel', 
-      href: '/shop/apparel',
-      icon: Crown,
-      description: 'Wearable Art',
-      gradient: 'from-purple-500 to-pink-500'
-    },
+    // { 
+    //   name: 'Apparel', 
+    //   href: '/shop/apparel',
+    //   icon: Crown,
+    //   description: 'Wearable Art',
+    //   gradient: 'from-purple-500 to-pink-500'
+    // },
     { 
       name: 'Accessories', 
       href: '/shop/accessories',
