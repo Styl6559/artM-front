@@ -169,7 +169,7 @@ const RefundPolicyPage: React.FC = () => {
                   className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white font-medium rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   <Mail className="w-5 h-5 mr-2" />
-                  Contact for Return/Exchange
+                  Contact for Exchange
                 </Link>
                 
                 <Link 
