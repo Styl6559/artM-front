@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useProducts } from '../context/ProductContext';
 import { Link } from 'react-router-dom';
-import { User, Calendar, Shield, Heart, ShoppingBag, Star, Palette, TrendingUp, Award, Eye, Sparkles, Brush, Camera, Crown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { User, Calendar, Shield, Heart, ShoppingBag, Star, Palette, TrendingUp, Award, Eye, Sparkles, Brush, Camera, Crown, ChevronLeft, ChevronRight, Phone, MessageCircle } from 'lucide-react';
 import Button from '../components/ui/Button';
 import ProductCard from '../components/ProductCard';
 import ProductCardSkeleton from '../components/ProductCardSkeleton';
@@ -226,7 +226,7 @@ const Dashboard: React.FC = () => {
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 overflow-hidden">
             {/* Gallery Carousel replacing Welcome Header */}
             {galleryImages.length > 0 ? (
-              <div className="relative w-full h-64 md:h-80 overflow-hidden">
+              <div className="relative w-full h-80 md:h-96 lg:h-[28rem] overflow-hidden">
                 {galleryImages.map((image, idx) => (
                   <div
                     key={image._id || idx}
@@ -260,9 +260,9 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             ) : heroLoading ? (
-              <div className="w-full h-64 md:h-80 bg-gray-200 animate-pulse rounded-lg"></div>
+              <div className="w-full h-80 md:h-96 lg:h-[28rem] bg-gray-200 animate-pulse rounded-lg"></div>
             ) : (
-              <div className="w-full h-64 md:h-80 bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 flex items-center justify-center">
+              <div className="w-full h-80 md:h-96 lg:h-[28rem] bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 flex items-center justify-center">
                 <div className="text-center text-white">
                   <Sparkles className="w-16 h-16 mx-auto mb-4 animate-pulse" />
                   <h1 className="text-3xl md:text-4xl font-bold mb-2 font-serif">Welcome to Rangleela</h1>
@@ -366,7 +366,7 @@ const Dashboard: React.FC = () => {
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+              {/* <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
                 <Link to="/shop/painting" onClick={scrollToTop} className="w-full sm:w-[180px]">
                   <Button className="group w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
                     <div className="flex items-center justify-center">
@@ -397,7 +397,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   </Button>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -474,7 +474,7 @@ const Dashboard: React.FC = () => {
               </div>
             </Link>
 
-            <Link to="/shop/apparel" onClick={scrollToTop} className="group">
+            {/* <Link to="/shop/apparel" onClick={scrollToTop} className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
                   src="https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -496,7 +496,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </Link>
+            </Link> */}
 
             <Link to="/shop/accessories" onClick={scrollToTop} className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
@@ -593,6 +593,29 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* Floating Contact Buttons */}
+      <div className="fixed right-4 bottom-4 flex flex-col gap-3 z-50">
+        {/* WhatsApp Button */}
+        <a
+          href="https://wa.me/919389556890?text=Hello!%20I'm%20interested%20in%20your%20products"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-green-500 hover:bg-green-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
+          title="Chat on WhatsApp"
+        >
+          <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
+        </a>
+        
+        {/* Call Button */}
+        <a
+          href="tel:+919389556890"
+          className="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group"
+          title="Call us"
+        >
+          <Phone className="w-6 h-6 group-hover:scale-110 transition-transform" />
+        </a>
       </div>
     </div>
   );
