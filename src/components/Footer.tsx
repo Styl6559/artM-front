@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
               <span className="text-2xl font-bold font-serif">Rangleela</span>
             </div>
             <p className="text-slate-300 text-sm leading-relaxed font-serif">
-              Discover unique paintings and artistic apparel from talented creators around India. 
+              Discover unique paintings and accessories from talented creators around India. 
               Where art meets fashion in perfect harmony.
             </p>
             <div className="flex space-x-4">
@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
                   Paintings
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link 
                   to="/shop/apparel" 
                   onClick={scrollToTop}
@@ -91,7 +91,7 @@ const Footer: React.FC = () => {
                 >
                   Apparel
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link 
                   to="/shop/accessories" 
