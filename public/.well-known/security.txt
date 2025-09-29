@@ -1,11 +1,30 @@
 Contact: mailto:rangleela0506@gmail.com
-Expires: 2025-12-31T23:59:59.000Z
+Expires: 2026-09-29T23:59:59.000Z
 Preferred-Languages: en, hi
 Canonical: https://rangleela.com/.well-known/security.txt
-Policy: https://rangleela.com/privacy-policy
+Policy: https://rangleela.com/privacy
 
-# This is a legitimate e-commerce website
-# We sell paintings, apparel, and accessories
-# All payment processing is handled by Razorpay (secure payment gateway)
-# We use Google OAuth for authentication (standard practice)
-# No malware, adware, or unwanted software is present
+# Security Policy for Rangleela E-commerce Platform
+# 
+# Scope: This security.txt applies to rangleela.com and api.rangleela.com
+# 
+# About this website:
+# - Legitimate e-commerce platform selling paintings, apparel, and accessories
+# - Frontend: rangleela.com (React/TypeScript)
+# - Backend API: api.rangleela.com (Node.js/Express)
+# - Payment processing secured by Razorpay (PCI DSS compliant)
+# - Authentication via Google OAuth 2.0 and secure email verification
+# - All user data encrypted in transit (HTTPS) and at rest
+# - Regular security updates and monitoring implemented
+# 
+# Responsible Disclosure:
+# Please report security vulnerabilities via the contact email above
+# Allow reasonable time for remediation before public disclosure
+# 
+# Out of Scope:
+# - Social engineering attacks
+# - Physical attacks
+# - Denial of Service (DoS/DDoS)
+# - Issues in third-party services (Razorpay, Google, Cloudinary)
+# 
+# Thank you for helping us maintain a secure platform
