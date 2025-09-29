@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# Security scanners
+# Security scanners and malicious bots
 User-agent: Nikto
 Disallow: /
 
@@ -11,11 +11,38 @@ Disallow: /
 User-agent: w3af
 Disallow: /
 
+User-agent: Nmap
+Disallow: /
+
+User-agent: masscan
+Disallow: /
+
+User-agent: ZmEu
+Disallow: /
+
+# Bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
 # Sitemap
 Sitemap: https://rangleela.com/sitemap.xml
 
 # Prevent access to sensitive areas
 Disallow: /admin/
-Disallow: /api/
 Disallow: /.env
 Disallow: /server/
+Disallow: /config/
+Disallow: /logs/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /.gitignore
+Disallow: /README.md
+
+# Crawl-delay for heavy crawlers
+User-agent: *
+Crawl-delay: 1
