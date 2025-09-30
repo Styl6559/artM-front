@@ -537,24 +537,53 @@ const Dashboard: React.FC = () => {
         </div>
 
 
-        {/* Soulful Banner Section */}
+        {/* Soulful Banner Section (responsive) */}
         <div className="mb-10">
-          <Link to="/about" onClick={scrollToTop} className="block group">
+          <Link to="/about" onClick={scrollToTop} className="block">
             <div className="relative w-full h-56 md:h-64 lg:h-72 rounded-2xl overflow-hidden shadow-xl border border-white/20">
               <img
-                src="https://images.pexels.com/photos/102127/pexels-photo-102127.jpeg?auto=compress&w=800&h=400&fit=crop"
+                src="https://images.pexels.com/photos/102127/pexels-photo-102127.jpeg?auto=compress&w=1600&h=800&fit=crop"
                 alt="Pastel hand-painted canvas banner"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover object-center transition-all duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/70 via-blue-600/60 to-purple-600/70 opacity-80"></div>
-              <div className="absolute inset-0 flex flex-col justify-center items-center px-6 text-center">
-                <h2 className="text-2xl md:text-3xl font-bold text-white font-serif mb-4 drop-shadow-lg">Discover Rangleela's Artistic World</h2>
-                <ul className="text-lg md:text-xl text-white/90 font-light space-y-2 drop-shadow">
-                  <li>Soulful paintings – from mini collectibles to large canvases</li>
-                  <li>Hand-painted wooden articles – magnets, coasters, bookmarks & boxes</li>
-                  <li>Customized artistic apparels and accessories</li>
-                </ul>
-                <span className="mt-6 inline-block bg-white/20 text-white font-medium px-5 py-2 rounded-full shadow-lg border border-white/30 group-hover:bg-white/30 transition">Learn More</span>
+
+              {/* Gradient overlay to ensure text contrast */}
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/60 via-blue-600/40 to-purple-600/60"></div>
+
+              {/* Desktop / md+: centered card */}
+              <div className="hidden md:flex absolute inset-y-0 inset-x-0 items-center px-4 md:px-8 lg:px-12">
+                <div className="w-full max-w-2xl mx-auto bg-white/10 backdrop-blur-sm text-left rounded-2xl p-6 md:p-8 lg:p-10 border border-white/20">
+                  <h2 className="text-2xl md:text-3xl font-bold text-white font-serif mb-3 drop-shadow">Discover Rangleela's Artistic World</h2>
+                  <ul className="text-sm md:text-base text-white/95 font-light space-y-1.5">
+                    <li>Soulful paintings – from mini collectibles to large canvases</li>
+                    <li>Hand-painted wooden articles – magnets, coasters, bookmarks & boxes</li>
+                    <li>Customized artistic apparels and accessories</li>
+                  </ul>
+                  <div className="mt-4">
+                    <span className="inline-block bg-white/20 text-white font-medium px-4 py-2 rounded-full shadow-sm border border-white/25">Learn More</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile: compact bottom sheet style */}
+              <div className="md:hidden absolute left-0 right-0 bottom-0 px-4 pb-4">
+                <div className="w-full bg-white/95 rounded-xl p-3 shadow-lg border border-gray-100">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0">
+                      <div className="w-10 h-10 rounded-md bg-emerald-100 flex items-center justify-center text-emerald-600">
+                        <Palette className="w-5 h-5" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-base font-semibold text-gray-800">Discover Rangleela's Artistic World</h3>
+                      <p className="text-sm text-gray-600 mt-1">Soulful paintings, hand-painted wooden articles, and customized apparels.</p>
+                      <div className="mt-3 flex gap-2">
+                        <span className="inline-block bg-emerald-600 text-white text-sm px-3 py-1 rounded-full">Learn More</span>
+                        <span className="inline-block text-sm text-gray-500 px-3 py-1 rounded-full">Explore</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </Link>
