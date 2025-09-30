@@ -380,7 +380,7 @@ const Dashboard: React.FC = () => {
               </div>
 
               {/* CTA Buttons */}
-              {/* <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
                 <Link to="/shop/painting" onClick={scrollToTop} className="w-full sm:w-[180px]">
                   <Button className="group w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
                     <div className="flex items-center justify-center">
@@ -391,7 +391,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   </Button>
                 </Link>
-                <Link to="/shop/apparel" onClick={scrollToTop} className="w-full sm:w-[180px]">
+                {/* <Link to="/shop/apparel" onClick={scrollToTop} className="w-full sm:w-[180px]">
                   <Button className="group w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
                     <div className="flex items-center justify-center">
                       <div className="mr-2 p-1 bg-white/20 rounded-full group-hover:bg-white/30 transition-colors">
@@ -400,7 +400,7 @@ const Dashboard: React.FC = () => {
                       <span className="font-medium whitespace-nowrap">Shop Apparel</span>
                     </div>
                   </Button>
-                </Link> 
+                </Link> */}
                 <Link to="/shop/accessories" onClick={scrollToTop} className="w-full sm:w-[180px]">
                   <Button className="group w-full bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
                     <div className="flex items-center justify-center">
@@ -414,7 +414,7 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
 
         {/* Stats Cards - Only show if authenticated */}
         {isAuthenticated && stats.length > 0 && (
