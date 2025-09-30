@@ -1,3 +1,99 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom Scrollbar - Website Theme */
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 50%, #8b5cf6 100%);
+  border-radius: 6px;
+  border: 2px solid #f8fafc;
+  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.2);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0f766e 0%, #0284c7 50%, #7c3aed 100%);
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+  transform: scale(1.02);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(135deg, #0d5d56 0%, #0369a1 50%, #6d28d9 100%);
+  box-shadow: 0 2px 6px rgba(20, 184, 166, 0.4);
+}
+
+::-webkit-scrollbar-corner {
+  background: #f8fafc;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #14b8a6 #f1f5f9;
+}
+
+/* Custom scrollbar for specific containers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(248, 250, 252, 0.8);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #14b8a6, #0ea5e9);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #0f766e, #0284c7);
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Artistic scrollbar variant for special sections */
+.scrollbar-artistic::-webkit-scrollbar {
+  width: 14px;
+}
+
+.scrollbar-artistic::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #fef3f2 0%, #fdf2f8 50%, #f0f9ff 100%);
+  border-radius: 7px;
+  border: 1px solid #e5e7eb;
+}
+
+.scrollbar-artistic::-webkit-scrollbar-thumb {
+  background: conic-gradient(from 0deg, #14b8a6, #0ea5e9, #8b5cf6, #f59e0b, #f43f5e, #14b8a6);
+  border-radius: 7px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 3px 12px rgba(139, 92, 246, 0.3);
+}
+
+.scrollbar-artistic::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+  transform: scale(1.05);
+}
