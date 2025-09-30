@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useProducts } from '../context/ProductContext';
@@ -10,14 +10,18 @@ import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import ImageWithSkeleton from '../components/ImageWithSkeleton';
 import { formatDate } from '../lib/utils';
 
+// Memoized skeleton arrays to prevent recreation
+const GALLERY_SKELETON_ITEMS = Array.from({ length: 3 }, (_, i) => i);
+const PRODUCT_SKELETON_ITEMS = Array.from({ length: 4 }, (_, i) => i);
+
 const Dashboard: React.FC = () => {
   const { user, isAuthenticated } = useAuth();
   const { wishlist, getTotalItems } = useCart();
   const { products, featuredProducts, isLoading, error } = useProducts();
 
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
   // Memoize derived data to prevent unnecessary recalculations
   const { newArrivals, paintingProducts, apparelProducts, accessoryProducts } = useMemo(() => {
@@ -179,7 +183,15 @@ const Dashboard: React.FC = () => {
   }, []);
 
   // Gallery images (category: 'gallery') for auto-scroll carousel
-  const galleryImages = heroImages.filter(img => img.category === 'gallery');
+  const galleryImages = useMemo(() => 
+    heroImages.filter(img => img.category === 'gallery'), 
+    [heroImages]
+  );
+  
+  const heroGalleryCards = useMemo(() => 
+    heroImages.filter(img => img.category !== 'gallery'), 
+    [heroImages]
+  );
   
   // Auto-scroll for gallery carousel
   useEffect(() => {
@@ -190,7 +202,7 @@ const Dashboard: React.FC = () => {
     return () => clearInterval(interval);
   }, [galleryImages.length]);
 
-  const scrollGallery = (direction: 'left' | 'right') => {
+  const scrollGallery = useCallback((direction: 'left' | 'right') => {
     const gallery = document.getElementById('hero-gallery');
     if (gallery) {
       const scrollAmount = 320; // Width of one card plus gap
@@ -199,7 +211,7 @@ const Dashboard: React.FC = () => {
         behavior: 'smooth'
       });
     }
-  };
+  }, []);
 
   if (error) {
     return (
@@ -226,7 +238,7 @@ const Dashboard: React.FC = () => {
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 overflow-hidden">
             {/* Gallery Carousel replacing Welcome Header */}
             {galleryImages.length > 0 ? (
-              <div className="relative w-full h-80 md:h-96 lg:h-[28rem] overflow-hidden">
+              <div className="relative w-full h-80 sm:h-80 md:h-96 lg:h-[32rem] xl:h-[36rem] overflow-hidden">
                 {galleryImages.map((image, idx) => (
                   <div
                     key={image._id || idx}
@@ -237,7 +249,8 @@ const Dashboard: React.FC = () => {
                     <img
                       src={image.image}
                       alt={image.title || 'Gallery Image'}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-center"
+                      style={{ objectPosition: 'center top' }}
                     />
                     {/* Simple gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10"></div>
@@ -260,9 +273,9 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
             ) : heroLoading ? (
-              <div className="w-full h-80 md:h-96 lg:h-[28rem] bg-gray-200 animate-pulse rounded-lg"></div>
+              <div className="w-full h-80 sm:h-80 md:h-96 lg:h-[32rem] xl:h-[36rem] bg-gray-200 animate-pulse rounded-lg"></div>
             ) : (
-              <div className="w-full h-80 md:h-96 lg:h-[28rem] bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 flex items-center justify-center">
+              <div className="w-full h-80 sm:h-80 md:h-96 lg:h-[32rem] xl:h-[36rem] bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-500 flex items-center justify-center">
                 <div className="text-center text-white">
                   <Sparkles className="w-16 h-16 mx-auto mb-4 animate-pulse" />
                   <h1 className="text-3xl md:text-4xl font-bold mb-2 font-serif">Welcome to Rangleela</h1>
@@ -297,23 +310,22 @@ const Dashboard: React.FC = () => {
               <div className="relative">
                 <div
                   id="hero-gallery"
-                  className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-2"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  className="flex gap-4 overflow-x-auto custom-scrollbar scroll-smooth pb-2"
                 >
                   {heroLoading ? (
                     // Show 3 skeleton cards matching the gallery card size
-                    Array.from({ length: 3 }).map((_, i) => (
+                    GALLERY_SKELETON_ITEMS.map((i) => (
                       <div key={i} className="group flex-shrink-0 w-80 relative">
                         <div className="relative overflow-hidden rounded-lg shadow-xl transition-all duration-500">
-                          <div className="w-full h-48 bg-gray-200/60 animate-pulse rounded-lg" />
+                          <div className="w-full h-48 sm:h-48 md:h-52 bg-gray-200/60 animate-pulse rounded-lg" />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/5 to-transparent rounded-lg"></div>
                         </div>
                       </div>
                     ))
-                  ) : heroImages.filter(img => img.category !== 'gallery').length === 0 ? (
+                  ) : heroGalleryCards.length === 0 ? (
                     <div className="w-full text-center py-8 text-gray-400">Please check your connection</div>
                   ) : (
-                    heroImages.filter(img => img.category !== 'gallery').map((image, index) => (
+                    heroGalleryCards.map((image, index) => (
                       <Link
                         key={image._id || index}
                         to={image.link || `/shop/${image.category || 'painting'}`}
@@ -323,8 +335,8 @@ const Dashboard: React.FC = () => {
                           <ImageWithSkeleton
                             src={image.image}
                             alt={image.title}
-                            className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
-                            skeletonClassName="w-full h-48"
+                            className="w-full h-48 sm:h-48 md:h-52 object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                            skeletonClassName="w-full h-48 sm:h-48 md:h-52"
                           />
                           {/* Gradient Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
@@ -408,7 +420,7 @@ const Dashboard: React.FC = () => {
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="bg-white/80 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 p-6 hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                className="bg-white/80 backdrop-blur-sm rounded-lg border border-white/20 p-6 transition-all duration-300"
               >
                 <div className="flex items-center">
                   <div className={`p-3 rounded-lg ${stat.bgColor} shadow-lg`}>
@@ -468,7 +480,7 @@ const Dashboard: React.FC = () => {
                   <p className="text-white/90 text-sm mb-2">Unique artworks from talented artists</p>
                   <div className="flex items-center text-yellow-300 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">
                     <Eye className="w-4 h-4 mr-1" />
-                    <span className="text-sm font-medium">View Collection ({paintingProducts.length} items)</span>
+                    <span className="text-sm font-medium">View Collection</span>
                   </div>
                 </div>
               </div>
@@ -516,7 +528,7 @@ const Dashboard: React.FC = () => {
                   <p className="text-white/90 text-sm mb-2">Complete your look with artistic flair</p>
                   <div className="flex items-center text-yellow-300 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1">
                     <Eye className="w-4 h-4 mr-1" />
-                    <span className="text-sm font-medium">Discover ({accessoryProducts.length} items)</span>
+                    <span className="text-sm font-medium">Discover Items</span>
                   </div>
                 </div>
               </div>
@@ -525,6 +537,28 @@ const Dashboard: React.FC = () => {
         </div>
 
 
+        {/* Soulful Banner Section */}
+        <div className="mb-10">
+          <Link to="/about" onClick={scrollToTop} className="block group">
+            <div className="relative w-full h-56 md:h-64 lg:h-72 rounded-2xl overflow-hidden shadow-xl border border-white/20">
+              <img
+                src="https://images.pexels.com/photos/102127/pexels-photo-102127.jpeg?auto=compress&w=800&h=400&fit=crop"
+                alt="Pastel hand-painted canvas banner"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/70 via-blue-600/60 to-purple-600/70 opacity-80"></div>
+              <div className="absolute inset-0 flex flex-col justify-center items-center px-6 text-center">
+                <h2 className="text-2xl md:text-3xl font-bold text-white font-serif mb-4 drop-shadow-lg">Discover Rangleela's Artistic World</h2>
+                <ul className="text-lg md:text-xl text-white/90 font-light space-y-2 drop-shadow">
+                  <li>Soulful paintings – from mini collectibles to large canvases</li>
+                  <li>Hand-painted wooden articles – magnets, coasters, bookmarks & boxes</li>
+                  <li>Customized artistic apparels and accessories</li>
+                </ul>
+                <span className="mt-6 inline-block bg-white/20 text-white font-medium px-5 py-2 rounded-full shadow-lg border border-white/30 group-hover:bg-white/30 transition">Learn More</span>
+              </div>
+            </div>
+          </Link>
+        </div>
         {/* New Arrivals Section */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-6">
@@ -540,7 +574,7 @@ const Dashboard: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {isLoading ? (
-              [...Array(4)].map((_, i) => <ProductCardSkeleton key={i} />)
+              PRODUCT_SKELETON_ITEMS.map((i) => <ProductCardSkeleton key={i} />)
             ) : newArrivals.length > 0 ? (
               newArrivals.slice(0, 4).map((product) => (
                 <ProductCard key={product.id} product={product} />
@@ -568,7 +602,7 @@ const Dashboard: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
+            <div className="text-center group">
               <div className="bg-gradient-to-r from-emerald-100 to-emerald-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:shadow-xl transition-shadow">
                 <Palette className="w-6 h-6 text-emerald-600" />
               </div>
@@ -576,7 +610,7 @@ const Dashboard: React.FC = () => {
               <p className="text-gray-600 text-sm">Modern abstract paintings with bold colors</p>
             </div>
             
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
+            <div className="text-center group">
               <div className="bg-gradient-to-r from-orange-100 to-orange-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:shadow-xl transition-shadow">
                 <Star className="w-6 h-6 text-orange-600" />
               </div>
@@ -584,7 +618,7 @@ const Dashboard: React.FC = () => {
               <p className="text-gray-600 text-sm">Exclusive limited edition pieces</p>
             </div>
             
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
+            <div className="text-center group">
               <div className="bg-gradient-to-r from-green-100 to-green-200 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3 shadow-lg group-hover:shadow-xl transition-shadow">
                 <Award className="w-6 h-6 text-green-600" />
               </div>
