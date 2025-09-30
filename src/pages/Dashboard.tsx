@@ -323,7 +323,7 @@ const Dashboard: React.FC = () => {
                       </div>
                     ))
                   ) : heroGalleryCards.length === 0 ? (
-                    <div className="w-full text-center py-8 text-gray-400">Please check your connection</div>
+                    <div className="w-full text-center py-8 text-gray-400">...</div>
                   ) : (
                     heroGalleryCards.map((image, index) => (
                       <Link
@@ -378,7 +378,7 @@ const Dashboard: React.FC = () => {
               </div>
 
               {/* CTA Buttons */}
-              {/* <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
                 <Link to="/shop/painting" onClick={scrollToTop} className="w-full sm:w-[180px]">
                   <Button className="group w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
                     <div className="flex items-center justify-center">
@@ -389,7 +389,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   </Button>
                 </Link>
-                <Link to="/shop/apparel" onClick={scrollToTop} className="w-full sm:w-[180px]">
+                {/* <Link to="/shop/apparel" onClick={scrollToTop} className="w-full sm:w-[180px]">
                   <Button className="group w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
                     <div className="flex items-center justify-center">
                       <div className="mr-2 p-1 bg-white/20 rounded-full group-hover:bg-white/30 transition-colors">
@@ -398,7 +398,7 @@ const Dashboard: React.FC = () => {
                       <span className="font-medium whitespace-nowrap">Shop Apparel</span>
                     </div>
                   </Button>
-                </Link>
+                </Link> */}
                 <Link to="/shop/accessories" onClick={scrollToTop} className="w-full sm:w-[180px]">
                   <Button className="group w-full bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 text-white px-6 py-3 shadow-xl hover:shadow-2xl transition-all duration-300">
                     <div className="flex items-center justify-center">
@@ -409,7 +409,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   </Button>
                 </Link>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
@@ -459,7 +459,7 @@ const Dashboard: React.FC = () => {
         )}
 
         {/* Featured Categories */}
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center font-serif bg-gradient-to-r from-emerald-600 to-purple-600 bg-clip-text text-transparent">Shop by Category</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Link to="/shop/painting" onClick={scrollToTop} className="group">
@@ -486,7 +486,7 @@ const Dashboard: React.FC = () => {
               </div>
             </Link>
 
-            {/* <Link to="/shop/apparel" onClick={scrollToTop} className="group">
+            <Link to="/shop/apparel" onClick={scrollToTop} className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
                 <ImageWithSkeleton
                   src="https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=800"
@@ -508,7 +508,7 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </Link> */}
+            </Link>
 
             <Link to="/shop/accessories" onClick={scrollToTop} className="group">
               <div className="relative overflow-hidden rounded-lg shadow-2xl hover:shadow-3xl transition-all duration-500">
@@ -534,7 +534,7 @@ const Dashboard: React.FC = () => {
               </div>
             </Link>
           </div>
-        </div>
+        </div> */}
 
 
         {/* Soulful Banner Section (responsive) */}
