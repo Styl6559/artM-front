@@ -411,10 +411,10 @@ const Dashboard: React.FC = () => {
                     </div>
                   </Button>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
-        </div> */}
+        </div>
 
         {/* Stats Cards - Only show if authenticated */}
         {isAuthenticated && stats.length > 0 && (
