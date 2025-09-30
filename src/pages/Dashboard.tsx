@@ -240,11 +240,13 @@ const Dashboard: React.FC = () => {
             {galleryImages.length > 0 ? (
               <div className="relative w-full h-80 sm:h-80 md:h-96 lg:h-[32rem] xl:h-[36rem] overflow-hidden">
                 {galleryImages.map((image, idx) => (
-                  <div
+                  <Link
                     key={image._id || idx}
+                    to="/shop/painting"
+                    onClick={scrollToTop}
                     className={`absolute inset-0 transition-opacity duration-1000 ${
                       idx === galleryIndex ? 'opacity-100' : 'opacity-0'
-                    }`}
+                    } cursor-pointer`}
                   >
                     <img
                       src={image.image}
@@ -254,7 +256,7 @@ const Dashboard: React.FC = () => {
                     />
                     {/* Simple gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10"></div>
-                  </div>
+                  </Link>
                 ))}
                 
                 {/* Dots indicator */}
