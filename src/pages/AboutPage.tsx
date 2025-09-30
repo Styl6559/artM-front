@@ -36,8 +36,8 @@ const AboutPage: React.FC = () => {
             About Rangleela
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto font-light leading-relaxed">
-            We're passionate about connecting art lovers with talented creators across India, bringing unique paintings 
-            and artistic apparel to people who appreciate the beauty of handcrafted art.
+            Rangleela is not just a brand, it's a celebration of art, creativity, and culture. 
+            Every product we create is hand-painted with care, passion, and imagination, turning everyday objects into treasures that inspire joy.
           </p>
         </div>
 
@@ -45,16 +45,15 @@ const AboutPage: React.FC = () => {
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-4 font-serif">Our Mission</h2>
+              <h2 className="text-3xl font-bold text-gray-800 mb-4 font-serif">Our Story & Mission</h2>
               <p className="text-gray-600 mb-6 font-light leading-relaxed">
-                At Rangleela, we believe that art has the power to transform spaces, inspire emotions, 
-                and connect people across cultures. Our mission is to create a platform where Indian artists can 
-                showcase their work and art enthusiasts can discover pieces that speak to their souls.
+                From vibrant decor pieces to unique accessories and artistic apparels, our collection blends tradition with modern expression. 
+                Each stroke of colour at Rangleela carries a message of love, positivity, and individuality. 
+                Our creations aren't mass-produced – they are one-of-a-kind artworks designed to brighten spaces, uplift moods, and make memories special.
               </p>
               <p className="text-gray-600 font-light leading-relaxed">
-                We're committed to supporting independent artists across India and providing them with the tools and 
-                platform they need to reach a wider audience while maintaining the authenticity and 
-                personal touch that makes their work special.
+                We believe that art should be a part of everyday life, not confined to galleries and museums. 
+                That's why we transform ordinary objects into extraordinary canvases, bringing color, joy, and meaning to your daily routine.
               </p>
             </div>
             <div className="relative">
@@ -70,15 +69,15 @@ const AboutPage: React.FC = () => {
 
         {/* Values Section */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-800 text-center mb-12 font-serif">Our Values</h2>
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-12 font-serif">What We Offer</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 hover:scale-105 transition-all duration-300">
               <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Palette className="w-8 h-8 text-emerald-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Authenticity</h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Soulful Paintings</h3>
               <p className="text-gray-600 font-light">
-                Every piece in our collection is carefully curated to ensure authenticity and quality from Indian artists.
+                From mini collectibles to large canvases – every piece is meticulously hand-painted, making each artwork truly one-of-a-kind.
               </p>
             </div>
             
@@ -86,9 +85,9 @@ const AboutPage: React.FC = () => {
               <div className="bg-gradient-to-br from-orange-100 to-orange-200 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Heart className="w-8 h-8 text-orange-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Passion</h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Hand-Painted Wooden Articles</h3>
               <p className="text-gray-600 font-light">
-                We're driven by our love for Indian art and our commitment to supporting creative communities.
+                Beautiful magnets, coasters, bookmarks & boxes that tell your story and reflect your personality through the magic of art.
               </p>
             </div>
             
@@ -96,9 +95,9 @@ const AboutPage: React.FC = () => {
               <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Users className="w-8 h-8 text-blue-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Community</h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Thoughtful Gifting Options</h3>
               <p className="text-gray-600 font-light">
-                Building connections between artists and art lovers across India is at the heart of what we do.
+                Gifts that carry warmth and meaning, bringing your creative visions to life with artistic flair.
               </p>
             </div>
             
@@ -106,59 +105,70 @@ const AboutPage: React.FC = () => {
               <div className="bg-gradient-to-br from-purple-100 to-purple-200 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Award className="w-8 h-8 text-purple-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Excellence</h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Customized Artistic Apparels</h3>
               <p className="text-gray-600 font-light">
-                We strive for excellence in every aspect of our service, from curation to customer care.
+                Unique accessories and artistic apparels that celebrate traditional art techniques while embracing contemporary creativity.
               </p>
             </div>
           </div>
         </div>
 
         {/* Story Section */}
-        <div className="bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 rounded-2xl p-8 text-white mb-12 shadow-2xl">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6 font-serif">Our Story</h2>
-            <p className="text-lg text-white/90 mb-6 font-light leading-relaxed">
-              Founded in 2024, Rangleela began as a passionate project to connect talented Indian artists 
-              with art enthusiasts across the country. What started as a vision to celebrate India's rich artistic heritage 
-              has grown into a thriving platform that showcases creativity and craftsmanship.
-            </p>
-            <p className="text-lg text-white/90 font-light leading-relaxed">
-              Today, we're proud to work with dozens of artists from across India, offering 
-              everything from traditional paintings to contemporary artistic apparel. Our commitment to quality, 
-              authenticity, and community remains unchanged as we continue to grow.
-            </p>
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+            <div>
+              <p className="text-gray-600 mb-6 font-light leading-relaxed">
+                At Rangleela, we believe that every object has the potential to become a canvas for creativity. 
+                Our journey began with a simple yet powerful idea: to transform the mundane into the magnificent through 
+                the timeless art of hand-painting. Each brushstroke tells a story, each color carries emotion, 
+                and each finished piece becomes a unique expression of artistry.
+              </p>
+              <p className="text-gray-600 font-light leading-relaxed">
+                Each stroke of colour at Rangleela carries a message of love, positivity, and individuality. 
+                Our creations aren't mass-produced – they are one-of-a-kind artworks designed to brighten spaces, uplift moods, and make memories special. 
+                Rangleela – Spreading smiles, one brushstroke at a time.
+              </p>
+            </div>
+            <div className="relative flex flex-col items-center">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-2xl blur-2xl opacity-20"></div>
+              <img
+                src="https://images.pexels.com/photos/1438761/pexels-photo-1438761.jpeg?auto=compress&w=600&h=400&fit=crop"
+                alt="Hand-painted art in progress"
+                className="relative rounded-2xl shadow-xl"
+              />
+              <h2 className="text-2xl font-bold text-gray-800 mt-4 font-serif text-center">Spreading Smiles, One Brushstroke at a Time</h2>
+            </div>
           </div>
         </div>
 
         {/* Team Section */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-800 text-center mb-12 font-serif">Meet Our Team</h2>
+          <h2 className="text-3xl font-bold text-gray-800 text-center mb-12 font-serif">Our Creative Process</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 hover:scale-105 transition-all duration-300">
               <div className="w-32 h-32 bg-gradient-to-br from-emerald-200 to-blue-200 rounded-full mx-auto mb-6 shadow-lg"></div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Rangleela Team</h3>
-              <p className="text-emerald-600 font-medium mb-3">Founder & Curator</p>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Master Artisans</h3>
+              <p className="text-emerald-600 font-medium mb-3">Skilled Craftspeople</p>
               <p className="text-gray-600 text-sm font-light">
-                Art enthusiasts passionate about promoting Indian creativity and connecting artists with art lovers.
+                Our talented artisans bring years of experience and passion to every hand-painted creation, ensuring exceptional quality.
               </p>
             </div>
             
             <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 hover:scale-105 transition-all duration-300">
               <div className="w-32 h-32 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full mx-auto mb-6 shadow-lg"></div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Art Curation</h3>
-              <p className="text-blue-600 font-medium mb-3">Quality & Authenticity</p>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Custom Design</h3>
+              <p className="text-blue-600 font-medium mb-3">Personalization Experts</p>
               <p className="text-gray-600 text-sm font-light">
-                Dedicated team ensuring every piece meets our high standards of quality and artistic value.
+                We work closely with you to bring your vision to life, creating truly personalized pieces that reflect your unique style.
               </p>
             </div>
             
             <div className="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 hover:scale-105 transition-all duration-300">
               <div className="w-32 h-32 bg-gradient-to-br from-purple-200 to-pink-200 rounded-full mx-auto mb-6 shadow-lg"></div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Artist Relations</h3>
-              <p className="text-purple-600 font-medium mb-3">Community Support</p>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2 font-serif">Quality Assurance</h3>
+              <p className="text-purple-600 font-medium mb-3">Excellence Standards</p>
               <p className="text-gray-600 text-sm font-light">
-                Supporting and nurturing relationships with talented artists across India.
+                Every piece undergoes careful quality checks to ensure it meets our high standards before reaching you.
               </p>
             </div>
           </div>
