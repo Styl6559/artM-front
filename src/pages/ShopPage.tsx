@@ -28,7 +28,6 @@ const ShopPage: React.FC = () => {
   }
 
   const validCategory = category as ValidCategory | undefined;
-  const { products, isLoading } = useProducts();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('name');
   const [priceRange, setPriceRange] = useState([0, 10000]);
