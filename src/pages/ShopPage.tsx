@@ -7,10 +7,27 @@ import ProductCard from '../components/ProductCard';
 import ProductCardSkeleton from '../components/ProductCardSkeleton';
 import Button from '../components/ui/Button';
 import SEO from '../components/SEO';
+import NotFoundPage from './NotFoundPage';
+
+const VALID_CATEGORIES = ['painting', 'apparel', 'accessories'] as const;
+type ValidCategory = typeof VALID_CATEGORIES[number];
 
 const ShopPage: React.FC = () => {
-  const { category } = useParams<{ category: 'painting' | 'apparel' | 'accessories' }>();
+  const { category } = useParams<{ category: string }>();
   const navigate = useNavigate();
+  const { products, isLoading } = useProducts();
+
+  // Validate category parameter
+  const isValidCategory = (cat: string | undefined): cat is ValidCategory => {
+    return cat !== undefined && VALID_CATEGORIES.includes(cat as ValidCategory);
+  };
+
+  // If category is invalid, show 404 page
+  if (category && !isValidCategory(category)) {
+    return <NotFoundPage />;
+  }
+
+  const validCategory = category as ValidCategory | undefined;
   const { products, isLoading } = useProducts();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('name');
@@ -38,8 +55,8 @@ const ShopPage: React.FC = () => {
 
   // Memoize filtered and sorted products
   const filteredProducts = useMemo(() => {
-    let filtered = category 
-      ? products.filter(p => p.category === category)
+    let filtered = validCategory 
+      ? products.filter(p => p.category === validCategory)
       : products;
 
     // Filter by search query (name only)
@@ -110,7 +127,7 @@ const ShopPage: React.FC = () => {
     });
 
     return filtered;
-  }, [products, category, debouncedSearchQuery, priceRange, sortBy, discountFilter, ratingFilter, discountRange, ratingRange]);
+  }, [products, validCategory, debouncedSearchQuery, priceRange, sortBy, discountFilter, ratingFilter, discountRange, ratingRange]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -123,21 +140,21 @@ const ShopPage: React.FC = () => {
     setCurrentPage(1);
   }, [debouncedSearchQuery, priceRange, sortBy, discountFilter, ratingFilter, discountRange, ratingRange]);
 
-  const categoryTitle = category === 'painting' ? 'Original Paintings' 
-    : category === 'apparel' ? 'Designer Apparel' 
-    : category === 'accessories' ? 'Artistic Accessories'
+  const categoryTitle = validCategory === 'painting' ? 'Original Paintings' 
+    : validCategory === 'apparel' ? 'Designer Apparel' 
+    : validCategory === 'accessories' ? 'Artistic Accessories'
     : 'All Products';
-  const categoryDescription = category === 'painting' 
+  const categoryDescription = validCategory === 'painting' 
     ? 'Discover unique paintings from around the world' 
-    : category === 'apparel' 
+    : validCategory === 'apparel' 
     ? 'Fashion-forward designs'
-    : category === 'accessories'
+    : validCategory === 'accessories'
     ? 'Complete your look with artistic accessories'
     : 'Browse our complete collection';
 
-  const categoryIcon = category === 'painting' ? Palette 
-    : category === 'apparel' ? Crown 
-    : category === 'accessories' ? Star 
+  const categoryIcon = validCategory === 'painting' ? Palette 
+    : validCategory === 'apparel' ? Crown 
+    : validCategory === 'accessories' ? Star 
     : Sparkles;
 
   if (isLoading) {
@@ -161,23 +178,23 @@ const ShopPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-purple-50 to-indigo-100">
       <SEO 
-        title={category 
-          ? `${category.charAt(0).toUpperCase() + category.slice(1)} Collection - RangLeela`
+        title={validCategory 
+          ? `${validCategory.charAt(0).toUpperCase() + validCategory.slice(1)} Collection - RangLeela`
           : "Shop All Products - RangLeela | Paintings, Apparel & Accessories"
         }
-        description={category 
-          ? `Explore our exclusive ${category} collection. ${
-              category === 'painting' ? 'Unique handcrafted paintings by Indian artists.' :
-              category === 'apparel' ? 'Artistic clothing and fashion apparel.' :
+        description={validCategory 
+          ? `Explore our exclusive ${validCategory} collection. ${
+              validCategory === 'painting' ? 'Unique handcrafted paintings by Indian artists.' :
+              validCategory === 'apparel' ? 'Artistic clothing and fashion apparel.' :
               'Beautiful accessories to complement your style.'
             }`
           : "Shop unique paintings, artistic apparel, and accessories from talented Indian creators. Discover authentic handcrafted items where creativity meets style."
         }
-        keywords={category 
-          ? `${category}, ${category} online, buy ${category}, Indian ${category}, handmade ${category}, RangLeela`
+        keywords={validCategory 
+          ? `${validCategory}, ${validCategory} online, buy ${validCategory}, Indian ${validCategory}, handmade ${validCategory}, RangLeela`
           : "paintings, apparel, accessories, art, fashion, handmade, Indian art, creative clothing"
         }
-        url={`https://rangleela.com/shop${category ? `/${category}` : ''}`}
+        url={validCategory ? `https://rangleela.com/shop/${validCategory}` : "https://rangleela.com/shop"}
       />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
