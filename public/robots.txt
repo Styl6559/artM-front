@@ -1,6 +1,35 @@
 User-agent: *
 Allow: /
 
+# Allow crawling of important pages
+Allow: /dashboard
+Allow: /shop/*
+Allow: /product/*
+Allow: /about
+Allow: /contact
+Allow: /help
+Allow: /privacy
+Allow: /terms
+Allow: /shipping
+Allow: /refund-policy
+
+# Disallow admin and private pages
+Disallow: /admin/*
+Disallow: /login
+Disallow: /register
+Disallow: /verify
+Disallow: /profile
+Disallow: /my-orders
+Disallow: /cart
+Disallow: /wishlist
+Disallow: /search
+
+# Crawl delay to be respectful
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://rangleela.com/sitemap.xml
+
 # Security scanners and malicious bots
 User-agent: Nikto
 Disallow: /
