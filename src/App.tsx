@@ -25,6 +25,7 @@ import ContactPage from './pages/ContactPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsOfServicePage from './pages/TermsOfServicePage';
 import RefundPolicyPage from './pages/RefundPolicyPage';
+import NotFoundPage from './pages/NotFoundPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
 import AdminOrders from './pages/admin/AdminOrders';
@@ -159,8 +160,8 @@ function App() {
                             </ProtectedRoute>
                           } />
                           
-                          {/* Catch-all route - redirect unknown routes to dashboard */}
-                          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                          {/* Catch-all route - show 404 page for unknown routes */}
+                          <Route path="*" element={<NotFoundPage />} />
                         </Routes>
                       </main>
                       <Footer />
