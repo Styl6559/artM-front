@@ -7,7 +7,6 @@ import AdminRoute from './components/AdminRoute';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CookieConsent from './components/CookieConsent';
-import LoadingSpinner from './components/ui/LoadingSpinner';
 
 // Lazy load all page components
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
@@ -72,49 +71,49 @@ function App() {
               <div className="App min-h-screen flex flex-col">
                 <Routes>
                   {/* Auth Routes */}
-                  <Route path="/login" element={<Suspense fallback={<LoadingSpinner />}><LoginPage /></Suspense>} />
-                  <Route path="/register" element={<Suspense fallback={<LoadingSpinner />}><RegisterPage /></Suspense>} />
-                  <Route path="/verify" element={<Suspense fallback={<LoadingSpinner />}><VerifyPage /></Suspense>} />
+                  <Route path="/login" element={<Suspense fallback={null}><LoginPage /></Suspense>} />
+                  <Route path="/register" element={<Suspense fallback={null}><RegisterPage /></Suspense>} />
+                  <Route path="/verify" element={<Suspense fallback={null}><VerifyPage /></Suspense>} />
                   
                   {/* Admin Routes */}
                   <Route path="/admin" element={
                     <AdminRoute>
-                      <Suspense fallback={<LoadingSpinner />}>
+                      <Suspense fallback={null}>
                         <AdminDashboard />
                       </Suspense>
                     </AdminRoute>
                   } />
                   <Route path="/admin/products" element={
                     <AdminRoute>
-                      <Suspense fallback={<LoadingSpinner />}>
+                      <Suspense fallback={null}>
                         <AdminProducts />
                       </Suspense>
                     </AdminRoute>
                   } />
                   <Route path="/admin/orders" element={
                     <AdminRoute>
-                      <Suspense fallback={<LoadingSpinner />}>
+                      <Suspense fallback={null}>
                         <AdminOrders />
                       </Suspense>
                     </AdminRoute>
                   } />
                   <Route path="/admin/contacts" element={
                     <AdminRoute>
-                      <Suspense fallback={<LoadingSpinner />}>
+                      <Suspense fallback={null}>
                         <AdminContacts />
                       </Suspense>
                     </AdminRoute>
                   } />
                   <Route path="/admin/hero-images" element={
                     <AdminRoute>
-                      <Suspense fallback={<LoadingSpinner />}>
+                      <Suspense fallback={null}>
                         <AdminHeroImages />
                       </Suspense>
                     </AdminRoute>
                   } />
                   <Route path="/admin/analytics" element={
                     <AdminRoute>
-                      <Suspense fallback={<LoadingSpinner />}>
+                      <Suspense fallback={null}>
                         <AdminAnalytics />
                       </Suspense>
                     </AdminRoute>
@@ -128,44 +127,44 @@ function App() {
                         <Routes>
                           {/* Public Pages */}
                           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                          <Route path="/dashboard" element={<Suspense fallback={<LoadingSpinner />}><Dashboard /></Suspense>} />
-                          <Route path="/shop/:category" element={<Suspense fallback={<LoadingSpinner />}><ShopPage /></Suspense>} />
-                          <Route path="/product/:id" element={<Suspense fallback={<LoadingSpinner />}><ProductDetailPage /></Suspense>} />
-                          <Route path="/about" element={<Suspense fallback={<LoadingSpinner />}><AboutPage /></Suspense>} />
-                          <Route path="/help" element={<Suspense fallback={<LoadingSpinner />}><HelpCenterPage /></Suspense>} />
-                          <Route path="/privacy" element={<Suspense fallback={<LoadingSpinner />}><PrivacyPolicyPage /></Suspense>} />
-                          <Route path="/terms" element={<Suspense fallback={<LoadingSpinner />}><TermsOfServicePage /></Suspense>} />
-                          <Route path="/contact" element={<Suspense fallback={<LoadingSpinner />}><ContactPage /></Suspense>} />
-                          <Route path="/shipping" element={<Suspense fallback={<LoadingSpinner />}><ShippingInfoPage /></Suspense>} />
-                          <Route path="/refund-policy" element={<Suspense fallback={<LoadingSpinner />}><RefundPolicyPage /></Suspense>} />
+                          <Route path="/dashboard" element={<Suspense fallback={null}><Dashboard /></Suspense>} />
+                          <Route path="/shop/:category" element={<Suspense fallback={null}><ShopPage /></Suspense>} />
+                          <Route path="/product/:id" element={<Suspense fallback={null}><ProductDetailPage /></Suspense>} />
+                          <Route path="/about" element={<Suspense fallback={null}><AboutPage /></Suspense>} />
+                          <Route path="/help" element={<Suspense fallback={null}><HelpCenterPage /></Suspense>} />
+                          <Route path="/privacy" element={<Suspense fallback={null}><PrivacyPolicyPage /></Suspense>} />
+                          <Route path="/terms" element={<Suspense fallback={null}><TermsOfServicePage /></Suspense>} />
+                          <Route path="/contact" element={<Suspense fallback={null}><ContactPage /></Suspense>} />
+                          <Route path="/shipping" element={<Suspense fallback={null}><ShippingInfoPage /></Suspense>} />
+                          <Route path="/refund-policy" element={<Suspense fallback={null}><RefundPolicyPage /></Suspense>} />
                           
                           {/* Protected Routes */}
                           <Route path="/search" element={
                             <ProtectedRoute>
-                              <Suspense fallback={<LoadingSpinner />}>
+                              <Suspense fallback={null}>
                                 <SearchPage />
                               </Suspense>
                             </ProtectedRoute>
                           } />
-                          <Route path="/cart" element={<Suspense fallback={<LoadingSpinner />}><CartPage /></Suspense>} />
-                          <Route path="/wishlist" element={<Suspense fallback={<LoadingSpinner />}><WishlistPage /></Suspense>} />
+                          <Route path="/cart" element={<Suspense fallback={null}><CartPage /></Suspense>} />
+                          <Route path="/wishlist" element={<Suspense fallback={null}><WishlistPage /></Suspense>} />
                           <Route path="/profile" element={
                             <ProtectedRoute>
-                              <Suspense fallback={<LoadingSpinner />}>
+                              <Suspense fallback={null}>
                                 <ProfilePage />
                               </Suspense>
                             </ProtectedRoute>
                           } />
                           <Route path="/my-orders" element={
                             <ProtectedRoute>
-                              <Suspense fallback={<LoadingSpinner />}>
+                              <Suspense fallback={null}>
                                 <MyOrdersPage />
                               </Suspense>
                             </ProtectedRoute>
                           } />
                           
                           {/* Catch-all route - show 404 page for unknown routes */}
-                          <Route path="*" element={<Suspense fallback={<LoadingSpinner />}><NotFoundPage /></Suspense>} />
+                          <Route path="*" element={<Suspense fallback={null}><NotFoundPage /></Suspense>} />
                         </Routes>
                       </main>
                       <Footer />
