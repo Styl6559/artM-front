@@ -8,10 +8,12 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import CookieConsent from './components/CookieConsent';
 
-// Lazy load all page components
-const LoginPage = React.lazy(() => import('./pages/LoginPage'));
-const RegisterPage = React.lazy(() => import('./pages/RegisterPage'));
-const VerifyPage = React.lazy(() => import('./pages/VerifyPage'));
+// Auth pages - import eagerly (first visit pages, no delay wanted)
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import VerifyPage from './pages/VerifyPage';
+
+// Lazy load all other page components
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const ShopPage = React.lazy(() => import('./pages/ShopPage'));
 const ProductDetailPage = React.lazy(() => import('./pages/ProductDetailPage'));
@@ -38,6 +40,11 @@ import { AuthProvider } from './context/AuthContext';
 import { ProductProvider } from './context/ProductContext';
 import { CartProvider } from './context/CartContext';
 import { SearchProvider } from './context/SearchContext';
+
+// Helper component to reduce Suspense boilerplate
+const Lazy: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <Suspense fallback={null}>{children}</Suspense>
+);
 
 function App() {
 
@@ -70,52 +77,40 @@ function App() {
               <SearchProvider>
               <div className="App min-h-screen flex flex-col">
                 <Routes>
-                  {/* Auth Routes */}
-                  <Route path="/login" element={<Suspense fallback={null}><LoginPage /></Suspense>} />
-                  <Route path="/register" element={<Suspense fallback={null}><RegisterPage /></Suspense>} />
-                  <Route path="/verify" element={<Suspense fallback={null}><VerifyPage /></Suspense>} />
+                  {/* Auth Routes - Not lazy loaded (first visit pages) */}
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/verify" element={<VerifyPage />} />
                   
                   {/* Admin Routes */}
                   <Route path="/admin" element={
                     <AdminRoute>
-                      <Suspense fallback={null}>
-                        <AdminDashboard />
-                      </Suspense>
+                      <Lazy><AdminDashboard /></Lazy>
                     </AdminRoute>
                   } />
                   <Route path="/admin/products" element={
                     <AdminRoute>
-                      <Suspense fallback={null}>
-                        <AdminProducts />
-                      </Suspense>
+                      <Lazy><AdminProducts /></Lazy>
                     </AdminRoute>
                   } />
                   <Route path="/admin/orders" element={
                     <AdminRoute>
-                      <Suspense fallback={null}>
-                        <AdminOrders />
-                      </Suspense>
+                      <Lazy><AdminOrders /></Lazy>
                     </AdminRoute>
                   } />
                   <Route path="/admin/contacts" element={
                     <AdminRoute>
-                      <Suspense fallback={null}>
-                        <AdminContacts />
-                      </Suspense>
+                      <Lazy><AdminContacts /></Lazy>
                     </AdminRoute>
                   } />
                   <Route path="/admin/hero-images" element={
                     <AdminRoute>
-                      <Suspense fallback={null}>
-                        <AdminHeroImages />
-                      </Suspense>
+                      <Lazy><AdminHeroImages /></Lazy>
                     </AdminRoute>
                   } />
                   <Route path="/admin/analytics" element={
                     <AdminRoute>
-                      <Suspense fallback={null}>
-                        <AdminAnalytics />
-                      </Suspense>
+                      <Lazy><AdminAnalytics /></Lazy>
                     </AdminRoute>
                   } />
                   
@@ -127,44 +122,38 @@ function App() {
                         <Routes>
                           {/* Public Pages */}
                           <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                          <Route path="/dashboard" element={<Suspense fallback={null}><Dashboard /></Suspense>} />
-                          <Route path="/shop/:category" element={<Suspense fallback={null}><ShopPage /></Suspense>} />
-                          <Route path="/product/:id" element={<Suspense fallback={null}><ProductDetailPage /></Suspense>} />
-                          <Route path="/about" element={<Suspense fallback={null}><AboutPage /></Suspense>} />
-                          <Route path="/help" element={<Suspense fallback={null}><HelpCenterPage /></Suspense>} />
-                          <Route path="/privacy" element={<Suspense fallback={null}><PrivacyPolicyPage /></Suspense>} />
-                          <Route path="/terms" element={<Suspense fallback={null}><TermsOfServicePage /></Suspense>} />
-                          <Route path="/contact" element={<Suspense fallback={null}><ContactPage /></Suspense>} />
-                          <Route path="/shipping" element={<Suspense fallback={null}><ShippingInfoPage /></Suspense>} />
-                          <Route path="/refund-policy" element={<Suspense fallback={null}><RefundPolicyPage /></Suspense>} />
+                          <Route path="/dashboard" element={<Lazy><Dashboard /></Lazy>} />
+                          <Route path="/shop/:category" element={<Lazy><ShopPage /></Lazy>} />
+                          <Route path="/product/:id" element={<Lazy><ProductDetailPage /></Lazy>} />
+                          <Route path="/about" element={<Lazy><AboutPage /></Lazy>} />
+                          <Route path="/help" element={<Lazy><HelpCenterPage /></Lazy>} />
+                          <Route path="/privacy" element={<Lazy><PrivacyPolicyPage /></Lazy>} />
+                          <Route path="/terms" element={<Lazy><TermsOfServicePage /></Lazy>} />
+                          <Route path="/contact" element={<Lazy><ContactPage /></Lazy>} />
+                          <Route path="/shipping" element={<Lazy><ShippingInfoPage /></Lazy>} />
+                          <Route path="/refund-policy" element={<Lazy><RefundPolicyPage /></Lazy>} />
                           
                           {/* Protected Routes */}
                           <Route path="/search" element={
                             <ProtectedRoute>
-                              <Suspense fallback={null}>
-                                <SearchPage />
-                              </Suspense>
+                              <Lazy><SearchPage /></Lazy>
                             </ProtectedRoute>
                           } />
-                          <Route path="/cart" element={<Suspense fallback={null}><CartPage /></Suspense>} />
-                          <Route path="/wishlist" element={<Suspense fallback={null}><WishlistPage /></Suspense>} />
+                          <Route path="/cart" element={<Lazy><CartPage /></Lazy>} />
+                          <Route path="/wishlist" element={<Lazy><WishlistPage /></Lazy>} />
                           <Route path="/profile" element={
                             <ProtectedRoute>
-                              <Suspense fallback={null}>
-                                <ProfilePage />
-                              </Suspense>
+                              <Lazy><ProfilePage /></Lazy>
                             </ProtectedRoute>
                           } />
                           <Route path="/my-orders" element={
                             <ProtectedRoute>
-                              <Suspense fallback={null}>
-                                <MyOrdersPage />
-                              </Suspense>
+                              <Lazy><MyOrdersPage /></Lazy>
                             </ProtectedRoute>
                           } />
                           
                           {/* Catch-all route - show 404 page for unknown routes */}
-                          <Route path="*" element={<Suspense fallback={null}><NotFoundPage /></Suspense>} />
+                          <Route path="*" element={<Lazy><NotFoundPage /></Lazy>} />
                         </Routes>
                       </main>
                       <Footer />
