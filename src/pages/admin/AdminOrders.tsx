@@ -102,8 +102,8 @@ const AdminOrders: React.FC = () => {
               <div className="relative bg-white/20 backdrop-blur-sm rounded-lg px-2 sm:px-4 py-2 border border-white/30 shadow-lg">
                 <div className="absolute inset-0 bg-white/20 rounded-lg blur-sm"></div>
                 <span className="relative text-white font-medium text-xs sm:text-sm">
-                  <span className="hidden sm:inline">{orders.filter(o => o.status === 'paid' || o.status === 'processing').length} pending orders</span>
-                  <span className="sm:hidden">{orders.filter(o => o.status === 'paid' || o.status === 'processing').length} pending</span>
+                  <span className="hidden sm:inline">{orders.filter(o => o.status === 'pending' || o.status === 'paid' || o.status === 'processing').length} active orders</span>
+                  <span className="sm:hidden">{orders.filter(o => o.status === 'pending' || o.status === 'paid' || o.status === 'processing').length} active</span>
                 </span>
               </div>
             </div>
